@@ -10,17 +10,30 @@ CFLAGS = -Wall -g -I. -Imodel -Iview -Icontroller -Ivalidacoes
 # --- 2. DEFINIÇÃO DOS ARQUIVOS ---
 VPATH = model:view:controller:validacoes
 
-# CORREÇÃO: Adicionados todos os novos arquivos .c
 SRCS =  main.c \
         model/cliente.c \
         model/equipe.c \
-        view/view.c \
+        view/menus.c \
+        view/mostrar_dados.c \
+        view/receber_dados.c \
+        view/formatacao.c \
         controller/controller.c \
         controller/cliente_controller.c \
         controller/equipe_controller.c \
         validacoes/validacoes.c
 
 OBJS = $(notdir $(SRCS:.c=.o))
+# CORREÇÃO: Adicionados todos os novos arquivos .c
+# SRCS =  main.c \
+#         model/cliente.c \
+#         model/equipe.c \
+#         view/view.c \
+#         controller/controller.c \
+#         controller/cliente_controller.c \
+#         controller/equipe_controller.c \
+#         validacoes/validacoes.c
+
+# OBJS = $(notdir $(SRCS:.c=.o))
 
 # --- 3. REGRAS DE COMPILAÇÃO ---
 all: $(TARGET)

@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include "cliente_controller.h"
-#include "../view/view.h"
+// #include "../view/view.h"
+// Em cliente_controller.c
+#include "../view/menus.h"
+#include "../view/mostrar_dados.h"
+#include "../view/receber_dados.h"
 
 // Esta função tem seu próprio loop e gerencia apenas o submódulo de clientes.
 void controller_gerenciar_clientes(ListaCliente** lista_clientes) {

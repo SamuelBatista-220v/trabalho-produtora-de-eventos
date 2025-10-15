@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include "equipe_controller.h"
-#include "../view/view.h"
+// #include "../view/view.h"
+// Em cliente_controller.c
+#include "../view/menus.h"
+#include "../view/mostrar_dados.h"
+#include "../view/receber_dados.h"
 // O model/equipe.h já é incluído pelo equipe_controller.h
 
 void controller_gerenciar_equipe(ListaEquipe** lista_de_equipe) {
