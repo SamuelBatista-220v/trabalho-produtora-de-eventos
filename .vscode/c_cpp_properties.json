@@ -3,9 +3,13 @@
     {
       "name": "windows-gcc-x64",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/controller",
+        "${workspaceFolder}/model",
+        "${workspaceFolder}/view",
+        "${workspaceFolder}/validacoes"
       ],
-      "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
+      "compilerPath": "C:\\MinGW\\bin\\gcc.exe", // Lembre-se de usar o seu caminho correto aqui
       "cStandard": "${default}",
       "cppStandard": "${default}",
       "intelliSenseMode": "windows-gcc-x64",
