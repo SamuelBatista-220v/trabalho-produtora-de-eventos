@@ -99,7 +99,7 @@
     printf("+-----------------------------------------------+\n");
 }
 
- void view_exibir_menu_fornecedores() {
+ void view_exibir_menu_fornecedor() {
     printf("\n+---------------------------------------------+\n");
     printf("|          FORNECEDORES E PARCEIROS            |\n");
     printf("+----------------------------------------------+\n");

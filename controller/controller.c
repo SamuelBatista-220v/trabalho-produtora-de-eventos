@@ -8,16 +8,23 @@
 
 #include "../model/cliente.h"
 #include "../model/equipe.h"
+#include "../model/fornecedor.h"
 
 // Inclui os headers dos novos sub-controllers
 #include "cliente_controller.h"
 #include "equipe_controller.h"
+#include "fornecedor_controller.h"
 
 // Função principal que gerencia o fluxo da aplicação.
 void controller_iniciar_sistema() {
     // Declara uma lista para cada módulo do sistema
+    // ListaProdutora* lista_de_produtora = NULL;
     ListaCliente* lista_de_clientes = NULL;
     ListaEquipe* lista_de_equipe = NULL;
+    // ListaRecursos* lista_de_recursos = NULL;
+    Listafornecedor* lista_de_fornecedor = NULL;
+    // ListaOperadores* lista_de_operadores = NULL;
+                    
 
     int opcao = -1;
 
@@ -28,10 +35,22 @@ void controller_iniciar_sistema() {
 
         switch (opcao) {
             case 1:
-                controller_gerenciar_clientes(&lista_de_clientes);
+                // controller_gerenciar_produtora(&lista_de_produtora);
                 break;
             case 2:
+                controller_gerenciar_clientes(&lista_de_clientes);
+                break;
+            case 3:
                 controller_gerenciar_equipe(&lista_de_equipe);
+                break; 
+            case 4:
+                // controller_gerenciar_recursos(&lista_de_recursos);
+                break;
+            case 5:
+                controller_gerenciar_fornecedor(&lista_de_fornecedor);
+                break;
+            case 6:
+                // controller_gerenciar_operadores(&lista_de_operadores);
                 break;
             case 0:
                 view_exibir_mensagem("\nSaindo do programa...");
@@ -47,6 +66,46 @@ void controller_iniciar_sistema() {
     liberar_lista_equipe(&lista_de_equipe);
     view_exibir_mensagem("Memoria liberada com sucesso.");
 }
+// // Função principal que gerencia o fluxo da aplicação.
+// void controller_iniciar_sistema() {
+//     // Declara uma lista para cada módulo do sistema
+//     ListaCliente* lista_de_clientes = NULL;
+//     ListaEquipe* lista_de_equipe = NULL;
+
+//     int opcao = -1;
+
+//     do {
+//         // CORREÇÃO AQUI: Chamando a função de menu principal correta
+//         view_exibir_menu_principal(); 
+//         opcao = view_ler_opcao();
+
+//         switch (opcao) {
+//             case 1:
+//                 controller_gerenciar_clientes(&lista_de_clientes);
+//                 break;
+//             case 2:
+//                 controller_gerenciar_equipe(&lista_de_equipe);
+//                 break;
+//             case 0:
+//                 view_exibir_mensagem("\nSaindo do programa...");
+//                 break;
+//             default:
+//                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
+//                 break;
+//         }
+//     } while (opcao != 0);
+
+//     // Libera a memória de todas as listas antes de encerrar
+//     liberar_lista(&lista_de_clientes);
+//     liberar_lista_equipe(&lista_de_equipe);
+//     view_exibir_mensagem("Memoria liberada com sucesso.");
+// }
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 //                 if (id_busca <= 0) {
 //                     view_exibir_mensagem(">> Codigo invalido.");

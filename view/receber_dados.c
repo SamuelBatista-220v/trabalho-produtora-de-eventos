@@ -86,3 +86,13 @@ void view_ler_dados_equipe(Equipe* equipe) {
     if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
     equipe->valor_diaria = atof(buffer_float);
 }
+
+void view_ler_dados_fornecedor(fornecedor* fornecedor) {
+    printf("\n--- Cadastro de Novo Fornecedor ---\n");
+    ler_campo_validado("Digite o Nome Fantasia: ", fornecedor->nome_fantasia, sizeof(fornecedor->nome_fantasia), NULL, NULL);
+    ler_campo_validado("Digite a Razao Social: ", fornecedor->razao_social, sizeof(fornecedor->razao_social), NULL, NULL);
+    ler_campo_validado("Digite o CNPJ (14 numeros): ", fornecedor->cnpj, sizeof(fornecedor->cnpj), validar_cnpj, "Erro: CNPJ invalido.");
+    ler_campo_validado("Digite o endereco completo: ", fornecedor->endereco_completo, sizeof(fornecedor->endereco_completo), NULL, NULL);
+    ler_campo_validado("Digite o telefone (10 ou 11 numeros): ", fornecedor->telefone, sizeof(fornecedor->telefone), validar_telefone, "Erro: Telefone invalido.");
+    ler_campo_validado("Digite o Tipo de Servico (Ex: Buffet): ", fornecedor->tipo_servico, sizeof(fornecedor->tipo_servico), NULL, NULL);
+}

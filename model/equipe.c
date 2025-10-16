@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "equipe.h"
+#include "status.h" // Inclui o enum StatusOperacao
 
 static int proximo_id_equipe = 1;
 
@@ -50,17 +51,17 @@ StatusOperacao atualizar_equipe_por_id(ListaEquipe* lista, int id_busca, Equipe 
         }
         atual = atual->prox;
     }
-    return ERRO_CLIENTE_NAO_ENCONTRADO; // Pode criar um ERRO_EQUIPE_NAO_ENCONTRADA se preferir
+    return ERRO_NAO_ENCONTRADO; // Pode criar um ERRO_EQUIPE_NAO_ENCONTRADA se preferir
 }
 
 // Função para desativar um membro da equipe (soft delete)
 StatusOperacao desativar_equipe_por_id(ListaEquipe* lista, int id_busca) {
     ListaEquipe* no_equipe = buscar_equipe_por_id(lista, id_busca);
     if (no_equipe == NULL) {
-        return ERRO_CLIENTE_NAO_ENCONTRADO;
+        return ERRO_NAO_ENCONTRADO;
     }
     if (no_equipe->conteudo.ativo == 0) {
-        return ERRO_CLIENTE_JA_INATIVO; // Pode criar um ERRO_EQUIPE_JA_INATIVA
+        return ERRO_JA_INATIVO; // Pode criar um ERRO_EQUIPE_JA_INATIVA
     }
     no_equipe->conteudo.ativo = 0;
     return OPERACAO_SUCESSO;
@@ -77,7 +78,7 @@ StatusOperacao remover_fisico_equipe_por_id(ListaEquipe** lista, int id_busca) {
     }
 
     if (atual == NULL) {
-        return ERRO_CLIENTE_NAO_ENCONTRADO;
+        return ERRO_NAO_ENCONTRADO;
     }
 
     if (anterior == NULL) {
@@ -94,10 +95,10 @@ StatusOperacao remover_fisico_equipe_por_id(ListaEquipe** lista, int id_busca) {
 StatusOperacao ativar_equipe_por_id(ListaEquipe* lista, int id_busca) {
     ListaEquipe* no_equipe = buscar_equipe_por_id(lista, id_busca);
     if (no_equipe == NULL) {
-        return ERRO_CLIENTE_NAO_ENCONTRADO;
+        return ERRO_NAO_ENCONTRADO;
     }
     if (no_equipe->conteudo.ativo == 1) {
-        return ERRO_CLIENTE_JA_ATIVO; // Pode criar um ERRO_EQUIPE_JA_ATIVA
+        return ERRO_JA_ATIVO; // Pode criar um ERRO_EQUIPE_JA_ATIVA
     }
     no_equipe->conteudo.ativo = 1;
     return OPERACAO_SUCESSO;

@@ -3,6 +3,8 @@
 #ifndef EQUIPE_H
 #define EQUIPE_H
 
+#include "status.h" // Inclui o enum StatusOperacao
+
 #include "cliente.h" // Inclui para pegar a definição de StatusOperacao
 
 typedef struct {

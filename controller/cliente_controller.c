@@ -88,9 +88,9 @@ void controller_gerenciar_clientes(ListaCliente** lista_clientes) {
                 StatusOperacao status = desativar_cliente_por_id(*lista_clientes, id_busca);
                 if (status == OPERACAO_SUCESSO) {
                     view_exibir_mensagem("\n>> SUCESSO: Cliente desativado.");
-                } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
+                } else if (status == ERRO_NAO_ENCONTRADO) {
                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-                } else if (status == ERRO_CLIENTE_JA_INATIVO) {
+                } else if (status == ERRO_JA_INATIVO) {
                     view_exibir_mensagem("\n>> AVISO: O cliente ja esta inativo.");
                 }
                 break;
@@ -107,7 +107,7 @@ void controller_gerenciar_clientes(ListaCliente** lista_clientes) {
                 StatusOperacao status = remover_fisico_cliente_por_id(lista_clientes, id_busca);
                 if (status == OPERACAO_SUCESSO) {
                     view_exibir_mensagem("\n>> SUCESSO: Cliente removido fisicamente.");
-                } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
+                } else if (status == ERRO_NAO_ENCONTRADO) {
                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
                 }
                 break;
@@ -123,9 +123,9 @@ void controller_gerenciar_clientes(ListaCliente** lista_clientes) {
                 StatusOperacao status = ativar_cliente_por_id(*lista_clientes, id_busca);
                 if (status == OPERACAO_SUCESSO) {
                     view_exibir_mensagem("\n>> SUCESSO: Cliente ativado.");
-                } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
+                } else if (status == ERRO_NAO_ENCONTRADO) {
                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-                } else if (status == ERRO_CLIENTE_JA_ATIVO) {
+                } else if (status == ERRO_JA_ATIVO) {
                     view_exibir_mensagem("\n>> AVISO: O cliente ja esta ativo.");
                 }
                 break;

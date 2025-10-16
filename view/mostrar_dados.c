@@ -56,3 +56,34 @@ void view_imprimir_lista_equipe(ListaEquipe* lista) {
         printf("Status      : %s\n", aux->conteudo.ativo ? "Ativo" : "Inativo");
     }
 }
+
+void view_imprimir_fornecedor_unico(Listafornecedor* no_fornecedor) {
+    if (no_fornecedor == NULL) return;
+
+    printf("----------------------------------------\n");
+    printf("Codigo       : %d\n", no_fornecedor->conteudo.id);
+    printf("Nome Fantasia: %s\n", no_fornecedor->conteudo.nome_fantasia);
+    printf("Razao Social : %s\n", no_fornecedor->conteudo.razao_social);
+    printf("CNPJ         : ");
+    imprimir_cnpj_formatado(no_fornecedor->conteudo.cnpj);
+    printf("\nEndereco     : %s\n", no_fornecedor->conteudo.endereco_completo);
+    printf("Telefone     : ");
+    imprimir_telefone_formatado(no_fornecedor->conteudo.telefone);
+    printf("\nServico      : %s\n", no_fornecedor->conteudo.tipo_servico);
+    printf("Status       : %s\n", no_fornecedor->conteudo.ativo ? "Ativo" : "Inativo");
+}
+
+/**
+ * @brief Imprime a lista completa de fornecedores cadastrados.
+ * @param lista Ponteiro para o início da lista de fornecedores.
+ */
+void view_imprimir_lista_fornecedor(Listafornecedor* lista) {
+    if (lista == NULL) {
+        printf("\n>> A lista de fornecedores esta vazia.\n");
+        return;
+    }
+    printf("\n--- Lista de Fornecedores Cadastrados ---\n");
+    for (Listafornecedor* aux = lista; aux != NULL; aux = aux->prox) {
+        view_imprimir_fornecedor_unico(aux);
+    }
+}

@@ -79,7 +79,58 @@ StatusOperacao atualizar_cliente_por_id(ListaCliente* lista, int id_busca, Clien
     }
 
     // Se chegar aqui, não achou o cliente
-    return ERRO_CLIENTE_NAO_ENCONTRADO;
+    return ERRO_NAO_ENCONTRADO;
+}
+
+
+// Função alterada para retornar StatusOperacao
+StatusOperacao desativar_cliente_por_id(ListaCliente* lista, int id_busca) {
+    ListaCliente* no_cliente = buscar_cliente_por_id(lista, id_busca);
+    if (no_cliente == NULL) {
+        return ERRO_NAO_ENCONTRADO;
+    }
+    if (no_cliente->conteudo.ativo == 0) {
+        return ERRO_JA_INATIVO;
+    }
+    no_cliente->conteudo.ativo = 0;
+    return OPERACAO_SUCESSO;
+}
+
+// Função alterada para retornar StatusOperacao
+StatusOperacao remover_fisico_cliente_por_id(ListaCliente** lista, int id_busca) {
+    ListaCliente* atual = *lista;
+    ListaCliente* anterior = NULL;
+
+    while (atual != NULL && atual->conteudo.id != id_busca) {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    if (atual == NULL) {
+        return ERRO_NAO_ENCONTRADO;
+    }
+
+    if (anterior == NULL) {
+        *lista = atual->prox;
+    } else {
+        anterior->prox = atual->prox;
+    }
+
+    free(atual);
+    return OPERACAO_SUCESSO;
+}
+
+// Função alterada para retornar StatusOperacao
+StatusOperacao ativar_cliente_por_id(ListaCliente* lista, int id_busca) {
+    ListaCliente* no_cliente = buscar_cliente_por_id(lista, id_busca);
+    if (no_cliente == NULL) {
+        return ERRO_NAO_ENCONTRADO;
+    }
+    if (no_cliente->conteudo.ativo == 1) {
+        return ERRO_JA_ATIVO;
+    }
+    no_cliente->conteudo.ativo = 1;
+    return OPERACAO_SUCESSO;
 }
 
 // Função alterada para retornar StatusOperacao
@@ -121,53 +172,3 @@ StatusOperacao atualizar_cliente_por_id(ListaCliente* lista, int id_busca, Clien
 //     // REMOVIDO: printf de sucesso.
 //     return OPERACAO_SUCESSO;
 // }
-
-// Função alterada para retornar StatusOperacao
-StatusOperacao desativar_cliente_por_id(ListaCliente* lista, int id_busca) {
-    ListaCliente* no_cliente = buscar_cliente_por_id(lista, id_busca);
-    if (no_cliente == NULL) {
-        return ERRO_CLIENTE_NAO_ENCONTRADO;
-    }
-    if (no_cliente->conteudo.ativo == 0) {
-        return ERRO_CLIENTE_JA_INATIVO;
-    }
-    no_cliente->conteudo.ativo = 0;
-    return OPERACAO_SUCESSO;
-}
-
-// Função alterada para retornar StatusOperacao
-StatusOperacao remover_fisico_cliente_por_id(ListaCliente** lista, int id_busca) {
-    ListaCliente* atual = *lista;
-    ListaCliente* anterior = NULL;
-
-    while (atual != NULL && atual->conteudo.id != id_busca) {
-        anterior = atual;
-        atual = atual->prox;
-    }
-
-    if (atual == NULL) {
-        return ERRO_CLIENTE_NAO_ENCONTRADO;
-    }
-
-    if (anterior == NULL) {
-        *lista = atual->prox;
-    } else {
-        anterior->prox = atual->prox;
-    }
-
-    free(atual);
-    return OPERACAO_SUCESSO;
-}
-
-// Função alterada para retornar StatusOperacao
-StatusOperacao ativar_cliente_por_id(ListaCliente* lista, int id_busca) {
-    ListaCliente* no_cliente = buscar_cliente_por_id(lista, id_busca);
-    if (no_cliente == NULL) {
-        return ERRO_CLIENTE_NAO_ENCONTRADO;
-    }
-    if (no_cliente->conteudo.ativo == 1) {
-        return ERRO_CLIENTE_JA_ATIVO;
-    }
-    no_cliente->conteudo.ativo = 1;
-    return OPERACAO_SUCESSO;
-}
