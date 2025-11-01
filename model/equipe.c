@@ -6,8 +6,8 @@
 static int proximo_id_equipe = 1;
 
 // Exemplo da função de inserir
-StatusOperacao inserir_equipe(ListaEquipe** lista, Equipe nova_equipe) {
-    ListaEquipe* novo_no = (ListaEquipe*) malloc(sizeof(ListaEquipe));
+StatusOperacao inserir_equipe(Listaequipe** lista, equipe nova_equipe) {
+    Listaequipe* novo_no = (Listaequipe*) malloc(sizeof(Listaequipe));
     if (novo_no == NULL) {
         return ERRO_ALOCACAO_MEMORIA;
     }
@@ -19,7 +19,7 @@ StatusOperacao inserir_equipe(ListaEquipe** lista, Equipe nova_equipe) {
     if (*lista == NULL) {
         *lista = novo_no;
     } else {
-        ListaEquipe* atual = *lista;
+        Listaequipe* atual = *lista;
         while (atual->prox != NULL) {
             atual = atual->prox;
         }
@@ -29,8 +29,8 @@ StatusOperacao inserir_equipe(ListaEquipe** lista, Equipe nova_equipe) {
 }
 
 // Função para buscar um membro da equipe por ID
-ListaEquipe* buscar_equipe_por_id(ListaEquipe* lista, int id_busca) {
-    ListaEquipe* atual = lista;
+Listaequipe* buscar_equipe_por_id(Listaequipe* lista, int id_busca) {
+    Listaequipe* atual = lista;
     while (atual != NULL) {
         if (atual->conteudo.id == id_busca) {
             return atual;
@@ -41,8 +41,8 @@ ListaEquipe* buscar_equipe_por_id(ListaEquipe* lista, int id_busca) {
 }
 
 // Função para atualizar os dados de um membro da equipe
-StatusOperacao atualizar_equipe_por_id(ListaEquipe* lista, int id_busca, Equipe equipeAtualizada) {
-    ListaEquipe* atual = lista;
+StatusOperacao atualizar_equipe_por_id(Listaequipe* lista, int id_busca, equipe equipeAtualizada) {
+    Listaequipe* atual = lista;
     while (atual != NULL) {
         if (atual->conteudo.id == id_busca) {
             atual->conteudo = equipeAtualizada;
@@ -55,8 +55,8 @@ StatusOperacao atualizar_equipe_por_id(ListaEquipe* lista, int id_busca, Equipe 
 }
 
 // Função para desativar um membro da equipe (soft delete)
-StatusOperacao desativar_equipe_por_id(ListaEquipe* lista, int id_busca) {
-    ListaEquipe* no_equipe = buscar_equipe_por_id(lista, id_busca);
+StatusOperacao desativar_equipe_por_id(Listaequipe* lista, int id_busca) {
+    Listaequipe* no_equipe = buscar_equipe_por_id(lista, id_busca);
     if (no_equipe == NULL) {
         return ERRO_NAO_ENCONTRADO;
     }
@@ -68,9 +68,9 @@ StatusOperacao desativar_equipe_por_id(ListaEquipe* lista, int id_busca) {
 }
 
 // Função para remover fisicamente um membro da equipe da lista
-StatusOperacao remover_fisico_equipe_por_id(ListaEquipe** lista, int id_busca) {
-    ListaEquipe* atual = *lista;
-    ListaEquipe* anterior = NULL;
+StatusOperacao remover_fisico_equipe_por_id(Listaequipe** lista, int id_busca) {
+    Listaequipe* atual = *lista;
+    Listaequipe* anterior = NULL;
 
     while (atual != NULL && atual->conteudo.id != id_busca) {
         anterior = atual;
@@ -92,8 +92,8 @@ StatusOperacao remover_fisico_equipe_por_id(ListaEquipe** lista, int id_busca) {
 }
 
 // Função para ativar um membro da equipe
-StatusOperacao ativar_equipe_por_id(ListaEquipe* lista, int id_busca) {
-    ListaEquipe* no_equipe = buscar_equipe_por_id(lista, id_busca);
+StatusOperacao ativar_equipe_por_id(Listaequipe* lista, int id_busca) {
+    Listaequipe* no_equipe = buscar_equipe_por_id(lista, id_busca);
     if (no_equipe == NULL) {
         return ERRO_NAO_ENCONTRADO;
     }
@@ -105,9 +105,9 @@ StatusOperacao ativar_equipe_por_id(ListaEquipe* lista, int id_busca) {
 }
 
 // Não se esqueça da função para liberar a memória da lista!
-void liberar_lista_equipe(ListaEquipe** lista) {
-    ListaEquipe* atual = *lista;
-    ListaEquipe* proximo_no;
+void liberar_lista_equipe(Listaequipe** lista) {
+    Listaequipe* atual = *lista;
+    Listaequipe* proximo_no;
     while (atual != NULL) {
         proximo_no = atual->prox;
         free(atual);

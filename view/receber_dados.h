@@ -4,10 +4,16 @@
 #include "../model/cliente.h"
 #include "../model/equipe.h"
 #include "../model/fornecedor.h"
+#include "../model/operador.h"
+#include "../model/produtora.h"
+#include "../model/recurso.h"
 
 int view_ler_opcao();
 void view_ler_dados_cliente(Cliente* cliente);
-void view_ler_dados_equipe(Equipe* equipe);
-
+void view_ler_dados_equipe(equipe* equipe);
 void view_ler_dados_fornecedor(fornecedor* fornecedor);
+void view_ler_dados_operador(operador* operador);
+void view_ler_dados_produtora(produtora* produtora);
+void view_ler_dados_recurso(recurso* recurso);
+
 #endif // RECEBER_DADOS_H

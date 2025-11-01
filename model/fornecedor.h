@@ -3,15 +3,27 @@
 
 #include "status.h" // Inclui o enum StatusOperacao
 
+typedef enum {PESSOA_FISICA, PESSOA_JURIDICA} TipoFornecedor;
+
+typedef union 
+{
+     struct { char cpf[12]; } pf; 
+    struct {  char cnpj[15]; } pj;
+    
+} DocumentoFornecedor;
+
+
+
 // Estrutura principal com todos os dados de um fornecedor (agora apenas PJ)
 typedef struct {
     int id;
+    TipoFornecedor tipoF;
+    DocumentoFornecedor docfornecedor;
     char nome_fantasia[100];
-    char razao_social[100]; // Campo direto na struct
-    char cnpj[15];          // Campo direto na struct
+    char razao_social[100];
     char endereco_completo[150];
     char telefone[12];
-    char tipo_servico[100];
+    char tipo_servico[50];
     int ativo; // 1 para ativo, 0 para inativo
 } fornecedor;
 

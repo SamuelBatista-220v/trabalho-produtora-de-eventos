@@ -115,7 +115,7 @@
     printf("+----------------------------------------------+\n");
 }
 
- void view_exibir_menu_operadores() {
+ void view_exibir_menu_operador() {
     printf("\n+---------------------------------------------+\n");
     printf("|          OPERADORES DO SISTEMA               |\n");
     printf("+---------------------------------------------+\n");

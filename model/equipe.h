@@ -14,20 +14,20 @@ typedef struct {
     char funcao[100];
     float valor_diaria;
     int ativo;
-} Equipe;
+} equipe;
 
-typedef struct no_equipe ListaEquipe;
+typedef struct no_equipe Listaequipe;
 
 struct no_equipe {
-    Equipe conteudo;
-    ListaEquipe* prox;
+    equipe conteudo;
+    Listaequipe* prox;
 };
 
 // As funções já retornam o tipo correto (StatusOperacao)
-StatusOperacao inserir_equipe(ListaEquipe** lista, Equipe nova_equipe);
-ListaEquipe* buscar_equipe_por_id(ListaEquipe* lista, int id_busca);
-StatusOperacao atualizar_equipe_por_id(ListaEquipe* lista, int id, Equipe equipe_atualizada);
-StatusOperacao remover_fisico_equipe_por_id(ListaEquipe** lista, int id_busca);
-void liberar_lista_equipe(ListaEquipe** lista);
+StatusOperacao inserir_equipe(Listaequipe** lista, equipe nova_equipe);
+Listaequipe* buscar_equipe_por_id(Listaequipe* lista, int id_busca);
+StatusOperacao atualizar_equipe_por_id(Listaequipe* lista, int id, equipe equipe_atualizada);
+StatusOperacao remover_fisico_equipe_por_id(Listaequipe** lista, int id_busca);
+void liberar_lista_equipe(Listaequipe** lista);
 
-#endif // EQUIPE_H
+#endif // equipe_H

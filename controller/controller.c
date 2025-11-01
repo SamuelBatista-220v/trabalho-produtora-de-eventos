@@ -9,21 +9,27 @@
 #include "../model/cliente.h"
 #include "../model/equipe.h"
 #include "../model/fornecedor.h"
+#include "../model/produtora.h"
+#include "../model/recurso.h"
+#include "../model/operador.h"
 
 // Inclui os headers dos novos sub-controllers
 #include "cliente_controller.h"
 #include "equipe_controller.h"
 #include "fornecedor_controller.h"
+#include "produtora_controller.h"
+#include "recurso_controller.h"
+#include "operador_controller.h"
 
 // Função principal que gerencia o fluxo da aplicação.
 void controller_iniciar_sistema() {
     // Declara uma lista para cada módulo do sistema
-    // ListaProdutora* lista_de_produtora = NULL;
+    Listaprodutora* lista_de_produtora = NULL;
     ListaCliente* lista_de_clientes = NULL;
-    ListaEquipe* lista_de_equipe = NULL;
-    // ListaRecursos* lista_de_recursos = NULL;
+    Listaequipe* lista_de_equipe = NULL;
+    Listarecurso* lista_de_recurso = NULL;
     Listafornecedor* lista_de_fornecedor = NULL;
-    // ListaOperadores* lista_de_operadores = NULL;
+    Listaoperador* lista_de_operador= NULL;
                     
 
     int opcao = -1;

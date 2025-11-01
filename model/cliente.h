@@ -62,15 +62,15 @@
 // --- Definições das Estruturas de Dados ---
 typedef enum { PESSOA_FISICA, PESSOA_JURIDICA } TipoCliente;
 
-typedef union {
-    struct { char nome[100]; char cpf[12]; } pf;
+typedef union {  //Uma union é um tipo especial de estrutura em C que permite que todos os seus membros compartilhem o mesmo local de memória.
+    struct { char nome[100]; char cpf[12]; } pf; 
     struct { char razao_social[100]; char cnpj[15]; } pj;
 } Documento;
 
 typedef struct {
     int id;
-    TipoCliente tipo;
-    Documento doc;
+    TipoCliente tipo; //identifica se é PF ou PJ
+    Documento doc;   // conteiner de dados
     char endereco_completo[150];
     char telefone[12];
     char email[100];

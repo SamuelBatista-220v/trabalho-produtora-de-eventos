@@ -49,7 +49,7 @@ int view_ler_opcao() {
 }
 
 void view_ler_dados_cliente(Cliente* cliente) {
-    char buffer_leitura[256];
+    char buffer_leitura[150];
     int tipo_escolha = 0;
 
     do {
@@ -75,24 +75,99 @@ void view_ler_dados_cliente(Cliente* cliente) {
     ler_campo_validado("Digite o nome de contato: ", cliente->nome_contato, sizeof(cliente->nome_contato), validar_apenas_letras, "Erro: O nome de contato deve conter apenas letras.");
 }
 
-void view_ler_dados_equipe(Equipe* equipe) {
-    char buffer_float[32];
+void view_ler_dados_equipe(equipe* equipe) {
+    char buffer_float[30];
     ler_campo_validado("Digite o nome do membro da equipe: ", equipe->nome, sizeof(equipe->nome), validar_apenas_letras, "ERRO: O nome deve conter apenas letras.");
     ler_campo_validado("Digite o CPF (11 numeros): ", equipe->cpf, sizeof(equipe->cpf), validar_cpf, "Erro: CPF invalido.");
     ler_campo_validado("Digite a funcao (Ex: Produtor): ", equipe->funcao, sizeof(equipe->funcao), NULL, NULL);
     
-    printf("Digite o valor da diaria: ");
-    fgets(buffer_float, sizeof(buffer_float), stdin);
-    if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
+    ler_campo_validado("Digite o valor da diaria: ", buffer_float, sizeof(buffer_float), NULL, NULL);
     equipe->valor_diaria = atof(buffer_float);
+    // printf("Digite o valor da diaria: ");
+    // fgets(buffer_float, sizeof(buffer_float), stdin);
+    // if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
+    // equipe->valor_diaria = atof(buffer_float);
 }
 
 void view_ler_dados_fornecedor(fornecedor* fornecedor) {
-    printf("\n--- Cadastro de Novo Fornecedor ---\n");
+     char buffer_leitura[150];
+    int tipo_escolha = 0;
+    do {
+        printf("\nSelecione o tipo de fornecedor:\n1. Pessoa Fisica (CPF)\n2. Pessoa Juridica (CNPJ)\nEscolha: ");
+        fgets(buffer_leitura, sizeof(buffer_leitura), stdin);
+        if (strchr(buffer_leitura, '\n') == NULL) limpar_buffer_teclado();
+        tipo_escolha = atoi(buffer_leitura);
+    } while (tipo_escolha != 1 && tipo_escolha != 2);
+
+    if (tipo_escolha == 1) {
+        fornecedor->tipoF = PESSOA_FISICA;
+        ler_campo_validado("Digite o CPF (11 numeros): ", fornecedor->docfornecedor.pf.cpf, sizeof(fornecedor->docfornecedor.pf.cpf), validar_cpf, "Erro: CPF invalido.");
+    } else {
+        fornecedor->tipoF = PESSOA_JURIDICA;
+        ler_campo_validado("Digite o CNPJ (14 numeros): ", fornecedor->docfornecedor.pj.cnpj, sizeof(fornecedor->docfornecedor.pj.cnpj), validar_cnpj, "Erro: CNPJ invalido.");
+    }
     ler_campo_validado("Digite o Nome Fantasia: ", fornecedor->nome_fantasia, sizeof(fornecedor->nome_fantasia), NULL, NULL);
     ler_campo_validado("Digite a Razao Social: ", fornecedor->razao_social, sizeof(fornecedor->razao_social), NULL, NULL);
-    ler_campo_validado("Digite o CNPJ (14 numeros): ", fornecedor->cnpj, sizeof(fornecedor->cnpj), validar_cnpj, "Erro: CNPJ invalido.");
     ler_campo_validado("Digite o endereco completo: ", fornecedor->endereco_completo, sizeof(fornecedor->endereco_completo), NULL, NULL);
     ler_campo_validado("Digite o telefone (10 ou 11 numeros): ", fornecedor->telefone, sizeof(fornecedor->telefone), validar_telefone, "Erro: Telefone invalido.");
     ler_campo_validado("Digite o Tipo de Servico (Ex: Buffet): ", fornecedor->tipo_servico, sizeof(fornecedor->tipo_servico), NULL, NULL);
+}
+
+void view_ler_dados_operador(operador* operador) {
+
+    ler_campo_validado("Digite o Nome: ", operador->nome, sizeof(operador->nome), NULL, NULL);
+    ler_campo_validado("Digite o Usuario: ", operador->usuario, sizeof(operador->usuario), NULL, NULL);
+    ler_campo_validado("Digite a Senha (numerica): ", operador->senha, sizeof(operador->senha), NULL, NULL);
+    
+
+}
+
+void view_ler_dados_produtora(produtora* produtora) {   
+    char buffer_float[30];
+    printf("\n--- Cadastro da Produtora ---\n");
+
+    ler_campo_validado("Digite o Nome Fantasia: ", produtora->nome_fantasia, sizeof(produtora->nome_fantasia), NULL, NULL);
+    ler_campo_validado("Digite a Razao Social: ", produtora->razao_social, sizeof(produtora->razao_social), NULL, NULL);
+    ler_campo_validado("Digite a Inscricao Estadual: ", produtora->inscricao_estadual, sizeof(produtora->inscricao_estadual), NULL, NULL);
+    ler_campo_validado("Digite o CNPJ (14 numeros): ", produtora->cnpj, sizeof(produtora->cnpj), validar_cnpj, "Erro: CNPJ invalido.");
+    ler_campo_validado("Digite o endereco completo: ", produtora->endereco_completo, sizeof(produtora->endereco_completo), NULL, NULL);
+    ler_campo_validado("Digite o telefone (10 ou 11 numeros): ", produtora->telefone, sizeof(produtora->telefone), validar_telefone, "Erro: Telefone invalido.");
+    ler_campo_validado("Digite o email: ", produtora->email, sizeof(produtora->email), validar_email, "Erro: Email invalido (deve conter '@').");
+    ler_campo_validado("Digite o nome do responsavel: ", produtora->nome_responsavel, sizeof(produtora->nome_responsavel), validar_apenas_letras, "Erro: O nome do responsavel deve conter apenas letras.");
+    ler_campo_validado("Digite o telefone do responsavel: ", produtora->telefone_responsavel, sizeof(produtora->telefone_responsavel), validar_telefone, "Erro: Telefone invalido.");
+
+    char buffer_float[30];
+    ler_campo_validado("Digite o valor da diaria [margem de lucro]: ", buffer_float, sizeof(buffer_float), NULL, NULL);
+    produtora->margem_lucro_padrao = atof(buffer_float);
+    //   printf("Digite o valor da diaria: ");
+    // fgets(buffer_float, sizeof(buffer_float), stdin);
+    // if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
+    // produtora->margem_lucro_padrao = atof(buffer_float);
+   
+}
+
+void view_ler_dados_recurso(recurso* recurso) {
+    char buffer_float[50];
+
+    ler_campo_validado("Digite a descricao (caixa de som, projetor, etc): ", recurso->descricao, sizeof(recurso->descricao), NULL, NULL);
+    ler_campo_validado("Digite a categoria (ilumincao, sonorizacao, etc): ", recurso->categoria, sizeof(recurso->categoria), NULL, NULL);
+    ler_campo_validado("Digite a quantidade em estoque: ", buffer_float, sizeof(buffer_float), NULL, NULL);
+    recurso->quantidade = atoi(buffer_float);
+
+    ler_campo_validado("Digite o preco de custo: ", buffer_float, sizeof(buffer_float), NULL, NULL);
+    recurso->preco_de_custo = atof(buffer_float);
+
+
+    ler_campo_validado("Digite o valor da locacao: ", buffer_float, sizeof(buffer_float), NULL, NULL);
+    recurso->valor_da_locacao = atof(buffer_float);
+    //       printf("Digite o preco de custo: ");
+    // fgets(buffer_float, sizeof(buffer_float), stdin);
+    // if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
+    // recurso->preco_de_custo = atof(buffer_float);
+
+    //         printf("Digite o valor da locacao: ");
+    // fgets(buffer_float, sizeof(buffer_float), stdin);
+    // if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
+    // recurso->valor_da_locacao = atof(buffer_float);
+
 }
