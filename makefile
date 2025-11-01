@@ -12,6 +12,9 @@ VPATH = model:view:controller:validacoes
 
 # CORREÇÃO: Lista completa de todos os arquivos .c do projeto
 SRCS =  main.c \
+		model/produtora.c \
+		model/recurso.c \
+		model/operador.c \
         model/cliente.c \
         model/equipe.c \
         model/fornecedor.c \
@@ -19,6 +22,9 @@ SRCS =  main.c \
         view/menus.c \
         view/mostrar_dados.c \
         view/receber_dados.c \
+		controller/produtora_controller.c \
+		controller/recurso_controller.c \
+		controller/operador_controller.c \
         controller/cliente_controller.c \
         controller/equipe_controller.c \
         controller/fornecedor_controller.c \

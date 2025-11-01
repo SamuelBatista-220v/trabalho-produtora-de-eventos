@@ -40,9 +40,6 @@ void view_imprimir_produtora_unico(Listaprodutora* no_produtora) {
 }
 
 
-
-
-
 void view_imprimir_lista(ListaCliente* lista) {
     if (lista == NULL) {
         printf("\n>> A lista de clientes esta vazia.\n");
@@ -76,7 +73,6 @@ void view_imprimir_cliente_unico(ListaCliente* no_cliente) {
 }
 
 
-
 void view_imprimir_lista_equipe(Listaequipe* lista) {
     if (lista == NULL) {
         printf("\n>> A lista de membros da equipe esta vazia.\n");
@@ -89,7 +85,9 @@ void view_imprimir_lista_equipe(Listaequipe* lista) {
 }
 
 void view_imprimir_equipe_unico(Listaequipe* no_equipe) {
-    if (no_equipe == NULL) { return;
+    if (no_equipe == NULL) {
+         return;
+    }
     printf("\n--- Lista de Membros da Equipe ---\n");
 
         printf("----------------------------------------\n");
@@ -152,7 +150,7 @@ void view_imprimir_fornecedor_unico(Listafornecedor* no_fornecedor) {
     printf("----------------------------------------\n");
     printf("Nome Fantasia: %s\n", no_fornecedor->conteudo.nome_fantasia);
     printf("Razao Social : %s\n", no_fornecedor->conteudo.razao_social);
-      if (no_fornecedor->conteudo.tipoF == PESSOA_FISICA) {
+      if (no_fornecedor->conteudo.tipoF == PESSOA_FISICA_FOR) {
         printf("CPF    : ");
         imprimir_cpf_formatado(no_fornecedor->conteudo.docfornecedor.pf.cpf);
     } else {

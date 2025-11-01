@@ -117,8 +117,11 @@ void view_ler_dados_operador(operador* operador) {
 
     ler_campo_validado("Digite o Nome: ", operador->nome, sizeof(operador->nome), NULL, NULL);
     ler_campo_validado("Digite o Usuario: ", operador->usuario, sizeof(operador->usuario), NULL, NULL);
-    ler_campo_validado("Digite a Senha (numerica): ", operador->senha, sizeof(operador->senha), NULL, NULL);
+    // ler_campo_validado("Digite a Senha (numerica): ", operador->senha, sizeof(operador->senha), NULL, NULL);
     
+    char buffer_senha[20];
+    ler_campo_validado("Digite a Senha (numerica): ", buffer_senha, sizeof(buffer_senha), NULL, NULL);
+    operador->senha = atoi(buffer_senha);
 
 }
 
@@ -136,9 +139,8 @@ void view_ler_dados_produtora(produtora* produtora) {
     ler_campo_validado("Digite o nome do responsavel: ", produtora->nome_responsavel, sizeof(produtora->nome_responsavel), validar_apenas_letras, "Erro: O nome do responsavel deve conter apenas letras.");
     ler_campo_validado("Digite o telefone do responsavel: ", produtora->telefone_responsavel, sizeof(produtora->telefone_responsavel), validar_telefone, "Erro: Telefone invalido.");
 
-    char buffer_float[30];
-    ler_campo_validado("Digite o valor da diaria [margem de lucro]: ", buffer_float, sizeof(buffer_float), NULL, NULL);
-    produtora->margem_lucro_padrao = atof(buffer_float);
+    // ler_campo_validado("Digite o valor da diaria [margem de lucro]: ", buffer_float, sizeof(buffer_float), NULL, NULL);
+    // produtora->margem_lucro_padrao = atof(buffer_float);
     //   printf("Digite o valor da diaria: ");
     // fgets(buffer_float, sizeof(buffer_float), stdin);
     // if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();

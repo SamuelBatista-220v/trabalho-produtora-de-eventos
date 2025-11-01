@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include "controller.h"
+
+#include <string.h> // Necessário para o strcpy do operador padrão
+
 // #include "../view/view.h"
 // Em cliente_controller.c
 #include "../view/menus.h"
@@ -21,6 +24,8 @@
 #include "recurso_controller.h"
 #include "operador_controller.h"
 
+static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op);
+
 // Função principal que gerencia o fluxo da aplicação.
 void controller_iniciar_sistema() {
     // Declara uma lista para cada módulo do sistema
@@ -34,6 +39,8 @@ void controller_iniciar_sistema() {
 
     int opcao = -1;
 
+    controller_setup_inicial(&lista_de_produtora, &lista_de_operador);
+
     do {
         // CORREÇÃO AQUI: Chamando a função de menu principal correta
         view_exibir_menu_principal(); 
@@ -41,7 +48,7 @@ void controller_iniciar_sistema() {
 
         switch (opcao) {
             case 1:
-                // controller_gerenciar_produtora(&lista_de_produtora);
+                controller_gerenciar_produtora(&lista_de_produtora);
                 break;
             case 2:
                 controller_gerenciar_clientes(&lista_de_clientes);
@@ -50,13 +57,13 @@ void controller_iniciar_sistema() {
                 controller_gerenciar_equipe(&lista_de_equipe);
                 break; 
             case 4:
-                // controller_gerenciar_recursos(&lista_de_recursos);
+                controller_gerenciar_recurso(&lista_de_recurso);
                 break;
             case 5:
                 controller_gerenciar_fornecedor(&lista_de_fornecedor);
                 break;
             case 6:
-                // controller_gerenciar_operadores(&lista_de_operadores);
+                controller_gerenciar_operador(&lista_de_operador);
                 break;
             case 0:
                 view_exibir_mensagem("\nSaindo do programa...");
@@ -67,10 +74,53 @@ void controller_iniciar_sistema() {
         }
     } while (opcao != 0);
 
-    // Libera a memória de todas as listas antes de encerrar
+
     liberar_lista(&lista_de_clientes);
-    liberar_lista_equipe(&lista_de_equipe);
-    view_exibir_mensagem("Memoria liberada com sucesso.");
+  liberar_lista_equipe(&lista_de_equipe);
+  liberar_lista_fornecedor(&lista_de_fornecedor);
+  liberar_lista_produtora(&lista_de_produtora);
+  liberar_lista_recurso(&lista_de_recurso);
+  liberar_lista_operador(&lista_de_operador);
+  view_exibir_mensagem("Memoria liberada com sucesso.");
+
+    // Libera a memória de todas as listas antes de encerrar
+    // liberar_lista(&lista_de_clientes);
+    // liberar_lista_equipe(&lista_de_equipe);
+    // view_exibir_mensagem("Memoria liberada com sucesso.");
+}
+// Em: controller/controller.c (no final do ficheiro)
+
+static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op) {
+    
+    // REQUERIMENTO 1: Criar a Produtora (se ela não existir)
+    if (*lista_prod == NULL) {
+        view_exibir_mensagem("\n--- BEM-VINDO AO SISTEMA ---");
+        view_exibir_mensagem("Vamos registar os dados da sua Produtora (isto so sera feito uma vez).");
+        
+        produtora nova_produtora;
+        view_ler_dados_produtora(&nova_produtora);
+        nova_produtora.ativo = 1;
+        
+        inserir_produtora(lista_prod, nova_produtora);
+        view_exibir_mensagem(">> SUCESSO: Produtora principal registada.");
+    }
+
+    // REQUERIMENTO 2: Criar o Operador "admin" (se ele não existir)
+    if (*lista_op == NULL) {
+        view_exibir_mensagem("\nA criar operador 'admin' padrao...");
+        
+        operador admin;
+        strcpy(admin.nome, "Administrador Padrao");
+        strcpy(admin.usuario, "admin");
+        admin.senha = 1234; // Você leu a senha como int no receber_dados.c
+        admin.ativo = 1;
+
+        inserir_operador(lista_op, admin);
+        view_exibir_mensagem(">> SUCESSO: Operador 'admin' (senha: 1234) criado.");
+    }
+
+    printf("\n(Pressione Enter para continuar...)");
+    getchar(); // Pausa para o utilizador ler as mensagens de setup
 }
 // // Função principal que gerencia o fluxo da aplicação.
 // void controller_iniciar_sistema() {

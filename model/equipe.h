@@ -28,6 +28,8 @@ StatusOperacao inserir_equipe(Listaequipe** lista, equipe nova_equipe);
 Listaequipe* buscar_equipe_por_id(Listaequipe* lista, int id_busca);
 StatusOperacao atualizar_equipe_por_id(Listaequipe* lista, int id, equipe equipe_atualizada);
 StatusOperacao remover_fisico_equipe_por_id(Listaequipe** lista, int id_busca);
+StatusOperacao desativar_equipe_por_id(Listaequipe* lista, int id_busca);
+StatusOperacao ativar_equipe_por_id(Listaequipe* lista, int id_busca);
 void liberar_lista_equipe(Listaequipe** lista);
 
 #endif // equipe_H

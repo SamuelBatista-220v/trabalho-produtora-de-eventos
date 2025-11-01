@@ -23,17 +23,30 @@
     printf("+-----------------------------------------------+\n");
 }
 
+//  void view_exibir_menu_produtora() {
+//     printf("\n+----------------------------------------------+\n");
+//     printf("|          MODULO DA PRODUTORA                  |\n");
+//     printf("+-----------------------------------------------+\n");
+//     printf("| 1. Inserir novo membro                        |\n");
+//     printf("| 2. Buscar membro por Codigo                   |\n");
+//     printf("| 3. Atualizar dados de um membro               |\n");
+//     printf("| 4. Desativar membro                           |\n");
+//     printf("| 5. Remover membro (exclusao permanente)       |\n");
+//     printf("| 6. Ativar membro                              |\n");
+//     printf("| 7. Listar todos os membros                    |\n");
+//     printf("+-----------------------------------------------+\n");
+//     printf("| 0. Voltar ao menu principal                   |\n");
+//     printf("+-----------------------------------------------+\n");
+// }
+// Em: view/menus.c
+
  void view_exibir_menu_produtora() {
     printf("\n+----------------------------------------------+\n");
     printf("|          MODULO DA PRODUTORA                  |\n");
     printf("+-----------------------------------------------+\n");
-    printf("| 1. Inserir novo membro                        |\n");
-    printf("| 2. Buscar membro por Codigo                   |\n");
-    printf("| 3. Atualizar dados de um membro               |\n");
-    printf("| 4. Desativar membro                           |\n");
-    printf("| 5. Remover membro (exclusao permanente)       |\n");
-    printf("| 6. Ativar membro                              |\n");
-    printf("| 7. Listar todos os membros                    |\n");
+    printf("| 1. Ver dados da Produtora                     |\n");
+    printf("| 2. Atualizar dados da Produtora               |\n");
+    printf("| 7. Listar todos os membros (Apenas para teste) |\n"); // Mantido para depuração
     printf("+-----------------------------------------------+\n");
     printf("| 0. Voltar ao menu principal                   |\n");
     printf("+-----------------------------------------------+\n");
@@ -83,7 +96,7 @@
     printf("+-----------------------------------------------+\n");
 }
 
- void view_exibir_menu_recursos() {
+ void view_exibir_menu_recurso() {
     printf("\n+----------------------------------------------+\n");
     printf("|          RECURSOS E EQUIPAMENTOS              |\n");
     printf("+-----------------------------------------------+\n");

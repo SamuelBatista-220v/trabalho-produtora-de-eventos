@@ -3,7 +3,7 @@
 
 #include "status.h" // Inclui o enum StatusOperacao
 
-typedef enum {PESSOA_FISICA, PESSOA_JURIDICA} TipoFornecedor;
+typedef enum {PESSOA_FISICA_FOR, PESSOA_JURIDICA_FOR} TipoFornecedor;
 
 typedef union 
 {
