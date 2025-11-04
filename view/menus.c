@@ -9,7 +9,7 @@
 //     printf("   ==========================================\n");
 // }
  void view_exibir_menu_principal() {
-    printf("\n+----------------------------------------------+\n");
+    printf("\n+-----------------------------------------------+\n");
     printf("|          MENU PRINCIPAL                       |\n");
     printf("+-----------------------------------------------+\n");
     printf("| 1. Gerenciar dados da produtora               |\n");
@@ -41,12 +41,12 @@
 // Em: view/menus.c
 
  void view_exibir_menu_produtora() {
-    printf("\n+----------------------------------------------+\n");
+    printf("\n+-----------------------------------------------+\n");
     printf("|          MODULO DA PRODUTORA                  |\n");
     printf("+-----------------------------------------------+\n");
     printf("| 1. Ver dados da Produtora                     |\n");
     printf("| 2. Atualizar dados da Produtora               |\n");
-    printf("| 7. Listar todos os membros (Apenas para teste) |\n"); // Mantido para depuração
+    printf("| 7. Listar todos os membros (Apenas para teste)|\n"); // Mantido para depuração
     printf("+-----------------------------------------------+\n");
     printf("| 0. Voltar ao menu principal                   |\n");
     printf("+-----------------------------------------------+\n");
@@ -65,7 +65,7 @@
 //     printf("   ========================================\n");
 // }
  void view_exibir_menu_clientes() {
-    printf("\n+----------------------------------------------+\n");
+    printf("\n+-----------------------------------------------+\n");
     printf("|          MODULO DE CLIENTES                   |\n");
     printf("+-----------------------------------------------+\n");
     printf("| 1. Inserir novo cliente                       |\n");
@@ -81,7 +81,7 @@
 }
 
  void view_exibir_menu_equipe() {
-    printf("\n+----------------------------------------------+\n");
+    printf("\n+-----------------------------------------------+\n");
     printf("|          MODULO DE EQUIPES                    |\n");
     printf("+-----------------------------------------------+\n");
     printf("| 1. Inserir novo membro                        |\n");
@@ -97,7 +97,7 @@
 }
 
  void view_exibir_menu_recurso() {
-    printf("\n+----------------------------------------------+\n");
+    printf("\n+-----------------------------------------------+\n");
     printf("|          RECURSOS E EQUIPAMENTOS              |\n");
     printf("+-----------------------------------------------+\n");
     printf("| 1. Inserir novos equipamentos                 |\n");
@@ -113,7 +113,7 @@
 }
 
  void view_exibir_menu_fornecedor() {
-    printf("\n+---------------------------------------------+\n");
+    printf("\n+----------------------------------------------+\n");
     printf("|          FORNECEDORES E PARCEIROS            |\n");
     printf("+----------------------------------------------+\n");
     printf("| 1. Inserir novo fornecedor                   |\n");
@@ -129,9 +129,9 @@
 }
 
  void view_exibir_menu_operador() {
-    printf("\n+---------------------------------------------+\n");
+    printf("\n+----------------------------------------------+\n");
     printf("|          OPERADORES DO SISTEMA               |\n");
-    printf("+---------------------------------------------+\n");
+    printf("+----------------------------------------------+\n");
     printf("| 1. Inserir novo operador do sistema          |\n");
     printf("| 2. Buscar operador por Codigo                |\n");
     printf("| 3. Atualizar dados de um operador            |\n");
