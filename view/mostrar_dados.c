@@ -179,7 +179,7 @@ void view_imprimir_lista_operador(Listaoperador* lista) {
 void view_imprimir_operador_unico(Listaoperador* no_operador) {
     if (no_operador == NULL) return;
 
-    printf("----------------------------------------\n");
+    printf("\n----------------------------------------------");
     printf("\n |Codigo      | : %d ", no_operador->conteudo.id);
     printf("\n |Nome        | : %s ", no_operador->conteudo.nome);
     printf("\n |Usuario     | : %s ", no_operador->conteudo.usuario);
