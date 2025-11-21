@@ -121,7 +121,83 @@ void liberar_lista_fornecedor(Listafornecedor** lista) {
     *lista = NULL;
 }
 
+// --- FUNÇÕES DE PERSISTÊNCIA (CORRIGIDAS) ---
 
+StatusOperacao salvar_fornecedor_txt(Listafornecedor* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "w");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    
+    Listafornecedor* atual = lista;
+    while (atual) {
+        fornecedor* fr = &atual->conteudo;
+        // Salva campos comuns
+        fprintf(f, "%d;%d;%s;%s;%s;%s;%s;%d;",
+            fr->id, (int)fr->tipoF, fr->nome_fantasia, fr->razao_social,
+            fr->endereco_completo, fr->telefone, fr->tipo_servico, fr->ativo);
+        
+        // CORREÇÃO AQUI: removido o ".docfornecedor" extra
+        if (fr->tipoF == PESSOA_FISICA_FOR) {
+            fprintf(f, "%s\n", fr->docfornecedor.pf.cpf);
+        } else {
+            fprintf(f, "%s\n", fr->docfornecedor.pj.cnpj);
+        }
+        
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_fornecedor_txt(Listafornecedor** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "r");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    
+    liberar_lista_fornecedor(lista);
+    proximo_id_fornecedor = 1;
+
+    fornecedor fr;
+    // Lê campos comuns
+    while (fscanf(f, "%d;%d;%[^;];%[^;];%[^;];%[^;];%[^;];%d;",
+        &fr.id, (int*)&fr.tipoF, fr.nome_fantasia, fr.razao_social,
+        fr.endereco_completo, fr.telefone, fr.tipo_servico, &fr.ativo) == 8) {
+        
+        // CORREÇÃO AQUI: removido o ".docfornecedor" extra
+        if (fr.tipoF == PESSOA_FISICA_FOR) {
+            fscanf(f, "%[^\n]\n", fr.docfornecedor.pf.cpf);
+        } else {
+            fscanf(f, "%[^\n]\n", fr.docfornecedor.pj.cnpj);
+        }
+        
+        inserir_fornecedor(lista, fr);
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao salvar_fornecedor_bin(Listafornecedor* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "wb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listafornecedor* atual = lista;
+    while (atual) {
+        fwrite(&atual->conteudo, sizeof(fornecedor), 1, f);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_fornecedor_bin(Listafornecedor** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "rb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_fornecedor(lista);
+    proximo_id_fornecedor = 1;
+    fornecedor fr;
+    while (fread(&fr, sizeof(fornecedor), 1, f) == 1) {
+        inserir_fornecedor(lista, fr);
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
 // #include <stdlib.h>
 // #include <string.h>
 // #include "fornecedor.h"

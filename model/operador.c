@@ -121,3 +121,53 @@ void liberar_lista_operador(Listaoperador** lista) {
     *lista = NULL;
 }
 
+// Persistência
+StatusOperacao salvar_operador_txt(Listaoperador* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "w");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listaoperador* atual = lista;
+    while (atual) {
+        operador* op = &atual->conteudo;
+        fprintf(f, "%d;%s;%s;%d;%d\n",
+            op->id, op->nome, op->usuario, op->senha, op->ativo);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_operador_txt(Listaoperador** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "r");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_operador(lista);
+    operador op;
+    while (fscanf(f, "%d;%[^;];%[^;];%d;%d\n",
+        &op.id, op.nome, op.usuario, &op.senha, &op.ativo) == 5) {
+        inserir_operador(lista, op);
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao salvar_operador_bin(Listaoperador* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "wb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listaoperador* atual = lista;
+    while (atual) {
+        fwrite(&atual->conteudo, sizeof(operador), 1, f);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_operador_bin(Listaoperador** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "rb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_operador(lista);
+    operador op;
+    while (fread(&op, sizeof(operador), 1, f) == 1) inserir_operador(lista, op);
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+

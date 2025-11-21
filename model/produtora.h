@@ -53,6 +53,10 @@ void liberar_lista_produtora(Listaprodutora** lista);
 // (Opcional) Funções de Persistência
 // StatusOperacao salvar_produtoraes(Listaprodutora* lista, const char* nome_arquivo);
 // StatusOperacao carregar_produtoraes(Listaprodutora** lista, const char* nome_arquivo);
+StatusOperacao salvar_produtora_txt(Listaprodutora* lista, const char* nome_arquivo);
+StatusOperacao carregar_produtora_txt(Listaprodutora** lista, const char* nome_arquivo);
+StatusOperacao salvar_produtora_bin(Listaprodutora* lista, const char* nome_arquivo);
+StatusOperacao carregar_produtora_bin(Listaprodutora** lista, const char* nome_arquivo);
 
 #endif // produtora_H
 

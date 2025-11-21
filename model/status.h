@@ -13,7 +13,6 @@ typedef enum {
 
     // --- Erros de Sistema / Memória ---
     ERRO_ALOCACAO_MEMORIA,
-
     // --- Erros de Persistência (Ficheiros) ---
     ERRO_ABRIR_ARQUIVO,
     ERRO_ESCREVER_ARQUIVO,

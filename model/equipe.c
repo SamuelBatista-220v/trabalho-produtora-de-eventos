@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "equipe.h"
 #include "status.h" // Inclui o enum StatusOperacao
 
@@ -114,4 +115,54 @@ void liberar_lista_equipe(Listaequipe** lista) {
         atual = proximo_no;
     }
     *lista = NULL;
+}
+
+// Persistência
+StatusOperacao salvar_equipe_txt(Listaequipe* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "w");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listaequipe* atual = lista;
+    while (atual) {
+        equipe* e = &atual->conteudo;
+        fprintf(f, "%d;%s;%s;%s;%.2f;%d\n",
+            e->id, e->nome, e->cpf, e->funcao, e->valor_diaria, e->ativo);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_equipe_txt(Listaequipe** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "r");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_equipe(lista);
+    equipe e;
+    while (fscanf(f, "%d;%[^;];%[^;];%[^;];%f;%d\n",
+        &e.id, e.nome, e.cpf, e.funcao, &e.valor_diaria, &e.ativo) == 6) {
+        inserir_equipe(lista, e);
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao salvar_equipe_bin(Listaequipe* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "wb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listaequipe* atual = lista;
+    while (atual) {
+        fwrite(&atual->conteudo, sizeof(equipe), 1, f);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_equipe_bin(Listaequipe** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "rb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_equipe(lista);
+    equipe e;
+    while (fread(&e, sizeof(equipe), 1, f) == 1) inserir_equipe(lista, e);
+    fclose(f);
+    return OPERACAO_SUCESSO;
 }

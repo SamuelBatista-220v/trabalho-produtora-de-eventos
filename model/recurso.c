@@ -121,3 +121,52 @@ void liberar_lista_recurso(Listarecurso** lista) {
     *lista = NULL;
 }
 
+// Persistência
+StatusOperacao salvar_recurso_txt(Listarecurso* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "w");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listarecurso* atual = lista;
+    while (atual) {
+        recurso* r = &atual->conteudo;
+        fprintf(f, "%d;%s;%s;%d;%.2f;%.2f;%d\n",
+            r->id, r->descricao, r->categoria, r->quantidade, r->preco_de_custo, r->valor_da_locacao, r->ativo);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_recurso_txt(Listarecurso** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "r");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_recurso(lista);
+    recurso r;
+    while (fscanf(f, "%d;%[^;];%[^;];%d;%f;%f;%d\n",
+        &r.id, r.descricao, r.categoria, &r.quantidade, &r.preco_de_custo, &r.valor_da_locacao, &r.ativo) == 7) {
+        inserir_recurso(lista, r);
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao salvar_recurso_bin(Listarecurso* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "wb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listarecurso* atual = lista;
+    while (atual) {
+        fwrite(&atual->conteudo, sizeof(recurso), 1, f);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_recurso_bin(Listarecurso** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "rb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_recurso(lista);
+    recurso r;
+    while (fread(&r, sizeof(recurso), 1, f) == 1) inserir_recurso(lista, r);
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}

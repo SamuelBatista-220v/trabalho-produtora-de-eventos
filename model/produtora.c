@@ -121,3 +121,57 @@ void liberar_lista_produtora(Listaprodutora** lista) {
     *lista = NULL;
 }
 
+// Persistência
+StatusOperacao salvar_produtora_txt(Listaprodutora* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "w");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listaprodutora* atual = lista;
+    while (atual) {
+        produtora* p = &atual->conteudo;
+        fprintf(f, "%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%.2f;%d\n",
+            p->id, p->nome_fantasia, p->razao_social, p->inscricao_estadual,
+            p->cnpj, p->endereco_completo, p->telefone, p->email,
+            p->nome_responsavel, p->telefone_responsavel, p->margem_lucro_padrao, p->ativo);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_produtora_txt(Listaprodutora** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "r");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_produtora(lista);
+    produtora p;
+    while (fscanf(f, "%d;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%f;%d\n",
+        &p.id, p.nome_fantasia, p.razao_social, p.inscricao_estadual,
+        p.cnpj, p.endereco_completo, p.telefone, p.email,
+        p.nome_responsavel, p.telefone_responsavel, &p.margem_lucro_padrao, &p.ativo) == 12) {
+        inserir_produtora(lista, p);
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao salvar_produtora_bin(Listaprodutora* lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "wb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    Listaprodutora* atual = lista;
+    while (atual) {
+        fwrite(&atual->conteudo, sizeof(produtora), 1, f);
+        atual = atual->prox;
+    }
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_produtora_bin(Listaprodutora** lista, const char* nome_arquivo) {
+    FILE* f = fopen(nome_arquivo, "rb");
+    if (!f) return ERRO_ABRIR_ARQUIVO;
+    liberar_lista_produtora(lista);
+    produtora p;
+    while (fread(&p, sizeof(produtora), 1, f) == 1) inserir_produtora(lista, p);
+    fclose(f);
+    return OPERACAO_SUCESSO;
+}
+

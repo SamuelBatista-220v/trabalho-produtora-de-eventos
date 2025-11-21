@@ -50,6 +50,13 @@ void liberar_lista_fornecedor(Listafornecedor** lista);
 // (Opcional) Funções de Persistência
 // StatusOperacao salvar_fornecedores(ListaFornecedor* lista, const char* nome_arquivo);
 // StatusOperacao carregar_fornecedores(ListaFornecedor** lista, const char* nome_arquivo);
+// ... (código anterior) ...
+
+// Funções de Persistência
+StatusOperacao salvar_fornecedor_txt(Listafornecedor* lista, const char* nome_arquivo);
+StatusOperacao carregar_fornecedor_txt(Listafornecedor** lista, const char* nome_arquivo);
+StatusOperacao salvar_fornecedor_bin(Listafornecedor* lista, const char* nome_arquivo);
+StatusOperacao carregar_fornecedor_bin(Listafornecedor** lista, const char* nome_arquivo);
 
 #endif // FORNECEDOR_H
 
@@ -57,7 +64,8 @@ void liberar_lista_fornecedor(Listafornecedor** lista);
 
 
 
-// #ifndef FORNECEDOR_H
+
+
 // #define FORNECEDOR_H
 
 // #include "status.h"

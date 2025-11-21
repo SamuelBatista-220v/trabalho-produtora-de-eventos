@@ -94,4 +94,10 @@ StatusOperacao remover_fisico_cliente_por_id(ListaCliente** lista, int id_busca)
 StatusOperacao ativar_cliente_por_id(ListaCliente* lista, int id_busca);
 StatusOperacao atualizar_cliente_por_id(ListaCliente* lista, int id, Cliente clienteAtualizado);
 
+// No final de model/cliente.h
+StatusOperacao salvar_clientes_txt(ListaCliente* lista, const char* nome_arquivo);
+StatusOperacao carregar_clientes_txt(ListaCliente** lista, const char* nome_arquivo);
+StatusOperacao salvar_clientes_bin(ListaCliente* lista, const char* nome_arquivo);
+StatusOperacao carregar_clientes_bin(ListaCliente** lista, const char* nome_arquivo);
+
 #endif

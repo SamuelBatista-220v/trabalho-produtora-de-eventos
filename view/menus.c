@@ -8,21 +8,33 @@
 //     printf("   |  0. Sair do Sistema                        |\n");
 //     printf("   ==========================================\n");
 // }
- void view_exibir_menu_principal() {
-    printf("\n+-----------------------------------------------+\n");
-    printf("|          MENU PRINCIPAL                       |\n");
-    printf("+-----------------------------------------------+\n");
-    printf("| 1. Gerenciar dados da produtora               |\n");
-    printf("| 2. Gerenciar clientes                         |\n");
-    printf("| 3. Gerenciar equipe interna                   |\n");
-    printf("| 4. Gerenciar recursos e equipamentos          |\n");
-    printf("| 5. Gerenciar fornecedores                     |\n");
-    printf("| 6. Gerenciar operadores do sistema            |\n");
-    printf("+-----------------------------------------------+\n");
-    printf("| 0. Sair do sistema                            |\n");
-    printf("+-----------------------------------------------+\n");
+//  void view_exibir_menu_principal() {
+//     printf("\n+-----------------------------------------------+\n");
+//     printf("|          MENU PRINCIPAL                       |\n");
+//     printf("+-----------------------------------------------+\n");
+//     printf("| 1. Gerenciar dados da produtora               |\n");
+//     printf("| 2. Gerenciar clientes                         |\n");
+//     printf("| 3. Gerenciar equipe interna                   |\n");
+//     printf("| 4. Gerenciar recursos e equipamentos          |\n");
+//     printf("| 5. Gerenciar fornecedores                     |\n");
+//     printf("| 6. Gerenciar operadores do sistema            |\n");
+//     printf("+-----------------------------------------------+\n");
+//     printf("| 0. Sair do sistema                            |\n");
+//     printf("+-----------------------------------------------+\n");
+// }
+void view_exibir_menu_principal() {
+    printf("\n ====== SISTEMA PRODUTORA DE EVENTOS ========\n");
+    printf("   |  1. Gerenciar Produtora (Principal)    |\n"); // Ajustei conforme seu controller
+    printf("   |  2. Gerenciar Clientes                 |\n");
+    printf("   |  3. Gerenciar Equipe                   |\n");
+    printf("   |  4. Gerenciar Recursos                 |\n");
+    printf("   |  5. Gerenciar Fornecedores             |\n");
+    printf("   |  6. Gerenciar Operadores               |\n");
+    printf("   |----------------------------------------|\n");
+    printf("   |  7. Mudar Modo de Salvamento (TXT/BIN) |\n"); // <--- NOVA OPÇÃO
+    printf("   |  0. Sair e Salvar                      |\n");
+    printf("   ==========================================\n");
 }
-
 //  void view_exibir_menu_produtora() {
 //     printf("\n+----------------------------------------------+\n");
 //     printf("|          MODULO DA PRODUTORA                  |\n");

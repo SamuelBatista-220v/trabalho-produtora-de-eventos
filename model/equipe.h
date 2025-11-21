@@ -32,4 +32,9 @@ StatusOperacao desativar_equipe_por_id(Listaequipe* lista, int id_busca);
 StatusOperacao ativar_equipe_por_id(Listaequipe* lista, int id_busca);
 void liberar_lista_equipe(Listaequipe** lista);
 
+StatusOperacao salvar_equipe_txt(Listaequipe* lista, const char* nome_arquivo);
+StatusOperacao carregar_equipe_txt(Listaequipe** lista, const char* nome_arquivo);
+StatusOperacao salvar_equipe_bin(Listaequipe* lista, const char* nome_arquivo);
+StatusOperacao carregar_equipe_bin(Listaequipe** lista, const char* nome_arquivo);
+
 #endif // equipe_H

@@ -126,7 +126,7 @@ void view_ler_dados_operador(operador* operador) {
 }
 
 void view_ler_dados_produtora(produtora* produtora) {   
-    char buffer_float[30];
+    // char buffer_float[30];
     printf("\n--- Cadastro da Produtora ---\n");
 
     ler_campo_validado("Digite o Nome Fantasia: ", produtora->nome_fantasia, sizeof(produtora->nome_fantasia), NULL, NULL);

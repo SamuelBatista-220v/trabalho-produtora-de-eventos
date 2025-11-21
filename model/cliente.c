@@ -133,6 +133,90 @@ StatusOperacao ativar_cliente_por_id(ListaCliente* lista, int id_busca) {
     return OPERACAO_SUCESSO;
 }
 
+// --- Funções de Persistência (TXT/CSV e Binário) ---
+
+StatusOperacao salvar_clientes_txt(ListaCliente* lista, const char* nome_arquivo) {
+    FILE* arquivo = fopen(nome_arquivo, "w");
+    if (arquivo == NULL) return ERRO_ABRIR_ARQUIVO;
+
+    ListaCliente* atual = lista;
+    while (atual != NULL) {
+        Cliente* c = &atual->conteudo;
+        
+        // Formato: ID;Ativo;Tipo;Endereco;Telefone;Email;Contato;
+        fprintf(arquivo, "%d;%d;%d;%s;%s;%s;%s;", 
+                c->id, c->ativo, (int)c->tipo, 
+                c->endereco_completo, c->telefone, c->email, c->nome_contato);
+
+        // Salva a parte específica da Union baseada no Tipo
+        if (c->tipo == PESSOA_FISICA) {
+            fprintf(arquivo, "%s;%s\n", c->doc.pf.nome, c->doc.pf.cpf);
+        } else {
+            fprintf(arquivo, "%s;%s\n", c->doc.pj.razao_social, c->doc.pj.cnpj);
+        }
+
+        atual = atual->prox;
+    }
+    fclose(arquivo);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_clientes_txt(ListaCliente** lista, const char* nome_arquivo) {
+    FILE* arquivo = fopen(nome_arquivo, "r");
+    if (arquivo == NULL) return ERRO_ABRIR_ARQUIVO;
+
+    liberar_lista(lista); 
+    proximo_id = 1; 
+
+    Cliente temp;
+    // Loop de leitura
+    while (fscanf(arquivo, "%d;%d;%d;%[^;];%[^;];%[^;];%[^;];", 
+                  &temp.id, &temp.ativo, (int*)&temp.tipo, 
+                  temp.endereco_completo, temp.telefone, temp.email, temp.nome_contato) == 7) {
+        
+        if (temp.tipo == PESSOA_FISICA) {
+            fscanf(arquivo, "%[^;];%[^\n]\n", temp.doc.pf.nome, temp.doc.pf.cpf);
+        } else {
+            fscanf(arquivo, "%[^;];%[^\n]\n", temp.doc.pj.razao_social, temp.doc.pj.cnpj);
+        }
+
+        inserir_cliente(lista, temp);
+    }
+
+    fclose(arquivo);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao salvar_clientes_bin(ListaCliente* lista, const char* nome_arquivo) {
+    FILE* arquivo = fopen(nome_arquivo, "wb");
+    if (arquivo == NULL) return ERRO_ABRIR_ARQUIVO;
+
+    ListaCliente* atual = lista;
+    while (atual != NULL) {
+        fwrite(&atual->conteudo, sizeof(Cliente), 1, arquivo);
+        atual = atual->prox;
+    }
+    
+    fclose(arquivo);
+    return OPERACAO_SUCESSO;
+}
+
+StatusOperacao carregar_clientes_bin(ListaCliente** lista, const char* nome_arquivo) {
+    FILE* arquivo = fopen(nome_arquivo, "rb");
+    if (arquivo == NULL) return ERRO_ABRIR_ARQUIVO;
+
+    liberar_lista(lista);
+    proximo_id = 1;
+
+    Cliente temp;
+    while (fread(&temp, sizeof(Cliente), 1, arquivo) == 1) {
+        inserir_cliente(lista, temp);
+    }
+
+    fclose(arquivo);
+    return OPERACAO_SUCESSO;
+}
+
 // Função alterada para retornar StatusOperacao
 // StatusOperacao atualizar_cliente_por_id(ListaCliente* lista, int id_busca) {
 //     ListaCliente* no_cliente = buscar_cliente_por_id(lista, id_busca);
