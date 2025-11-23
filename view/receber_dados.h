@@ -16,4 +16,10 @@ void view_ler_dados_operador(operador* operador);
 void view_ler_dados_produtora(produtora* produtora);
 void view_ler_dados_recurso(recurso* recurso);
 
+// Adicione no topo, junto com os outros includes
+#include "../model/orcamento.h"
+
+// Adicione no final, junto com os outros protótipos
+void view_ler_dados_base_orcamento(Orcamento* orcamento);
+
 #endif // RECEBER_DADOS_H

@@ -173,3 +173,50 @@ void view_ler_dados_recurso(recurso* recurso) {
     // recurso->valor_da_locacao = atof(buffer_float);
 
 }
+
+// Adicione ao final de view/receber_dados.c
+
+// void view_ler_dados_base_orcamento(Orcamento* orcamento) {
+//     printf("\n--- Dados do Evento ---\n");
+    
+//     ler_campo_validado("Nome do Evento: ", orcamento->nome_evento, sizeof(orcamento->nome_evento), NULL, NULL);
+//     ler_campo_validado("Local do Evento: ", orcamento->local, sizeof(orcamento->local), NULL, NULL);
+
+//     // Leitura de datas (Mantemos scanf pois são números específicos, mas limpamos o buffer)
+//     printf("Data de Inicio (Dia Mes Ano): ");
+//     scanf("%d %d %d", &orcamento->dia_inicio, &orcamento->mes_inicio, &orcamento->ano_inicio);
+    
+//     printf("Data de Termino (Dia Mes Ano): ");
+//     scanf("%d %d %d", &orcamento->dia_fim, &orcamento->mes_fim, &orcamento->ano_fim);
+    
+//     // Limpa o buffer após os scanfs para não pular o próximo input
+//     int ch; while ((ch = getchar()) != '\n' && ch != EOF);
+// }
+
+// ... (código anterior igual) ...
+
+void view_ler_dados_base_orcamento(Orcamento* orcamento) {
+    char buffer[50]; // Buffer auxiliar para leitura segura de datas
+    
+    printf("\n--- Dados do Evento ---\n");
+    
+    ler_campo_validado("Nome do Evento: ", orcamento->nome_evento, sizeof(orcamento->nome_evento), NULL, NULL);
+    ler_campo_validado("Local do Evento: ", orcamento->local, sizeof(orcamento->local), NULL, NULL);
+
+    // --- CORREÇÃO DA LEITURA DE DATAS ---
+    // Usamos fgets para garantir que o ENTER anterior não atrapalhe
+    
+    printf("Data de Inicio (DD MM AAAA): ");
+    fgets(buffer, sizeof(buffer), stdin); 
+    if (sscanf(buffer, "%d %d %d", &orcamento->dia_inicio, &orcamento->mes_inicio, &orcamento->ano_inicio) != 3) {
+        printf(">> Aviso: Data invalida lida. Definindo data padrao.\n");
+        orcamento->dia_inicio = 1; orcamento->mes_inicio = 1; orcamento->ano_inicio = 2025;
+    }
+
+    printf("Data de Termino (DD MM AAAA): ");
+    fgets(buffer, sizeof(buffer), stdin);
+    if (sscanf(buffer, "%d %d %d", &orcamento->dia_fim, &orcamento->mes_fim, &orcamento->ano_fim) != 3) {
+        printf(">> Aviso: Data invalida lida. Definindo data padrao.\n");
+        orcamento->dia_fim = 1; orcamento->mes_fim = 1; orcamento->ano_fim = 2025;
+    }
+}

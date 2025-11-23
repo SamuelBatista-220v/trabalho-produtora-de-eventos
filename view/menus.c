@@ -22,16 +22,30 @@
 //     printf("| 0. Sair do sistema                            |\n");
 //     printf("+-----------------------------------------------+\n");
 // }
+// void view_exibir_menu_principal() {
+//     printf("\n ====== SISTEMA PRODUTORA DE EVENTOS ========\n");
+//     printf("   |  1. Gerenciar Produtora (Principal)    |\n"); // Ajustei conforme seu controller
+//     printf("   |  2. Gerenciar Clientes                 |\n");
+//     printf("   |  3. Gerenciar Equipe                   |\n");
+//     printf("   |  4. Gerenciar Recursos                 |\n");
+//     printf("   |  5. Gerenciar Fornecedores             |\n");
+//     printf("   |  6. Gerenciar Operadores               |\n");
+//     printf("   |----------------------------------------|\n");
+//     printf("   |  7. Mudar Modo de Salvamento (TXT/BIN) |\n"); // <--- NOVA OPÇÃO
+//     printf("   |  0. Sair e Salvar                      |\n");
+//     printf("   ==========================================\n");
+// }
 void view_exibir_menu_principal() {
     printf("\n ====== SISTEMA PRODUTORA DE EVENTOS ========\n");
-    printf("   |  1. Gerenciar Produtora (Principal)    |\n"); // Ajustei conforme seu controller
+    printf("   |  1. Gerenciar Produtora (Principal)    |\n");
     printf("   |  2. Gerenciar Clientes                 |\n");
     printf("   |  3. Gerenciar Equipe                   |\n");
     printf("   |  4. Gerenciar Recursos                 |\n");
     printf("   |  5. Gerenciar Fornecedores             |\n");
     printf("   |  6. Gerenciar Operadores               |\n");
     printf("   |----------------------------------------|\n");
-    printf("   |  7. Mudar Modo de Salvamento (TXT/BIN) |\n"); // <--- NOVA OPÇÃO
+    printf("   |  7. Mudar Modo de Salvamento (TXT/BIN) |\n");
+    printf("   |  8. GESTAO DE ORCAMENTOS E EVENTOS     |\n"); // <--- AQUI
     printf("   |  0. Sair e Salvar                      |\n");
     printf("   ==========================================\n");
 }

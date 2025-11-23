@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "mostrar_dados.h"
 #include "formatacao.h" // Importante: incluir o novo header de formatação!
 
@@ -148,6 +149,7 @@ void view_imprimir_fornecedor_unico(Listafornecedor* no_fornecedor) {
     if (no_fornecedor == NULL) return;
 
     printf("----------------------------------------\n");
+    printf("\n |Codigo         | : %d ", no_fornecedor->conteudo.id);
     printf("\n |Nome Fantasia  | : %s ", no_fornecedor->conteudo.nome_fantasia);
     printf("\n |Razao Social   | : %s ", no_fornecedor->conteudo.razao_social);
       if (no_fornecedor->conteudo.tipoF == PESSOA_FISICA_FOR) {
@@ -185,4 +187,255 @@ void view_imprimir_operador_unico(Listaoperador* no_operador) {
     printf("\n |Usuario     | : %s ", no_operador->conteudo.usuario);
     printf("\n |Senha       | : ******** ");
     printf("\n |Status      | : %s ", no_operador->conteudo.ativo ? "Ativo" : "Inativo");
+}
+
+// // Adicione ao final de view/mostrar_dados.c
+
+// void view_imprimir_orcamento_unico(Orcamento* o) {
+//     if (o == NULL) return;
+
+//     printf("------------------------------------------------\n");
+//     printf(" ID: %d | Cliente ID: %d\n", o->id, o->id_cliente);
+//     printf(" Evento: %s\n", o->nome_evento);
+//     printf(" Local : %s\n", o->local);
+//     printf(" Data  : %02d/%02d/%d a %02d/%02d/%d (%d dias)\n", 
+//            o->dia_inicio, o->mes_inicio, o->ano_inicio, 
+//            o->dia_fim, o->mes_fim, o->ano_fim, o->qtd_dias);
+    
+//     char* status_str;
+//     switch(o->status) {
+//         case STATUS_EM_ANALISE: status_str = "EM ANALISE"; break;
+//         case STATUS_APROVADO: status_str = "APROVADO (Reservado)"; break;
+//         case STATUS_FINALIZADO: status_str = "FINALIZADO"; break;
+//         case STATUS_CANCELADO: status_str = "CANCELADO"; break;
+//         default: status_str = "DESCONHECIDO";
+//     }
+//     printf(" Status: %s\n", status_str);
+//     printf(" Total : R$ %.2f\n", o->valor_total_geral);
+// }
+
+// void view_imprimir_lista_orcamento(ListaOrcamento* lista) {
+//     if (lista == NULL) {
+//         view_exibir_mensagem("\n>> Nenhum orcamento cadastrado.");
+//         return;
+//     }
+    
+//     printf("\n=== LISTA DE ORCAMENTOS ===\n");
+//     while (lista != NULL) {
+//         view_imprimir_orcamento_unico(&lista->conteudo);
+//         lista = lista->prox;
+//     }
+// }
+
+// // --- ORÇAMENTOS (CORRIGIDO: Detalhamento de Custos) ---
+// void view_imprimir_orcamento_unico(Orcamento* o) {
+//     if (o == NULL) return;
+
+//     printf("\n================================================\n");
+//     printf(" ORCAMENTO #%d | STATUS: ", o->id);
+    
+//     switch(o->status) {
+//         case STATUS_EM_ANALISE: printf("EM ANALISE"); break;
+//         case STATUS_APROVADO: printf("APROVADO (Reservado)"); break;
+//         case STATUS_FINALIZADO: printf("FINALIZADO"); break;
+//         case STATUS_CANCELADO: printf("CANCELADO"); break;
+//         default: printf("DESCONHECIDO");
+//     }
+//     printf("\n================================================\n");
+//     printf(" Evento      : %s\n", o->nome_evento);
+//     printf(" Cliente ID  : %d\n", o->id_cliente);
+//     printf(" Local       : %s\n", o->local);
+//     printf(" Periodo     : %02d/%02d/%d ate %02d/%02d/%d (%d dias)\n", 
+//            o->dia_inicio, o->mes_inicio, o->ano_inicio, 
+//            o->dia_fim, o->mes_fim, o->ano_fim, o->qtd_dias);
+//     printf("------------------------------------------------\n");
+//     // DETALHAMENTO DE CUSTOS
+//     printf(" (+) Custos de Equipamentos : R$ %.2f\n", o->valor_total_recursos);
+//     printf(" (+) Custos de Servicos     : R$ %.2f\n", o->valor_total_servicos);
+//     printf("------------------------------------------------\n");
+//     printf(" (=) TOTAL GERAL            : R$ %.2f\n", o->valor_total_geral);
+//     printf("================================================\n");
+// }
+
+// void view_imprimir_lista_orcamento(ListaOrcamento* lista) {
+//     if (lista == NULL) {
+//         view_exibir_mensagem("\n>> Nenhum orcamento cadastrado.");
+//         return;
+//     }
+//     printf("\n=== LISTA DE ORCAMENTOS ===\n");
+//     while (lista != NULL) {
+//         view_imprimir_orcamento_unico(&lista->conteudo);
+//         lista = lista->prox;
+//     }
+// }
+
+
+// // Em view/mostrar_dados.c
+
+// // Nova função para o cronograma
+// void view_exibir_ocupacao_recurso(int id_recurso, char* nome, int dia_i, int mes_i, int ano_i, int dia_f, int mes_f, int ano_f, int qtd) {
+//     printf(">> RESERVADO: %s | Qtd: %d | Periodo: %02d/%02d/%d a %02d/%02d/%d\n", 
+//            nome, qtd, dia_i, mes_i, ano_i, dia_f, mes_f, ano_f);
+// }
+
+// // Versão filtrada da listagem
+// void view_imprimir_lista_orcamento_por_status(ListaOrcamento* lista, int status_filtro) {
+//     int encontrou = 0;
+//     if (lista == NULL) {
+//         printf("\n>> Nenhum orcamento cadastrado no sistema.\n");
+//         return;
+//     }
+    
+//     char* titulo;
+//     if (status_filtro == 0) titulo = "EM ANALISE (Orcamentos)";
+//     else if (status_filtro == 1) titulo = "APROVADOS (Eventos Futuros)";
+//     else if (status_filtro == 2) titulo = "FINALIZADOS (Historico)";
+//     else titulo = "CANCELADOS";
+
+//     printf("\n=== LISTA: %s ===\n", titulo);
+//     while (lista != NULL) {
+//         if (lista->conteudo.status == status_filtro) {
+//             view_imprimir_orcamento_unico(&lista->conteudo);
+//             encontrou = 1;
+//         }
+//         lista = lista->prox;
+//     }
+//     if (!encontrou) printf(">> Nenhum registro encontrado com este status.\n");
+// }
+
+
+// Em view/mostrar_dados.c (Final do arquivo)
+
+// --- ORÇAMENTOS DETALHADOS ---
+
+void view_imprimir_orcamento_unico(Orcamento* o, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq) {
+    if (o == NULL) return;
+
+    printf("\n================================================\n");
+    printf(" ORCAMENTO #%d | STATUS: ", o->id);
+    
+    switch(o->status) {
+        case STATUS_EM_ANALISE: printf("EM ANALISE"); break;
+        case STATUS_APROVADO: printf("APROVADO (Reservado)"); break;
+        case STATUS_FINALIZADO: printf("FINALIZADO"); break;
+        case STATUS_CANCELADO: printf("CANCELADO"); break;
+        default: printf("DESCONHECIDO");
+    }
+    printf("\n================================================\n");
+    printf(" Evento      : %s\n", o->nome_evento);
+    printf(" Cliente ID  : %d\n", o->id_cliente);
+    printf(" Local       : %s\n", o->local);
+    printf(" Periodo     : %02d/%02d/%d ate %02d/%02d/%d (%d dias)\n", 
+           o->dia_inicio, o->mes_inicio, o->ano_inicio, 
+           o->dia_fim, o->mes_fim, o->ano_fim, o->qtd_dias);
+    
+    printf("------------------------------------------------\n");
+    printf(" [ITENS DO ORCAMENTO]\n");
+
+    // 1. LISTAR RECURSOS
+    if (o->qtd_recursos_selecionados > 0) {
+        printf("\n > Equipamentos/Recursos:\n");
+        for (int i = 0; i < o->qtd_recursos_selecionados; i++) {
+            int id = o->lista_recursos[i].id_recurso;
+            int qtd = o->lista_recursos[i].quantidade;
+            float val_un = o->lista_recursos[i].valor_unitario_momento;
+            float subtotal = val_un * qtd * o->qtd_dias; // Valor x Qtd x Dias
+
+            // Busca o nome se a lista foi fornecida
+            char nome_rec[100] = "Item nao encontrado";
+            if (l_rec != NULL) {
+                Listarecurso* no = buscar_recurso_por_id(l_rec, id);
+                if (no) strcpy(nome_rec, no->conteudo.descricao);
+            }
+
+            printf("   - %dx %-20s (R$ %.2f/dia) = R$ %.2f\n", qtd, nome_rec, val_un, subtotal);
+        }
+        printf("   Subtotal Equipamentos: R$ %.2f\n", o->valor_total_recursos);
+    }
+
+    // 2. LISTAR SERVIÇOS
+    if (o->qtd_servicos_selecionados > 0) {
+        printf("\n > Servicos Terceirizados:\n");
+        for (int i = 0; i < o->qtd_servicos_selecionados; i++) {
+            int id = o->lista_servicos[i].id_fornecedor;
+            float val = o->lista_servicos[i].valor_combinado;
+            char* desc = o->lista_servicos[i].descricao_servico;
+
+            char nome_for[100] = "Desconhecido";
+            if (l_for != NULL) {
+                Listafornecedor* no = buscar_fornecedor_por_id(l_for, id);
+                if (no) strcpy(nome_for, no->conteudo.nome_fantasia);
+            }
+
+            printf("   - [%s] %s = R$ %.2f\n", nome_for, desc, val);
+        }
+        printf("   Subtotal Servicos: R$ %.2f\n", o->valor_total_servicos);
+    }
+
+    // 3. LISTAR EQUIPE
+    if (o->qtd_equipe_selecionada > 0) {
+        printf("\n > Equipe Interna:\n");
+        for (int i = 0; i < o->qtd_equipe_selecionada; i++) {
+            int id = o->lista_equipe[i].id_membro_equipe;
+            float val = o->lista_equipe[i].valor_diaria_momento;
+            int dias = o->lista_equipe[i].dias_trabalhados;
+            float subtotal = val * dias;
+
+            char nome_eq[100] = "Desconhecido";
+            if (l_eq != NULL) {
+                Listaequipe* no = buscar_equipe_por_id(l_eq, id);
+                if (no) strcpy(nome_eq, no->conteudo.nome);
+            }
+
+            printf("   - %s (%d dias x R$ %.2f) = R$ %.2f\n", nome_eq, dias, val, subtotal);
+        }
+        printf("   Subtotal Equipe: R$ %.2f\n", o->valor_total_equipe);
+    }
+
+    printf("------------------------------------------------\n");
+    printf(" (=) TOTAL GERAL            : R$ %.2f\n", o->valor_total_geral);
+    printf("================================================\n");
+}
+
+void view_imprimir_lista_orcamento(ListaOrcamento* lista, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq) {
+    if (lista == NULL) {
+        view_exibir_mensagem("\n>> Nenhum orcamento cadastrado.");
+        return;
+    }
+    printf("\n=== LISTA DE ORCAMENTOS ===\n");
+    while (lista != NULL) {
+        view_imprimir_orcamento_unico(&lista->conteudo, l_rec, l_for, l_eq);
+        lista = lista->prox;
+    }
+}
+
+void view_imprimir_lista_orcamento_por_status(ListaOrcamento* lista, int status_filtro, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq) {
+    int encontrou = 0;
+    if (lista == NULL) {
+        printf("\n>> Nenhum orcamento cadastrado no sistema.\n");
+        return;
+    }
+    
+    char* titulo;
+    if (status_filtro == 0) titulo = "EM ANALISE (Orcamentos)";
+    else if (status_filtro == 1) titulo = "APROVADOS (Eventos Futuros)";
+    else if (status_filtro == 2) titulo = "FINALIZADOS (Historico)";
+    else titulo = "CANCELADOS";
+
+    printf("\n=== LISTA: %s ===\n", titulo);
+    while (lista != NULL) {
+        if (lista->conteudo.status == status_filtro) {
+            view_imprimir_orcamento_unico(&lista->conteudo, l_rec, l_for, l_eq);
+            encontrou = 1;
+        }
+        lista = lista->prox;
+    }
+    if (!encontrou) printf(">> Nenhum registro encontrado com este status.\n");
+}
+
+// Cole isto no FINAL do arquivo view/mostrar_dados.c
+
+void view_exibir_ocupacao_recurso(int id_recurso, char* nome, int dia_i, int mes_i, int ano_i, int dia_f, int mes_f, int ano_f, int qtd) {
+    printf(">> RESERVADO: %s | Qtd: %d | Periodo: %02d/%02d/%d a %02d/%02d/%d\n", 
+           nome, qtd, dia_i, mes_i, ano_i, dia_f, mes_f, ano_f);
 }
