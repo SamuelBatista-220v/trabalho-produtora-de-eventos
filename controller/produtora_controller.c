@@ -59,7 +59,7 @@ void controller_gerenciar_produtora(Listaprodutora** lista_produtora) {
             // REMOVIDO: case 5 (Remover)
             // REMOVIDO: case 6 (Ativar)
             
-            case 7: { // Listar (Mantido para fins de teste)
+            case 3: { // Listar (Mantido para fins de teste)
                 view_exibir_mensagem("[Modo Teste] Listando todas as produtoras registadas...");
                 view_imprimir_lista_produtora(*lista_produtora);
                 break;

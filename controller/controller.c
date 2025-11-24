@@ -1,361 +1,3 @@
-// #include <stdio.h>
-// #include "controller.h"
-
-// #include <string.h> // Necessário para o strcpy do operador padrão
-
-// // #include "../view/view.h"
-// // Em cliente_controller.c
-// #include "../view/menus.h"
-// #include "../view/mostrar_dados.h"
-// #include "../view/receber_dados.h"
-
-// #include "../model/cliente.h"
-// #include "../model/equipe.h"
-// #include "../model/fornecedor.h"
-// #include "../model/produtora.h"
-// #include "../model/recurso.h"
-// #include "../model/operador.h"
-
-// // Inclui os headers dos novos sub-controllers
-// #include "cliente_controller.h"
-// #include "equipe_controller.h"
-// #include "fornecedor_controller.h"
-// #include "produtora_controller.h"
-// #include "recurso_controller.h"
-// #include "operador_controller.h"
-
-// static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op);
-
-// // Função principal que gerencia o fluxo da aplicação.
-// void controller_iniciar_sistema() {
-//     // Declara uma lista para cada módulo do sistema
-//     Listaprodutora* lista_de_produtora = NULL;
-//     ListaCliente* lista_de_clientes = NULL;
-//     Listaequipe* lista_de_equipe = NULL;
-//     Listarecurso* lista_de_recurso = NULL;
-//     Listafornecedor* lista_de_fornecedor = NULL;
-//     Listaoperador* lista_de_operador= NULL;
-                    
-
-//     int opcao = -1;
-
-//     controller_setup_inicial(&lista_de_produtora, &lista_de_operador);
-
-//     do {
-//         // CORREÇÃO AQUI: Chamando a função de menu principal correta
-//         view_exibir_menu_principal(); 
-//         opcao = view_ler_opcao();
-
-//         switch (opcao) {
-//             case 1:
-//                 controller_gerenciar_produtora(&lista_de_produtora);
-//                 break;
-//             case 2:
-//                 controller_gerenciar_clientes(&lista_de_clientes);
-//                 break;
-//             case 3:
-//                 controller_gerenciar_equipe(&lista_de_equipe);
-//                 break; 
-//             case 4:
-//                 controller_gerenciar_recurso(&lista_de_recurso);
-//                 break;
-//             case 5:
-//                 controller_gerenciar_fornecedor(&lista_de_fornecedor);
-//                 break;
-//             case 6:
-//                 controller_gerenciar_operador(&lista_de_operador);
-//                 break;
-//             case 0:
-//                 view_exibir_mensagem("\nSaindo do programa...");
-//                 break;
-//             default:
-//                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
-//                 break;
-//         }
-//     } while (opcao != 0);
-
-
-//     liberar_lista(&lista_de_clientes);
-//   liberar_lista_equipe(&lista_de_equipe);
-//   liberar_lista_fornecedor(&lista_de_fornecedor);
-//   liberar_lista_produtora(&lista_de_produtora);
-//   liberar_lista_recurso(&lista_de_recurso);
-//   liberar_lista_operador(&lista_de_operador);
-//   view_exibir_mensagem("Memoria liberada com sucesso.");
-
-//     // Libera a memória de todas as listas antes de encerrar
-//     // liberar_lista(&lista_de_clientes);
-//     // liberar_lista_equipe(&lista_de_equipe);
-//     // view_exibir_mensagem("Memoria liberada com sucesso.");
-// }
-// // Em: controller/controller.c (no final do ficheiro)
-
-// static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op) {
-    
-//     // REQUERIMENTO 1: Criar a Produtora (se ela não existir)
-//     if (*lista_prod == NULL) {
-//         view_exibir_mensagem("\n--- BEM-VINDO AO SISTEMA ---");
-//         view_exibir_mensagem("Vamos registar os dados da sua Produtora (isto so sera feito uma vez).");
-        
-//         produtora nova_produtora;
-//         view_ler_dados_produtora(&nova_produtora);
-//         nova_produtora.ativo = 1;
-        
-//         inserir_produtora(lista_prod, nova_produtora);
-//         view_exibir_mensagem(">> SUCESSO: Produtora principal registada.");
-//     }
-
-//     // REQUERIMENTO 2: Criar o Operador "admin" (se ele não existir)
-//     if (*lista_op == NULL) {
-//         view_exibir_mensagem("\nA criar operador 'admin' padrao...");
-        
-//         operador admin;
-//         strcpy(admin.nome, "Administrador Padrao");
-//         strcpy(admin.usuario, "admin");
-//         admin.senha = 1234; // Você leu a senha como int no receber_dados.c
-//         admin.ativo = 1;
-
-//         inserir_operador(lista_op, admin);
-//         view_exibir_mensagem(">> SUCESSO: Operador 'admin' (senha: 1234) criado.");
-//     }
-
-//     printf("\n(Pressione Enter para continuar...)");
-//     getchar(); // Pausa para o utilizador ler as mensagens de setup
-// }
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include "controller.h"
-
-// #include "../view/menus.h"
-// #include "../view/view.h" 
-// #include "../view/mostrar_dados.h"
-// #include "../view/receber_dados.h"
-
-// // Includes dos Models
-// #include "../model/produtora.h"
-// #include "../model/cliente.h"
-// #include "../model/equipe.h"
-// #include "../model/recurso.h"
-// #include "../model/fornecedor.h"
-// #include "../model/operador.h"
-
-// #include "../model/orcamento.h"
-// #include "orcamento_controller.h"
-
-// // Includes dos Controllers
-// #include "produtora_controller.h"
-// #include "cliente_controller.h"
-// #include "equipe_controller.h"
-// #include "recurso_controller.h"
-// #include "fornecedor_controller.h"
-// #include "operador_controller.h"
-
-// // Variável global estática para controlar o modo de armazenamento
-// // 1 = Texto (CSV), 2 = Binário
-// static int modo_armazenamento = 1; 
-
-// // Protótipos auxiliares locais
-// static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador**, ListaOrcamento** l_orc);
-// static void salvar_tudo(Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, ListaOrcamento** l_orc);
-// static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op, ListaOrcamento** l_orc);
-
-// void controller_iniciar_sistema() {
-//     // Declara listas
-//     Listaprodutora* lista_produtora = NULL;
-//     ListaCliente* lista_cliente = NULL;
-//     Listaequipe* lista_equipe = NULL;
-//     Listarecurso* lista_recurso = NULL;
-//     Listafornecedor* lista_fornecedor = NULL;
-//     Listaoperador* lista_operador = NULL;
-
-//     ListaOrcamento* lista_orcamento = NULL;
-
-//     // --- PASSO 1: PERGUNTA O MODO DE ARMAZENAMENTO ---
-//     view_exibir_mensagem("\n=== CONFIGURACAO DE ARMAZENAMENTO ===");
-//     view_exibir_mensagem("Escolha o formato para carregar/salvar os dados:");
-//     view_exibir_mensagem("1. Texto (CSV) - Excel/Humanos");
-//     view_exibir_mensagem("2. Binario (.bin) - Mais eficiente");
-//     view_exibir_mensagem("Opcao: ");
-    
-//     int opcao_modo = view_ler_opcao();
-//     if (opcao_modo == 2) {
-//         modo_armazenamento = 2;
-//         view_exibir_mensagem(">> Modo selecionado: BINARIO");
-//     } else {
-//         modo_armazenamento = 1;
-//         view_exibir_mensagem(">> Modo selecionado: TEXTO (CSV)");
-//     }
-
-//     // --- PASSO 2: TENTA CARREGAR TUDO AUTOMATICAMENTE ---
-//     view_exibir_mensagem("\n>> Tentando carregar dados existentes...");
-//     carregar_tudo(&lista_produtora, &lista_cliente, &lista_equipe, &lista_recurso, &lista_fornecedor, &lista_operador);
-
-//     // --- PASSO 3: SETUP INICIAL (SE NECESSÁRIO) ---
-//     // Só roda se não carregou nada (listas vazias)
-//     controller_setup_inicial(&lista_produtora, &lista_operador);
-
-//     int opcao = -1;
-//     do {
-//         view_exibir_menu_principal(); 
-//         opcao = view_ler_opcao();
-
-//         switch (opcao) {
-//             case 1: controller_gerenciar_produtora(&lista_produtora); break;
-//             case 2: controller_gerenciar_clientes(&lista_cliente); break;
-//             case 3: controller_gerenciar_equipe(&lista_equipe); break;
-//             case 4: controller_gerenciar_recurso(&lista_recurso); break;
-//             case 5: controller_gerenciar_fornecedor(&lista_fornecedor); break;
-//             case 6: controller_gerenciar_operador(&lista_operador); break;
-            
-//             // --- NOVA LÓGICA DE TROCA ---
-//             case 7: {
-//                 if (modo_armazenamento == 1) {
-//                     modo_armazenamento = 2;
-//                     view_exibir_mensagem("\n>> MODO ALTERADO PARA: BINARIO (.bin)");
-//                     view_exibir_mensagem(">> ATENCAO: Ao sair, os arquivos .csv antigos serao ignorados.");
-//                 } else {
-//                     modo_armazenamento = 1;
-//                     view_exibir_mensagem("\n>> MODO ALTERADO PARA: TEXTO (.csv)");
-//                     view_exibir_mensagem(">> ATENCAO: Ao sair, os arquivos .bin antigos serao ignorados.");
-//                 }
-//                 // Opcional: Forçar um salvamento imediato para garantir a conversão agora
-//                 salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador);
-//                 view_exibir_mensagem(">> Dados convertidos e salvos no novo formato com sucesso!");
-//                 break;
-//             }
-
-//             case 0: 
-//                 view_exibir_mensagem("\nSalvando dados e saindo...");
-//                 salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador);
-//                 break;
-//             default: view_exibir_mensagem("\n>> Opcao invalida!"); break;
-//         }
-//     } while (opcao != 0);
-//     do {
-//         view_exibir_menu_principal(); 
-//         opcao = view_ler_opcao();
-
-//         switch (opcao) {
-//             case 1: controller_gerenciar_produtora(&lista_produtora); break;
-//             case 2: controller_gerenciar_clientes(&lista_cliente); break;
-//             case 3: controller_gerenciar_equipe(&lista_equipe); break;
-//             case 4: controller_gerenciar_recurso(&lista_recurso); break;
-//             case 5: controller_gerenciar_fornecedor(&lista_fornecedor); break;
-//             case 6: controller_gerenciar_operador(&lista_operador); break;
-//            case 7: {
-//                 if (modo_armazenamento == 1) {
-//                     modo_armazenamento = 2;
-//                     view_exibir_mensagem("\n>> MODO ALTERADO PARA: BINARIO (.bin)");
-//                     view_exibir_mensagem(">> ATENCAO: Ao sair, os arquivos .csv antigos serao ignorados.");
-//                 } else {
-//                     modo_armazenamento = 1;
-//                     view_exibir_mensagem("\n>> MODO ALTERADO PARA: TEXTO (.csv)");
-//                     view_exibir_mensagem(">> ATENCAO: Ao sair, os arquivos .bin antigos serao ignorados.");
-//                 }
-//                 // Opcional: Forçar um salvamento imediato para garantir a conversão agora
-//                 salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador);
-//                 view_exibir_mensagem(">> Dados convertidos e salvos no novo formato com sucesso!");
-//                 break;
-//             }
-
-//             case 8: 
-//                 controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor);
-//                 break;
-
-
-//             case 0: 
-            
-//                 view_exibir_mensagem("\nSalvando dados e saindo...");
-//                 // --- PASSO 4: SALVA TUDO AO SAIR ---
-//                 salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador);
-//                 break;
-//             default: view_exibir_mensagem("\n>> Opcao invalida!"); break;
-//         }
-//     } while (opcao != 0);
-
-//     // Libera memória
-//     liberar_lista(&lista_cliente);
-//     liberar_lista_equipe(&lista_equipe);
-//     liberar_lista_fornecedor(&lista_fornecedor);
-//     liberar_lista_produtora(&lista_produtora);
-//     liberar_lista_recurso(&lista_recurso);
-//     liberar_lista_operador(&lista_operador);
-
-//     liberar_lista_orcamento(&lista_orcamento);
-    
-//     view_exibir_mensagem("Memoria liberada. Ate logo!");
-// }
-
-// // --- FUNÇÕES AUXILIARES ---
-
-// static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op , ListaOrcamento** l_orc) {
-//     if (modo_armazenamento == 1) {
-//         // Carrega TXT
-//         carregar_produtora_txt(l_prod, "db_produtora.csv");
-//         carregar_clientes_txt(l_cli, "db_clientes.csv");
-//         carregar_equipe_txt(l_eq, "db_equipe.csv");
-//         carregar_recurso_txt(l_rec, "db_recurso.csv");
-//         carregar_fornecedor_txt(l_for, "db_fornecedor.csv");
-//         carregar_operador_txt(l_op, "db_operador.csv");
-
-//         carregar_orcamento_txt(l_orc, "db_orcamento.csv");
-//     } else {
-//         // Carrega BIN
-//         carregar_produtora_bin(l_prod, "db_produtora.bin");
-//         carregar_clientes_bin(l_cli, "db_clientes.bin");
-//         carregar_equipe_bin(l_eq, "db_equipe.bin");
-//         carregar_recurso_bin(l_rec, "db_recurso.bin");
-//         carregar_fornecedor_bin(l_for, "db_fornecedor.bin");
-//         carregar_operador_bin(l_op, "db_operador.bin");
-
-//         carregar_orcamento_bin(l_orc, "db_orcamento.bin");
-//     }
-// }
-
-// static void salvar_tudo(Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, ListaOrcamento** l_orc) {
-//     if (modo_armazenamento == 1) {
-//         salvar_produtora_txt(l_prod, "db_produtora.csv");
-//         salvar_clientes_txt(l_cli, "db_clientes.csv");
-//         salvar_equipe_txt(l_eq, "db_equipe.csv");
-//         salvar_recurso_txt(l_rec, "db_recurso.csv");
-//         salvar_fornecedor_txt(l_for, "db_fornecedor.csv");
-//         salvar_operador_txt(l_op, "db_operador.csv");
-
-//         salvar_orcamento_txt(l_orc, "db_orcamento.csv");
-//     } else {
-//         salvar_produtora_bin(l_prod, "db_produtora.bin");
-//         salvar_clientes_bin(l_cli, "db_clientes.bin");
-//         salvar_equipe_bin(l_eq, "db_equipe.bin");
-//         salvar_recurso_bin(l_rec, "db_recurso.bin");
-//         salvar_fornecedor_bin(l_for, "db_fornecedor.bin");
-//         salvar_operador_bin(l_op, "db_operador.bin");
-
-//         salvar_orcamento_bin(l_orc, "db_orcamento.bin");
-//     }
-// }
-
-// static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op ) {
-//     if (*lista_prod == NULL) {
-//         view_exibir_mensagem("\n--- CONFIGURACAO INICIAL NECESSARIA ---");
-//         view_exibir_mensagem("Nenhuma Produtora encontrada. Vamos cadastrar:");
-//         produtora nova;
-//         view_ler_dados_produtora(&nova);
-//         nova.ativo = 1;
-//         inserir_produtora(lista_prod, nova);
-//     }
-//     if (*lista_op == NULL) {
-//         view_exibir_mensagem("\nNenhum Operador encontrado. Criando 'admin' padrao...");
-//         operador admin;
-//         strcpy(admin.nome, "Admin Padrao");
-//         strcpy(admin.usuario, "admin");
-//         admin.senha = 1234;
-//         admin.ativo = 1;
-//         inserir_operador(lista_op, admin);
-//     }
-// }
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -372,7 +14,8 @@
 #include "../model/recurso.h"
 #include "../model/fornecedor.h"
 #include "../model/operador.h"
-#include "../model/orcamento.h" // <--- IMPORTANTE
+#include "../model/orcamento.h" 
+#include "../model/financeiro.h" // Financeiro
 
 // Includes dos Controllers
 #include "produtora_controller.h"
@@ -381,13 +24,28 @@
 #include "recurso_controller.h"
 #include "fornecedor_controller.h"
 #include "operador_controller.h"
-#include "orcamento_controller.h" // <--- IMPORTANTE
+#include "orcamento_controller.h" 
+#include "financeiro_controller.h" // Financeiro
 
 static int modo_armazenamento = 1; 
 
-// --- 1. PROTÓTIPOS ATUALIZADOS (Adicionado l_orc) ---
-static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, ListaOrcamento** l_orc);
-static void salvar_tudo(Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, ListaOrcamento* l_orc);
+// --- PROTÓTIPOS CORRIGIDOS ---
+// Carregar precisa de ** (para alterar o ponteiro da lista)
+static void carregar_tudo(
+    Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, 
+    Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, 
+    ListaOrcamento** l_orc,
+    ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp 
+);
+
+// Salvar precisa apenas de * (para ler a lista) - AQUI ESTAVA O ERRO
+static void salvar_tudo(
+    Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, 
+    Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, 
+    ListaOrcamento* l_orc, 
+    ListaCaixa* l_cx, ListaContaReceber* l_cr, ListaContaPagar* l_cp 
+);
+
 static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op);
 
 void controller_iniciar_sistema() {
@@ -398,7 +56,12 @@ void controller_iniciar_sistema() {
     Listarecurso* lista_recurso = NULL;
     Listafornecedor* lista_fornecedor = NULL;
     Listaoperador* lista_operador = NULL;
-    ListaOrcamento* lista_orcamento = NULL; // <--- DECLARAÇÃO DA LISTA
+    ListaOrcamento* lista_orcamento = NULL;
+
+    // Listas Financeiras
+    ListaCaixa* lista_caixa = NULL;
+    ListaContaReceber* lista_receber = NULL;
+    ListaContaPagar* lista_pagar = NULL;
 
     // --- PASSO 1: MODO DE ARMAZENAMENTO ---
     view_exibir_mensagem("\n=== CONFIGURACAO DE ARMAZENAMENTO ===");
@@ -418,9 +81,9 @@ void controller_iniciar_sistema() {
 
     // --- PASSO 2: CARREGAR TUDO ---
     view_exibir_mensagem("\n>> Tentando carregar dados existentes...");
-    
-    // --- 2. CHAMADA ATUALIZADA (Passando &lista_orcamento) ---
-    carregar_tudo(&lista_produtora, &lista_cliente, &lista_equipe, &lista_recurso, &lista_fornecedor, &lista_operador, &lista_orcamento);
+    carregar_tudo(&lista_produtora, &lista_cliente, &lista_equipe, &lista_recurso, 
+                  &lista_fornecedor, &lista_operador, &lista_orcamento,
+                  &lista_caixa, &lista_receber, &lista_pagar);
 
     // --- PASSO 3: SETUP INICIAL ---
     controller_setup_inicial(&lista_produtora, &lista_operador);
@@ -446,22 +109,37 @@ void controller_iniciar_sistema() {
                     modo_armazenamento = 1;
                     view_exibir_mensagem("\n>> MODO ALTERADO PARA: TEXTO (.csv)");
                 }
-                // Salva tudo imediatamente no novo formato
-                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador, lista_orcamento);
+                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, 
+                            lista_fornecedor, lista_operador, lista_orcamento,
+                            lista_caixa, lista_receber, lista_pagar);
                 break;
             }
 
-            // // --- CASE 8: ORÇAMENTOS ---
-            // case 8: 
-            //     controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor);
-            //     break;
-             case 8: 
-                controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor, lista_equipe);
+            case 8: 
+                // controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor, lista_equipe, &lista_receber);
+                   // Case 8 corrigido (com &lista_caixa no final)
+                        controller_gerenciar_orcamentos(
+                         &lista_orcamento, 
+                          lista_cliente, 
+                          lista_recurso, 
+                          lista_fornecedor, 
+                          lista_equipe, 
+                         &lista_receber, 
+                         &lista_caixa 
+                    );
+             
                 break;
+            
+            
+            case 9: // FINANCEIRO
+                controller_gerenciar_financeiro(&lista_caixa, &lista_receber, &lista_pagar, lista_recurso, lista_produtora);
+                break;
+
             case 0: 
                 view_exibir_mensagem("\nSalvando dados e saindo...");
-                // Chamada de salvamento atualizada
-                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador, lista_orcamento);
+                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, 
+                            lista_fornecedor, lista_operador, lista_orcamento,
+                            lista_caixa, lista_receber, lista_pagar);
                 break;
             default: view_exibir_mensagem("\n>> Opcao invalida!"); break;
         }
@@ -474,60 +152,77 @@ void controller_iniciar_sistema() {
     liberar_lista_produtora(&lista_produtora);
     liberar_lista_recurso(&lista_recurso);
     liberar_lista_operador(&lista_operador);
-    liberar_lista_orcamento(&lista_orcamento); // Libera orçamentos
+    liberar_lista_orcamento(&lista_orcamento);
+    
+    // AQUI ESTAVA FALTANDO: Liberar o financeiro
+    liberar_listas_financeiro(&lista_caixa, &lista_receber, &lista_pagar);
     
     view_exibir_mensagem("Memoria liberada. Ate logo!");
 }
 
-// --- 3. IMPLEMENTAÇÕES ATUALIZADAS (Adicionado parâmetro l_orc) ---
+// --- IMPLEMENTAÇÕES ---
 
-static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, ListaOrcamento** l_orc) {
+// Em controller/controller.c
+
+static void carregar_tudo(
+    Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, 
+    Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, 
+    ListaOrcamento** l_orc,
+    ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp) 
+{
     if (modo_armazenamento == 1) {
-        // Carrega TXT
+        // MODO TEXTO (CSV)
         carregar_produtora_txt(l_prod, "db_produtora.csv");
         carregar_clientes_txt(l_cli, "db_clientes.csv");
         carregar_equipe_txt(l_eq, "db_equipe.csv");
         carregar_recurso_txt(l_rec, "db_recurso.csv");
         carregar_fornecedor_txt(l_for, "db_fornecedor.csv");
         carregar_operador_txt(l_op, "db_operador.csv");
-        
-        // AQUI ESTAVA O ERRO: Agora usamos l_orc corretamente
-        carregar_orcamento_txt(l_orc, "db_orcamento.csv"); 
+        carregar_orcamento_txt(l_orc, "db_orcamento.csv");
+        // NOVO: Carrega Financeiro em TXT
+        carregar_financeiro_txt(l_cx, l_cr, l_cp);
     } else {
-        // Carrega BIN
+        // MODO BINÁRIO
         carregar_produtora_bin(l_prod, "db_produtora.bin");
         carregar_clientes_bin(l_cli, "db_clientes.bin");
         carregar_equipe_bin(l_eq, "db_equipe.bin");
         carregar_recurso_bin(l_rec, "db_recurso.bin");
         carregar_fornecedor_bin(l_for, "db_fornecedor.bin");
         carregar_operador_bin(l_op, "db_operador.bin");
-        
-        // AQUI TAMBÉM: Usamos l_orc
         carregar_orcamento_bin(l_orc, "db_orcamento.bin");
+        // NOVO: Carrega Financeiro em BIN
+        carregar_financeiro_bin(l_cx, l_cr, l_cp, "db_financeiro.bin");
     }
 }
 
-static void salvar_tudo(Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, ListaOrcamento* l_orc) {
+static void salvar_tudo(
+    Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, 
+    Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, 
+    ListaOrcamento* l_orc,
+    ListaCaixa* l_cx, ListaContaReceber* l_cr, ListaContaPagar* l_cp) 
+{
     if (modo_armazenamento == 1) {
+        // MODO TEXTO (CSV)
         salvar_produtora_txt(l_prod, "db_produtora.csv");
         salvar_clientes_txt(l_cli, "db_clientes.csv");
         salvar_equipe_txt(l_eq, "db_equipe.csv");
         salvar_recurso_txt(l_rec, "db_recurso.csv");
         salvar_fornecedor_txt(l_for, "db_fornecedor.csv");
         salvar_operador_txt(l_op, "db_operador.csv");
-        
-        // AQUI TAMBÉM: Usamos l_orc
         salvar_orcamento_txt(l_orc, "db_orcamento.csv");
+        // NOVO: Salva Financeiro em TXT (Gera 3 arquivos)
+        salvar_financeiro_txt(l_cx, l_cr, l_cp);
     } else {
+        // MODO BINÁRIO
         salvar_produtora_bin(l_prod, "db_produtora.bin");
         salvar_clientes_bin(l_cli, "db_clientes.bin");
         salvar_equipe_bin(l_eq, "db_equipe.bin");
         salvar_recurso_bin(l_rec, "db_recurso.bin");
         salvar_fornecedor_bin(l_for, "db_fornecedor.bin");
         salvar_operador_bin(l_op, "db_operador.bin");
-        
-        // AQUI TAMBÉM: Usamos l_orc
         salvar_orcamento_bin(l_orc, "db_orcamento.bin");
+        // NOVO: Salva Financeiro em BIN
+        salvar_financeiro_bin(l_cx, l_cr, l_cp, "db_financeiro.bin");
     }
 }
 
@@ -550,154 +245,3 @@ static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador*
         inserir_operador(lista_op, admin);
     }
 }
-
-
-// // Função principal que gerencia o fluxo da aplicação.
-// void controller_iniciar_sistema() {
-//     // Declara uma lista para cada módulo do sistema
-//     ListaCliente* lista_de_clientes = NULL;
-//     ListaEquipe* lista_de_equipe = NULL;
-
-//     int opcao = -1;
-
-//     do {
-//         // CORREÇÃO AQUI: Chamando a função de menu principal correta
-//         view_exibir_menu_principal(); 
-//         opcao = view_ler_opcao();
-
-//         switch (opcao) {
-//             case 1:
-//                 controller_gerenciar_clientes(&lista_de_clientes);
-//                 break;
-//             case 2:
-//                 controller_gerenciar_equipe(&lista_de_equipe);
-//                 break;
-//             case 0:
-//                 view_exibir_mensagem("\nSaindo do programa...");
-//                 break;
-//             default:
-//                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
-//                 break;
-//         }
-//     } while (opcao != 0);
-
-//     // Libera a memória de todas as listas antes de encerrar
-//     liberar_lista(&lista_de_clientes);
-//     liberar_lista_equipe(&lista_de_equipe);
-//     view_exibir_mensagem("Memoria liberada com sucesso.");
-// }
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-
-//                 ListaCliente* no_cliente = buscar_cliente_por_id(minha_lista, id_busca);
-
-//                 if (no_cliente == NULL) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 } else {
-//                     printf("\n--- Digite os NOVOS dados para o cliente de ID %d ---\n", id_busca);
-//                     Cliente cliente_atualizado;
-                    
-//                     view_ler_dados_cliente(&cliente_atualizado); 
-                    
-//                     // Preserva o status 'ativo' original do cliente para evitar corrupção de dados
-//                     cliente_atualizado.ativo = no_cliente->conteudo.ativo; 
-
-//                     StatusOperacao status = atualizar_cliente_por_id(minha_lista, id_busca, cliente_atualizado);
-
-//                     if (status == OPERACAO_SUCESSO) {
-//                         view_exibir_mensagem("\n>> SUCESSO: Cliente atualizado.");
-//                     } else {
-//                         view_exibir_mensagem("\n>> ERRO: Falha inesperada ao atualizar o cliente.");
-//                     }
-//                 }
-//                 break;
-//             }
-
-//             case 4: { // Desativar cliente
-//                 view_exibir_mensagem("Digite o Codigo (ID) do cliente a ser desativado: ");
-//                 int id_busca = view_ler_opcao();
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-            
-//                 StatusOperacao status = desativar_cliente_por_id(minha_lista, id_busca);
-            
-//                 if (status == OPERACAO_SUCESSO) {
-//                     view_exibir_mensagem("\n>> SUCESSO: Cliente desativado.");
-//                 } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 } else if (status == ERRO_CLIENTE_JA_INATIVO) {
-//                     view_exibir_mensagem("\n>> AVISO: O cliente ja esta inativo.");
-//                 }
-//                 break;
-//             }
-
-//             case 5: { // Remover cliente (fisicamente)
-//                 view_exibir_mensagem("Digite o Codigo (ID) do cliente a ser removido: ");
-//                 int id_busca = view_ler_opcao();
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-
-//                 StatusOperacao status = remover_fisico_cliente_por_id(&minha_lista, id_busca);
-
-//                 if (status == OPERACAO_SUCESSO) {
-//                     view_exibir_mensagem("\n>> SUCESSO: Cliente removido fisicamente.");
-//                 } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 }
-//                 break;
-//             }
-            
-//             case 6: { // Ativar cliente
-//                 view_exibir_mensagem("Digite o Codigo (ID) do cliente a ser ativado: ");
-//                 int id_busca = view_ler_opcao();
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-
-//                 StatusOperacao status = ativar_cliente_por_id(minha_lista, id_busca);
-
-//                 if (status == OPERACAO_SUCESSO) {
-//                     view_exibir_mensagem("\n>> SUCESSO: Cliente ativado.");
-//                 } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 } else if (status == ERRO_CLIENTE_JA_ATIVO) {
-//                     view_exibir_mensagem("\n>> AVISO: O cliente ja esta ativo.");
-//                 }
-//                 break;
-//             }
-
-//             case 7: { // Listar todos os clientes
-//                 view_imprimir_lista(minha_lista);
-//                 break;
-//             }
-
-//             case 0: { // Sair
-//                 view_exibir_mensagem("\nSaindo do programa...");
-//                 break;
-//             }
-
-//             default: { // Opção inválida
-//                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
-//                 break;
-//             }
-//         }
-//     } while (opcao != 0);
-
-//     // Libera a memória alocada para a lista antes de encerrar o programa.
-//     liberar_lista(&minha_lista);
-//     view_exibir_mensagem("Memoria liberada com sucesso. Adeus!");
-// }

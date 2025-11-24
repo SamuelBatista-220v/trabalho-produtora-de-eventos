@@ -54,7 +54,7 @@ void view_imprimir_lista(ListaCliente* lista) {
 
 void view_imprimir_cliente_unico(ListaCliente* no_cliente) {
     if (no_cliente == NULL) return;
-    printf("----------------------------------------\n");
+    printf("\n----------------------------------------\n");
     printf("\n  |Codigo      | : %d ", no_cliente->conteudo.id);
     if (no_cliente->conteudo.tipo == PESSOA_FISICA) {
     printf("\n  |Nome        | : %s ", no_cliente->conteudo.doc.pf.nome);
@@ -71,6 +71,7 @@ void view_imprimir_cliente_unico(ListaCliente* no_cliente) {
     printf("\n  |Email       | : %s ", no_cliente->conteudo.email);
     printf("\n  |Contato     | : %s ", no_cliente->conteudo.nome_contato);
     printf("\n  |Status      | : %s ", no_cliente->conteudo.ativo ? "Ativo" : "Inativo");
+
 }
 
 
@@ -91,7 +92,7 @@ void view_imprimir_equipe_unico(Listaequipe* no_equipe) {
     }
     printf("\n--- Lista de Membros da Equipe ---\n");
 
-        printf("----------------------------------------\n");
+        printf("\n----------------------------------------\n");
         printf("\n |Codigo      | : %d ", no_equipe->conteudo.id);
         printf("\n |Nome        | : %s ", no_equipe->conteudo.nome);
         printf("\n |CPF         | : ");
@@ -121,7 +122,7 @@ void view_imprimir_lista_recurso(Listarecurso* lista) {
 void view_imprimir_recurso_unico(Listarecurso* no_recurso) {
     if (no_recurso == NULL) return;
 
-    printf("----------------------------------------\n");
+    printf("\n----------------------------------------\n");
     printf("\n |Codigo               | : %d ", no_recurso->conteudo.id);
     printf("\n |Descricao            | : %s ", no_recurso->conteudo.descricao);
     printf("\n |Categoria            | : %s ", no_recurso->conteudo.categoria);
@@ -148,7 +149,7 @@ void view_imprimir_lista_fornecedor(Listafornecedor* lista) {
 void view_imprimir_fornecedor_unico(Listafornecedor* no_fornecedor) {
     if (no_fornecedor == NULL) return;
 
-    printf("----------------------------------------\n");
+    printf("\n----------------------------------------\n");
     printf("\n |Codigo         | : %d ", no_fornecedor->conteudo.id);
     printf("\n |Nome Fantasia  | : %s ", no_fornecedor->conteudo.nome_fantasia);
     printf("\n |Razao Social   | : %s ", no_fornecedor->conteudo.razao_social);
@@ -323,16 +324,16 @@ void view_imprimir_orcamento_unico(Orcamento* o, Listarecurso* l_rec, Listaforne
     }
     printf("\n================================================\n");
     printf(" Evento      : %s\n", o->nome_evento);
-    printf(" Cliente ID  : %d\n", o->id_cliente);
+    printf(" ID Cliente  : %d\n", o->id_cliente);
     printf(" Local       : %s\n", o->local);
     printf(" Periodo     : %02d/%02d/%d ate %02d/%02d/%d (%d dias)\n", 
            o->dia_inicio, o->mes_inicio, o->ano_inicio, 
            o->dia_fim, o->mes_fim, o->ano_fim, o->qtd_dias);
     
-    printf("------------------------------------------------\n");
+    printf("\n------------------------------------------------\n");
     printf(" [ITENS DO ORCAMENTO]\n");
 
-    // 1. LISTAR RECURSOS
+    // 1. LISTA OS RECURSOS
     if (o->qtd_recursos_selecionados > 0) {
         printf("\n > Equipamentos/Recursos:\n");
         for (int i = 0; i < o->qtd_recursos_selecionados; i++) {
@@ -438,4 +439,93 @@ void view_imprimir_lista_orcamento_por_status(ListaOrcamento* lista, int status_
 void view_exibir_ocupacao_recurso(int id_recurso, char* nome, int dia_i, int mes_i, int ano_i, int dia_f, int mes_f, int ano_f, int qtd) {
     printf(">> RESERVADO: %s | Qtd: %d | Periodo: %02d/%02d/%d a %02d/%02d/%d\n", 
            nome, qtd, dia_i, mes_i, ano_i, dia_f, mes_f, ano_f);
+}
+
+// ... código anterior ...
+
+// --- RELATÓRIOS FINANCEIROS ---
+
+void view_imprimir_relatorio_financeiro(ListaContaPagar* l_cp, ListaContaReceber* l_cr) {
+    printf("\n=== RELATORIO DE CONTAS ===\n");
+    
+    printf("\n--- CONTAS A PAGAR (Saidas Previstas) ---\n");
+    if (l_cp == NULL) printf("   (Nenhuma conta pendente)\n");
+    while(l_cp) {
+        printf(" ID: %d | Desc: %-20s | Valor: R$ %8.2f | Venc: %s | Status: %s\n", 
+               l_cp->conteudo.id, 
+               l_cp->conteudo.descricao, 
+               l_cp->conteudo.valor_total, 
+               l_cp->conteudo.data_vencimento, 
+               l_cp->conteudo.status ? "[PAGO]" : "[PENDENTE]");
+        l_cp = l_cp->prox;
+    }
+
+    printf("\n--- CONTAS A RECEBER (Entradas Previstas) ---\n");
+    if (l_cr == NULL) printf("   (Nenhuma fatura a receber)\n");
+    while(l_cr) {
+        printf(" ID: %d | Desc: %-20s | Valor: R$ %8.2f | Venc: %s | Status: %s\n", 
+               l_cr->conteudo.id, 
+               l_cr->conteudo.descricao, 
+               l_cr->conteudo.valor_total, 
+               l_cr->conteudo.data_vencimento, 
+               l_cr->conteudo.status ? "[RECEBIDO]" : "[PENDENTE]");
+        l_cr = l_cr->prox;
+    }
+    printf("===========================\n");
+}
+
+void view_imprimir_extrato_caixa_detalhado(ListaCaixa* lista) {
+    float saldo = 0;
+    printf("\n=== EXTRATO DE CAIXA (Fluxo) ===\n");
+    
+    if (lista == NULL) printf("   (Caixa sem movimentacoes)\n");
+
+    // Nota: A lista está invertida (pilha). Para saldo correto linha a linha,
+    // idealmente deveríamos inverter, mas para extrato simples serve.
+    while (lista) {
+        char* tipo = (lista->conteudo.tipo == 1) ? "ENTRADA (+)" : "SAIDA   (-)";
+        float val = lista->conteudo.valor;
+        
+        // Atualiza saldo total
+        if (lista->conteudo.tipo == 1) saldo += val;
+        else saldo -= val;
+
+        printf("[%s] %s R$ %8.2f | Ref: %s\n", 
+               lista->conteudo.data, tipo, val, lista->conteudo.descricao);
+        
+        lista = lista->prox;
+    }
+    printf("----------------------------------------\n");
+    printf("SALDO ATUAL DO CAIXA: R$ %.2f\n", saldo);
+    printf("========================================\n");
+}
+
+// Em view/mostrar_dados.c
+
+void view_imprimir_nota_fiscal_detalhada(void* lista_itens, int qtd_itens, float total_prod, float total_frete, float total_imp) {
+    ItemCompraTemp* itens = (ItemCompraTemp*) lista_itens;
+    
+    printf("\n================================================\n");
+    printf("          PREVIA DA NOTA FISCAL (COMPRA)        \n");
+    printf("================================================\n");
+    printf(" ITEM                          | QTD | UNITARIO | SUBTOTAL \n");
+    printf("------------------------------------------------\n");
+
+    float soma_itens = 0;
+    for (int i = 0; i < qtd_itens; i++) {
+        float subtotal = itens[i].qtd * itens[i].custo;
+        soma_itens += subtotal;
+        
+        // Formatação bonita com espaçamento fixo
+        printf(" %-29s | %3d | R$ %6.2f | R$ %6.2f\n", 
+               itens[i].nome, itens[i].qtd, itens[i].custo, subtotal);
+    }
+    
+    printf("------------------------------------------------\n");
+    printf(" (+) Total Produtos : R$ %.2f\n", total_prod);
+    printf(" (+) Frete Total    : R$ %.2f\n", total_frete);
+    printf(" (+) Impostos Totais: R$ %.2f\n", total_imp);
+    printf("================================================\n");
+    printf(" (=) TOTAL A PAGAR  : R$ %.2f\n", total_prod + total_frete + total_imp);
+    printf("================================================\n");
 }

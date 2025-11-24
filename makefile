@@ -64,6 +64,9 @@
 # =============================================================================
 # Makefile para o projeto de Gestão de Eventos
 # =============================================================================
+# =============================================================================
+# Makefile para o projeto de Gestão de Eventos
+# =============================================================================
 
 # --- 1. CONFIGURAÇÕES E VARIÁVEIS ---
 CC = gcc
@@ -73,7 +76,7 @@ CFLAGS = -Wall -g -I. -Imodel -Iview -Icontroller -Ivalidacoes
 # --- 2. DEFINIÇÃO DOS ARQUIVOS ---
 VPATH = model:view:controller:validacoes
 
-# LISTA ATUALIZADA (Inclui orcamento.c e orcamento_controller.c)
+# LISTA COMPLETA DE ARQUIVOS (Incluindo Financeiro e Orcamento)
 SRCS =  main.c \
         model/produtora.c \
         model/recurso.c \
@@ -82,6 +85,7 @@ SRCS =  main.c \
         model/equipe.c \
         model/fornecedor.c \
         model/orcamento.c \
+        model/financeiro.c \
         view/formatacao.c \
         view/menus.c \
         view/mostrar_dados.c \
@@ -93,10 +97,11 @@ SRCS =  main.c \
         controller/equipe_controller.c \
         controller/fornecedor_controller.c \
         controller/orcamento_controller.c \
+        controller/financeiro_controller.c \
         controller/controller.c \
         validacoes/validacoes.c
 
-# Gera a lista de objetos (.o) automaticamente baseada nos sources (.c)
+# Gera a lista de objetos (.o) automaticamente
 OBJS = $(notdir $(SRCS:.c=.o))
 
 # --- 3. REGRAS DE COMPILAÇÃO ---
@@ -108,23 +113,17 @@ $(TARGET): $(OBJS)
 	@echo "----------------------------------------"
 	$(CC) $(OBJS) -o $(TARGET)
 
-# Regra genérica para compilar .c em .o
-# O VPATH ajuda o make a encontrar os arquivos nas pastas certas
 %.o: %.c
 	@echo "Compilando $< -> $@"
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# --- 4. REGRAS AUXILIARES E DE ATALHO ---
+# --- 4. REGRAS AUXILIARES ---
 run: $(TARGET)
-	@echo "----------------------------------------"
-	@echo ">> Executando o programa..."
-	@echo "----------------------------------------"
+	@echo ">> Executando..."
 	./$(TARGET)
 
 clean:
-	@echo "----------------------------------------"
-	@echo ">> Limpando arquivos compilados..."
-	@echo "----------------------------------------"
+	@echo ">> Limpando arquivos..."
 	del $(TARGET) $(OBJS)
 
 .PHONY: all clean run
