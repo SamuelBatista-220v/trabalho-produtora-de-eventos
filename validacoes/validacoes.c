@@ -9,14 +9,16 @@
 
 int validar_apenas_letras(const char* str) {
     if (str == NULL || str[0] == '\0') {
-        return 0; // Campo não pode ser vazio
+        return 0;
+        //str== NULL: verifica se o ponteiro da string é nulo (ou seja, não aponta para nenhum outro lugar válido na memória).
+        //str[0] == '\0': verifica se a string está vazia 
     }
     for (int i = 0; str[i] != '\0'; i++) {
         if (!isalpha((unsigned char)str[i]) && !isspace((unsigned char)str[i])) {
-            return 0; // Encontrou um caractere inválido
+            return 0;
         }
     }
-    return 1; // String válida
+    return 1;
 }
 
 
