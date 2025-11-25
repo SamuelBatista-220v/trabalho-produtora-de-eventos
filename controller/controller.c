@@ -102,6 +102,7 @@ void controller_iniciar_sistema() {
              case 8: 
                 controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor, lista_equipe);
                 break;
+
             case 0: 
                 view_exibir_mensagem("\nSalvando dados e saindo...");
                 // Chamada de salvamento atualizada
@@ -138,40 +139,45 @@ static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaeq
         // AQUI ESTAVA O ERRO: Agora usamos l_orc corretamente
         carregar_orcamento_txt(l_orc, "db_orcamento.csv"); 
     } else {
-        // Carrega BIN
+        // MODO BINÁRIO
         carregar_produtora_bin(l_prod, "db_produtora.bin");
         carregar_clientes_bin(l_cli, "db_clientes.bin");
         carregar_equipe_bin(l_eq, "db_equipe.bin");
         carregar_recurso_bin(l_rec, "db_recurso.bin");
         carregar_fornecedor_bin(l_for, "db_fornecedor.bin");
         carregar_operador_bin(l_op, "db_operador.bin");
-        
-        // AQUI TAMBÉM: Usamos l_orc
         carregar_orcamento_bin(l_orc, "db_orcamento.bin");
     }
 }
 
-static void salvar_tudo(Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, ListaOrcamento* l_orc) {
+static void salvar_tudo(
+    Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, 
+    Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, 
+    ListaOrcamento* l_orc,
+    ListaCaixa* l_cx, ListaContaReceber* l_cr, ListaContaPagar* l_cp) 
+{
     if (modo_armazenamento == 1) {
+        // MODO TEXTO (CSV)
         salvar_produtora_txt(l_prod, "db_produtora.csv");
         salvar_clientes_txt(l_cli, "db_clientes.csv");
         salvar_equipe_txt(l_eq, "db_equipe.csv");
         salvar_recurso_txt(l_rec, "db_recurso.csv");
         salvar_fornecedor_txt(l_for, "db_fornecedor.csv");
         salvar_operador_txt(l_op, "db_operador.csv");
-        
-        // AQUI TAMBÉM: Usamos l_orc
         salvar_orcamento_txt(l_orc, "db_orcamento.csv");
+        // NOVO: Salva Financeiro em TXT (Gera 3 arquivos)
+        salvar_financeiro_txt(l_cx, l_cr, l_cp);
     } else {
+        // MODO BINÁRIO
         salvar_produtora_bin(l_prod, "db_produtora.bin");
         salvar_clientes_bin(l_cli, "db_clientes.bin");
         salvar_equipe_bin(l_eq, "db_equipe.bin");
         salvar_recurso_bin(l_rec, "db_recurso.bin");
         salvar_fornecedor_bin(l_for, "db_fornecedor.bin");
         salvar_operador_bin(l_op, "db_operador.bin");
-        
-        // AQUI TAMBÉM: Usamos l_orc
         salvar_orcamento_bin(l_orc, "db_orcamento.bin");
+        // NOVO: Salva Financeiro em BIN
+        salvar_financeiro_bin(l_cx, l_cr, l_cp, "db_financeiro.bin");
     }
 }
 
@@ -194,154 +200,3 @@ static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador*
         inserir_operador(lista_op, admin);
     }
 }
-
-
-// // Função principal que gerencia o fluxo da aplicação.
-// void controller_iniciar_sistema() {
-//     // Declara uma lista para cada módulo do sistema
-//     ListaCliente* lista_de_clientes = NULL;
-//     ListaEquipe* lista_de_equipe = NULL;
-
-//     int opcao = -1;
-
-//     do {
-//         // CORREÇÃO AQUI: Chamando a função de menu principal correta
-//         view_exibir_menu_principal(); 
-//         opcao = view_ler_opcao();
-
-//         switch (opcao) {
-//             case 1:
-//                 controller_gerenciar_clientes(&lista_de_clientes);
-//                 break;
-//             case 2:
-//                 controller_gerenciar_equipe(&lista_de_equipe);
-//                 break;
-//             case 0:
-//                 view_exibir_mensagem("\nSaindo do programa...");
-//                 break;
-//             default:
-//                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
-//                 break;
-//         }
-//     } while (opcao != 0);
-
-//     // Libera a memória de todas as listas antes de encerrar
-//     liberar_lista(&lista_de_clientes);
-//     liberar_lista_equipe(&lista_de_equipe);
-//     view_exibir_mensagem("Memoria liberada com sucesso.");
-// }
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-
-//                 ListaCliente* no_cliente = buscar_cliente_por_id(minha_lista, id_busca);
-
-//                 if (no_cliente == NULL) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 } else {
-//                     printf("\n--- Digite os NOVOS dados para o cliente de ID %d ---\n", id_busca);
-//                     Cliente cliente_atualizado;
-                    
-//                     view_ler_dados_cliente(&cliente_atualizado); 
-                    
-//                     // Preserva o status 'ativo' original do cliente para evitar corrupção de dados
-//                     cliente_atualizado.ativo = no_cliente->conteudo.ativo; 
-
-//                     StatusOperacao status = atualizar_cliente_por_id(minha_lista, id_busca, cliente_atualizado);
-
-//                     if (status == OPERACAO_SUCESSO) {
-//                         view_exibir_mensagem("\n>> SUCESSO: Cliente atualizado.");
-//                     } else {
-//                         view_exibir_mensagem("\n>> ERRO: Falha inesperada ao atualizar o cliente.");
-//                     }
-//                 }
-//                 break;
-//             }
-
-//             case 4: { // Desativar cliente
-//                 view_exibir_mensagem("Digite o Codigo (ID) do cliente a ser desativado: ");
-//                 int id_busca = view_ler_opcao();
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-            
-//                 StatusOperacao status = desativar_cliente_por_id(minha_lista, id_busca);
-            
-//                 if (status == OPERACAO_SUCESSO) {
-//                     view_exibir_mensagem("\n>> SUCESSO: Cliente desativado.");
-//                 } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 } else if (status == ERRO_CLIENTE_JA_INATIVO) {
-//                     view_exibir_mensagem("\n>> AVISO: O cliente ja esta inativo.");
-//                 }
-//                 break;
-//             }
-
-//             case 5: { // Remover cliente (fisicamente)
-//                 view_exibir_mensagem("Digite o Codigo (ID) do cliente a ser removido: ");
-//                 int id_busca = view_ler_opcao();
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-
-//                 StatusOperacao status = remover_fisico_cliente_por_id(&minha_lista, id_busca);
-
-//                 if (status == OPERACAO_SUCESSO) {
-//                     view_exibir_mensagem("\n>> SUCESSO: Cliente removido fisicamente.");
-//                 } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 }
-//                 break;
-//             }
-            
-//             case 6: { // Ativar cliente
-//                 view_exibir_mensagem("Digite o Codigo (ID) do cliente a ser ativado: ");
-//                 int id_busca = view_ler_opcao();
-//                 if (id_busca <= 0) {
-//                     view_exibir_mensagem(">> Codigo invalido.");
-//                     break;
-//                 }
-
-//                 StatusOperacao status = ativar_cliente_por_id(minha_lista, id_busca);
-
-//                 if (status == OPERACAO_SUCESSO) {
-//                     view_exibir_mensagem("\n>> SUCESSO: Cliente ativado.");
-//                 } else if (status == ERRO_CLIENTE_NAO_ENCONTRADO) {
-//                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
-//                 } else if (status == ERRO_CLIENTE_JA_ATIVO) {
-//                     view_exibir_mensagem("\n>> AVISO: O cliente ja esta ativo.");
-//                 }
-//                 break;
-//             }
-
-//             case 7: { // Listar todos os clientes
-//                 view_imprimir_lista(minha_lista);
-//                 break;
-//             }
-
-//             case 0: { // Sair
-//                 view_exibir_mensagem("\nSaindo do programa...");
-//                 break;
-//             }
-
-//             default: { // Opção inválida
-//                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
-//                 break;
-//             }
-//         }
-//     } while (opcao != 0);
-
-//     // Libera a memória alocada para a lista antes de encerrar o programa.
-//     liberar_lista(&minha_lista);
-//     view_exibir_mensagem("Memoria liberada com sucesso. Adeus!");
-// }
