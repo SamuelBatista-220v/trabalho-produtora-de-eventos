@@ -31,10 +31,6 @@ StatusOperacao desativar_operador_por_id(Listaoperador* lista, int id_busca);
 StatusOperacao ativar_operador_por_id(Listaoperador* lista, int id_busca);
 StatusOperacao remover_fisico_operador_por_id(Listaoperador** lista, int id_busca);
 void liberar_lista_operador(Listaoperador** lista);
-
-// (Opcional) Funções de Persistência
-// StatusOperacao salvar_operadores(Listaoperador* lista, const char* nome_arquivo);
-// StatusOperacao carregar_operadores(Listaoperador** lista, const char* nome_arquivo);7StatusOperacao salvar_operador_txt(Listaoperador* lista, const char* nome_arquivo);
 StatusOperacao salvar_operador_txt(Listaoperador* lista, const char* nome_arquivo);
 StatusOperacao carregar_operador_txt(Listaoperador** lista, const char* nome_arquivo);
 StatusOperacao salvar_operador_bin(Listaoperador* lista, const char* nome_arquivo);

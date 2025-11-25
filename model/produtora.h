@@ -20,16 +20,7 @@ typedef struct {
     int ativo; // 1 para ativo, 0 para inativo
 } produtora;
 
-// ➢ Nome Fantasia
-// ➢ Razão Social
-// ➢ Inscrição Estadual
-// ➢ CNPJ
-// ➢ Endereço completo
-// ➢ Telefone
-// ➢ E-mail
-// ➢ Nome do responsável
-// ➢ Telefone do responsável
-// ➢ Margem de lucro padrão
+
 // Estrutura do nó da lista ligada de produtoraes
 typedef struct no_produtora Listaprodutora;
 
@@ -49,10 +40,6 @@ StatusOperacao desativar_produtora_por_id(Listaprodutora* lista, int id_busca);
 StatusOperacao ativar_produtora_por_id(Listaprodutora* lista, int id_busca);
 StatusOperacao remover_fisico_produtora_por_id(Listaprodutora** lista, int id_busca);
 void liberar_lista_produtora(Listaprodutora** lista);
-
-// (Opcional) Funções de Persistência
-// StatusOperacao salvar_produtoraes(Listaprodutora* lista, const char* nome_arquivo);
-// StatusOperacao carregar_produtoraes(Listaprodutora** lista, const char* nome_arquivo);
 StatusOperacao salvar_produtora_txt(Listaprodutora* lista, const char* nome_arquivo);
 StatusOperacao carregar_produtora_txt(Listaprodutora** lista, const char* nome_arquivo);
 StatusOperacao salvar_produtora_bin(Listaprodutora* lista, const char* nome_arquivo);

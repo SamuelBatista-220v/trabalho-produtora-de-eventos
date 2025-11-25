@@ -15,12 +15,12 @@ typedef struct {
     float valor_diaria;
     int ativo;
 } equipe;
-
+//Define a estrutura do nó da lista encadeada que armazena os registros de equipe.
 typedef struct no_equipe Listaequipe;
 
 struct no_equipe {
-    equipe conteudo;
-    Listaequipe* prox;
+    equipe conteudo;//a variável que armazena a estrutura de dados completa do membro da equipe.
+    Listaequipe* prox;//o ponteiro que aponta para o próximo nó na lista.
 };
 
 // As funções já retornam o tipo correto (StatusOperacao)
