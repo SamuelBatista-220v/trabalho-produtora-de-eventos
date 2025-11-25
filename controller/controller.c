@@ -15,8 +15,7 @@
 #include "../model/fornecedor.h"
 #include "../model/operador.h"
 #include "../model/orcamento.h" 
-#include "../model/financeiro.h" // Financeiro
-
+#include "../model/financeiro.h" 
 // Includes dos Controllers
 #include "produtora_controller.h"
 #include "cliente_controller.h"
@@ -29,8 +28,7 @@
 
 static int modo_armazenamento = 1; 
 
-// --- PROTÓTIPOS CORRIGIDOS ---
-// Carregar precisa de ** (para alterar o ponteiro da lista)
+
 static void carregar_tudo(
     Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, 
     Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, 
@@ -38,7 +36,7 @@ static void carregar_tudo(
     ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp 
 );
 
-// Salvar precisa apenas de * (para ler a lista) - AQUI ESTAVA O ERRO
+
 static void salvar_tudo(
     Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, 
     Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, 
@@ -63,7 +61,7 @@ void controller_iniciar_sistema() {
     ListaContaReceber* lista_receber = NULL;
     ListaContaPagar* lista_pagar = NULL;
 
-    // --- PASSO 1: MODO DE ARMAZENAMENTO ---
+    //  MODO DE ARMAZENAMENTO ---
     view_exibir_mensagem("\n=== CONFIGURACAO DE ARMAZENAMENTO ===");
     view_exibir_mensagem("Escolha o formato para carregar/salvar os dados:");
     view_exibir_mensagem("1. Texto (CSV)");
@@ -154,15 +152,13 @@ void controller_iniciar_sistema() {
     liberar_lista_operador(&lista_operador);
     liberar_lista_orcamento(&lista_orcamento);
     
-    // AQUI ESTAVA FALTANDO: Liberar o financeiro
+    // ESTAVA FALTANDO: Liberar o financeiro
     liberar_listas_financeiro(&lista_caixa, &lista_receber, &lista_pagar);
     
     view_exibir_mensagem("Memoria liberada. Ate logo!");
 }
 
-// --- IMPLEMENTAÇÕES ---
 
-// Em controller/controller.c
 
 static void carregar_tudo(
     Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, 

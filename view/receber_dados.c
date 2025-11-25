@@ -40,7 +40,7 @@ static void ler_campo_validado(const char* prompt, char* destino, int tamanho_de
 
 int view_ler_opcao() {
     char buffer[20];
-    printf("Escolha uma opcao: ");
+    printf("digite a opçao: ");
     if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
         if (strchr(buffer, '\n') == NULL) limpar_buffer_teclado();
         return atoi(buffer);
@@ -149,7 +149,7 @@ void view_ler_dados_operador(operador* operador) {
 // }
 
 void view_ler_dados_produtora(produtora* produtora) {   
-    char buffer_float[30]; // <--- ESTA VARIÁVEL PRECISA VOLTAR
+    char buffer_float[30]; 
     
     printf("\n--- Cadastro da Produtora ---\n");
 
@@ -163,7 +163,6 @@ void view_ler_dados_produtora(produtora* produtora) {
     ler_campo_validado("Digite o nome do responsavel: ", produtora->nome_responsavel, sizeof(produtora->nome_responsavel), validar_apenas_letras, "Erro: O nome do responsavel deve conter apenas letras.");
     ler_campo_validado("Digite o telefone do responsavel: ", produtora->telefone_responsavel, sizeof(produtora->telefone_responsavel), validar_telefone, "Erro: Telefone invalido.");
 
-    // --- AQUI ESTÁ A CORREÇÃO: LER A MARGEM DE LUCRO ---
     printf("Digite a Margem de Lucro Padrao (%%) [Ex: 20]: ");
     fgets(buffer_float, sizeof(buffer_float), stdin);
     if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
@@ -225,7 +224,6 @@ void view_ler_dados_base_orcamento(Orcamento* orcamento) {
     ler_campo_validado("Nome do Evento: ", orcamento->nome_evento, sizeof(orcamento->nome_evento), NULL, NULL);
     ler_campo_validado("Local do Evento: ", orcamento->local, sizeof(orcamento->local), NULL, NULL);
 
-    // --- CORREÇÃO DA LEITURA DE DATAS ---
     // Usamos fgets para garantir que o ENTER anterior não atrapalhe
     
     printf("Data de Inicio (DD MM AAAA): ");
@@ -284,7 +282,7 @@ void view_ler_dados_pagamento(int* forma_pag, char* data_venc, float* entrada, i
     
     printf("\n--- CONDICOES DE PAGAMENTO ---\n");
     printf("1. A Vista (Debito imediato)\n");
-    printf("2. A Prazo (Contas a Pagar)\n");
+    printf("2. A Prazo (   Sem juros   )\n");
     ler_campo_validado("Opcao: ", buffer, 50, NULL, NULL);
     *forma_pag = atoi(buffer);
 
