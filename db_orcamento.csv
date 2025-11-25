@@ -1,1 +1,4 @@
-ID;Cliente;Evento;Inicio;Fim;Status;TotalRecursos;TotalServicos;TotalEquipe;TotalGeral
+ID;Cliente;Evento;Local;Inicio;Fim;Status;Total;ITENS_RECURSOS;ITENS_EQUIPE
+1;1;aniversario;casa;10/12/2025;15/12/2025;2;1620.00;NONE;NONE
+2;2;rodeio;casa;10/12/2025;15/12/2025;2;0.00;NONE;NONE
+3;1;aniversarioaa;casa;10/12/2025;13/12/2025;0;3040.00;NONE;NONE

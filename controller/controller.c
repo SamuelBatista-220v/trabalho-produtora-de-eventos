@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,7 +14,8 @@
 #include "../model/recurso.h"
 #include "../model/fornecedor.h"
 #include "../model/operador.h"
-#include "../model/orcamento.h" // <--- IMPORTANTE
+#include "../model/orcamento.h" 
+#include "../model/financeiro.h" // Financeiro
 
 // Includes dos Controllers
 #include "produtora_controller.h"
@@ -25,13 +24,28 @@
 #include "recurso_controller.h"
 #include "fornecedor_controller.h"
 #include "operador_controller.h"
-#include "orcamento_controller.h" // <--- IMPORTANTE
+#include "orcamento_controller.h" 
+#include "financeiro_controller.h" // Financeiro
 
 static int modo_armazenamento = 1; 
 
-// --- 1. PROTÓTIPOS ATUALIZADOS (Adicionado l_orc) ---
-static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, ListaOrcamento** l_orc);
-static void salvar_tudo(Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, ListaOrcamento* l_orc);
+// --- PROTÓTIPOS CORRIGIDOS ---
+// Carregar precisa de ** (para alterar o ponteiro da lista)
+static void carregar_tudo(
+    Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, 
+    Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, 
+    ListaOrcamento** l_orc,
+    ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp 
+);
+
+// Salvar precisa apenas de * (para ler a lista) - AQUI ESTAVA O ERRO
+static void salvar_tudo(
+    Listaprodutora* l_prod, ListaCliente* l_cli, Listaequipe* l_eq, 
+    Listarecurso* l_rec, Listafornecedor* l_for, Listaoperador* l_op, 
+    ListaOrcamento* l_orc, 
+    ListaCaixa* l_cx, ListaContaReceber* l_cr, ListaContaPagar* l_cp 
+);
+
 static void controller_setup_inicial(Listaprodutora** lista_prod, Listaoperador** lista_op);
 
 void controller_iniciar_sistema() {
@@ -42,7 +56,12 @@ void controller_iniciar_sistema() {
     Listarecurso* lista_recurso = NULL;
     Listafornecedor* lista_fornecedor = NULL;
     Listaoperador* lista_operador = NULL;
-    ListaOrcamento* lista_orcamento = NULL; // <--- DECLARAÇÃO DA LISTA
+    ListaOrcamento* lista_orcamento = NULL;
+
+    // Listas Financeiras
+    ListaCaixa* lista_caixa = NULL;
+    ListaContaReceber* lista_receber = NULL;
+    ListaContaPagar* lista_pagar = NULL;
 
     // --- PASSO 1: MODO DE ARMAZENAMENTO ---
     view_exibir_mensagem("\n=== CONFIGURACAO DE ARMAZENAMENTO ===");
@@ -62,9 +81,9 @@ void controller_iniciar_sistema() {
 
     // --- PASSO 2: CARREGAR TUDO ---
     view_exibir_mensagem("\n>> Tentando carregar dados existentes...");
-    
-    // --- 2. CHAMADA ATUALIZADA (Passando &lista_orcamento) ---
-    carregar_tudo(&lista_produtora, &lista_cliente, &lista_equipe, &lista_recurso, &lista_fornecedor, &lista_operador, &lista_orcamento);
+    carregar_tudo(&lista_produtora, &lista_cliente, &lista_equipe, &lista_recurso, 
+                  &lista_fornecedor, &lista_operador, &lista_orcamento,
+                  &lista_caixa, &lista_receber, &lista_pagar);
 
     // --- PASSO 3: SETUP INICIAL ---
     controller_setup_inicial(&lista_produtora, &lista_operador);
@@ -90,23 +109,37 @@ void controller_iniciar_sistema() {
                     modo_armazenamento = 1;
                     view_exibir_mensagem("\n>> MODO ALTERADO PARA: TEXTO (.csv)");
                 }
-                // Salva tudo imediatamente no novo formato
-                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador, lista_orcamento);
+                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, 
+                            lista_fornecedor, lista_operador, lista_orcamento,
+                            lista_caixa, lista_receber, lista_pagar);
                 break;
             }
 
-            // // --- CASE 8: ORÇAMENTOS ---
-            // case 8: 
-            //     controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor);
-            //     break;
-             case 8: 
-                controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor, lista_equipe);
+            case 8: 
+                // controller_gerenciar_orcamentos(&lista_orcamento, lista_cliente, lista_recurso, lista_fornecedor, lista_equipe, &lista_receber);
+                   // Case 8 corrigido (com &lista_caixa no final)
+                        controller_gerenciar_orcamentos(
+                         &lista_orcamento, 
+                          lista_cliente, 
+                          lista_recurso, 
+                          lista_fornecedor, 
+                          lista_equipe, 
+                         &lista_receber, 
+                         &lista_caixa 
+                    );
+             
+                break;
+            
+            
+            case 9: // FINANCEIRO
+                controller_gerenciar_financeiro(&lista_caixa, &lista_receber, &lista_pagar, lista_recurso, lista_produtora);
                 break;
 
             case 0: 
                 view_exibir_mensagem("\nSalvando dados e saindo...");
-                // Chamada de salvamento atualizada
-                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, lista_fornecedor, lista_operador, lista_orcamento);
+                salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, 
+                            lista_fornecedor, lista_operador, lista_orcamento,
+                            lista_caixa, lista_receber, lista_pagar);
                 break;
             default: view_exibir_mensagem("\n>> Opcao invalida!"); break;
         }
@@ -119,25 +152,35 @@ void controller_iniciar_sistema() {
     liberar_lista_produtora(&lista_produtora);
     liberar_lista_recurso(&lista_recurso);
     liberar_lista_operador(&lista_operador);
-    liberar_lista_orcamento(&lista_orcamento); // Libera orçamentos
+    liberar_lista_orcamento(&lista_orcamento);
+    
+    // AQUI ESTAVA FALTANDO: Liberar o financeiro
+    liberar_listas_financeiro(&lista_caixa, &lista_receber, &lista_pagar);
     
     view_exibir_mensagem("Memoria liberada. Ate logo!");
 }
 
-// --- 3. IMPLEMENTAÇÕES ATUALIZADAS (Adicionado parâmetro l_orc) ---
+// --- IMPLEMENTAÇÕES ---
 
-static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, ListaOrcamento** l_orc) {
+// Em controller/controller.c
+
+static void carregar_tudo(
+    Listaprodutora** l_prod, ListaCliente** l_cli, Listaequipe** l_eq, 
+    Listarecurso** l_rec, Listafornecedor** l_for, Listaoperador** l_op, 
+    ListaOrcamento** l_orc,
+    ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp) 
+{
     if (modo_armazenamento == 1) {
-        // Carrega TXT
+        // MODO TEXTO (CSV)
         carregar_produtora_txt(l_prod, "db_produtora.csv");
         carregar_clientes_txt(l_cli, "db_clientes.csv");
         carregar_equipe_txt(l_eq, "db_equipe.csv");
         carregar_recurso_txt(l_rec, "db_recurso.csv");
         carregar_fornecedor_txt(l_for, "db_fornecedor.csv");
         carregar_operador_txt(l_op, "db_operador.csv");
-        
-        // AQUI ESTAVA O ERRO: Agora usamos l_orc corretamente
-        carregar_orcamento_txt(l_orc, "db_orcamento.csv"); 
+        carregar_orcamento_txt(l_orc, "db_orcamento.csv");
+        // NOVO: Carrega Financeiro em TXT
+        carregar_financeiro_txt(l_cx, l_cr, l_cp);
     } else {
         // MODO BINÁRIO
         carregar_produtora_bin(l_prod, "db_produtora.bin");
@@ -147,6 +190,8 @@ static void carregar_tudo(Listaprodutora** l_prod, ListaCliente** l_cli, Listaeq
         carregar_fornecedor_bin(l_for, "db_fornecedor.bin");
         carregar_operador_bin(l_op, "db_operador.bin");
         carregar_orcamento_bin(l_orc, "db_orcamento.bin");
+        // NOVO: Carrega Financeiro em BIN
+        carregar_financeiro_bin(l_cx, l_cr, l_cp, "db_financeiro.bin");
     }
 }
 

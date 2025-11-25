@@ -45,7 +45,8 @@ void view_exibir_menu_principal() {
     printf("   |  6. Gerenciar Operadores               |\n");
     printf("   |----------------------------------------|\n");
     printf("   |  7. Mudar Modo de Salvamento (TXT/BIN) |\n");
-    printf("   |  8. GESTAO DE ORCAMENTOS E EVENTOS     |\n"); // <--- AQUI
+    printf("   |  8. GESTAO DE ORCAMENTOS E EVENTOS     |\n"); 
+    printf("   |  9. MODULO FINANCEIRO & ESTOQUE        |\n");// <--- AQUI
     printf("   |  0. Sair e Salvar                      |\n");
     printf("   ==========================================\n");
 }

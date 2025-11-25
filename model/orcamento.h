@@ -169,4 +169,9 @@ StatusOperacao salvar_orcamento_bin(ListaOrcamento* lista, const char* nome_arqu
 StatusOperacao carregar_orcamento_bin(ListaOrcamento** lista, const char* nome_arquivo);
 void liberar_lista_orcamento(ListaOrcamento** lista);
 
+StatusOperacao remover_fisico_orcamento(ListaOrcamento** lista, int id);
+
+// PERSISTÊNCIA (TEXTO/CSV) - <--- ESTES FALTAVAM
+StatusOperacao salvar_orcamento_txt(ListaOrcamento* lista, const char* nome_arquivo);
+StatusOperacao carregar_orcamento_txt(ListaOrcamento** lista, const char* nome_arquivo);
 #endif

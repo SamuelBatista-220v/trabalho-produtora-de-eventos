@@ -125,8 +125,32 @@ void view_ler_dados_operador(operador* operador) {
 
 }
 
+// void view_ler_dados_produtora(produtora* produtora) {   
+//     // char buffer_float[30];
+//     printf("\n--- Cadastro da Produtora ---\n");
+
+//     ler_campo_validado("Digite o Nome Fantasia: ", produtora->nome_fantasia, sizeof(produtora->nome_fantasia), NULL, NULL);
+//     ler_campo_validado("Digite a Razao Social: ", produtora->razao_social, sizeof(produtora->razao_social), NULL, NULL);
+//     ler_campo_validado("Digite a Inscricao Estadual: ", produtora->inscricao_estadual, sizeof(produtora->inscricao_estadual), NULL, NULL);
+//     ler_campo_validado("Digite o CNPJ (14 numeros): ", produtora->cnpj, sizeof(produtora->cnpj), validar_cnpj, "Erro: CNPJ invalido.");
+//     ler_campo_validado("Digite o endereco completo: ", produtora->endereco_completo, sizeof(produtora->endereco_completo), NULL, NULL);
+//     ler_campo_validado("Digite o telefone (10 ou 11 numeros): ", produtora->telefone, sizeof(produtora->telefone), validar_telefone, "Erro: Telefone invalido.");
+//     ler_campo_validado("Digite o email: ", produtora->email, sizeof(produtora->email), validar_email, "Erro: Email invalido (deve conter '@').");
+//     ler_campo_validado("Digite o nome do responsavel: ", produtora->nome_responsavel, sizeof(produtora->nome_responsavel), validar_apenas_letras, "Erro: O nome do responsavel deve conter apenas letras.");
+//     ler_campo_validado("Digite o telefone do responsavel: ", produtora->telefone_responsavel, sizeof(produtora->telefone_responsavel), validar_telefone, "Erro: Telefone invalido.");
+
+//     // ler_campo_validado("Digite o valor da diaria [margem de lucro]: ", buffer_float, sizeof(buffer_float), NULL, NULL);
+//     // produtora->margem_lucro_padrao = atof(buffer_float);
+//     //   printf("Digite o valor da diaria: ");
+//     // fgets(buffer_float, sizeof(buffer_float), stdin);
+//     // if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
+//     // produtora->margem_lucro_padrao = atof(buffer_float);
+   
+// }
+
 void view_ler_dados_produtora(produtora* produtora) {   
-    // char buffer_float[30];
+    char buffer_float[30]; // <--- ESTA VARIÁVEL PRECISA VOLTAR
+    
     printf("\n--- Cadastro da Produtora ---\n");
 
     ler_campo_validado("Digite o Nome Fantasia: ", produtora->nome_fantasia, sizeof(produtora->nome_fantasia), NULL, NULL);
@@ -139,13 +163,11 @@ void view_ler_dados_produtora(produtora* produtora) {
     ler_campo_validado("Digite o nome do responsavel: ", produtora->nome_responsavel, sizeof(produtora->nome_responsavel), validar_apenas_letras, "Erro: O nome do responsavel deve conter apenas letras.");
     ler_campo_validado("Digite o telefone do responsavel: ", produtora->telefone_responsavel, sizeof(produtora->telefone_responsavel), validar_telefone, "Erro: Telefone invalido.");
 
-    // ler_campo_validado("Digite o valor da diaria [margem de lucro]: ", buffer_float, sizeof(buffer_float), NULL, NULL);
-    // produtora->margem_lucro_padrao = atof(buffer_float);
-    //   printf("Digite o valor da diaria: ");
-    // fgets(buffer_float, sizeof(buffer_float), stdin);
-    // if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
-    // produtora->margem_lucro_padrao = atof(buffer_float);
-   
+    // --- AQUI ESTÁ A CORREÇÃO: LER A MARGEM DE LUCRO ---
+    printf("Digite a Margem de Lucro Padrao (%%) [Ex: 20]: ");
+    fgets(buffer_float, sizeof(buffer_float), stdin);
+    if (strchr(buffer_float, '\n') == NULL) limpar_buffer_teclado();
+    produtora->margem_lucro_padrao = atof(buffer_float);
 }
 
 void view_ler_dados_recurso(recurso* recurso) {
@@ -218,5 +240,65 @@ void view_ler_dados_base_orcamento(Orcamento* orcamento) {
     if (sscanf(buffer, "%d %d %d", &orcamento->dia_fim, &orcamento->mes_fim, &orcamento->ano_fim) != 3) {
         printf(">> Aviso: Data invalida lida. Definindo data padrao.\n");
         orcamento->dia_fim = 1; orcamento->mes_fim = 1; orcamento->ano_fim = 2025;
+    }
+}
+
+// Lê os valores totais da Nota Fiscal
+void view_ler_totais_nota_fiscal(float* produtos, float* frete, float* impostos) {
+    char buffer[50];
+    printf("\n--- VALORES DA NOTA FISCAL ---\n");
+    
+    // Usamos NULL nos validadores para aceitar qualquer número por enquanto
+    ler_campo_validado("Valor Total dos Produtos (R$): ", buffer, 50, NULL, NULL);
+    *produtos = atof(buffer);
+
+    ler_campo_validado("Valor Total do Frete (R$): ", buffer, 50, NULL, NULL);
+    *frete = atof(buffer);
+
+    ler_campo_validado("Valor Total de Impostos (R$): ", buffer, 50, NULL, NULL);
+    *impostos = atof(buffer);
+}
+
+// Lê um item da nota. Retorna 0 se o usuário digitar ID 0 (sair), 1 se leu ok.
+int view_ler_item_nota_fiscal(int* id_rec, int* qtd, float* custo) {
+    char buffer[50];
+    
+    printf("\nDigite o ID do Recurso comprado (0 para encerrar): ");
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) return 0;
+    *id_rec = atoi(buffer);
+
+    if (*id_rec == 0) return 0; // Encerra loop
+
+    ler_campo_validado("Quantidade comprada: ", buffer, 50, NULL, NULL);
+    *qtd = atoi(buffer);
+
+    ler_campo_validado("Preco de Custo Unitario (R$): ", buffer, 50, NULL, NULL);
+    *custo = atof(buffer);
+
+    return 1;
+}
+
+// Lê os dados do pagamento (A vista ou Prazo)
+void view_ler_dados_pagamento(int* forma_pag, char* data_venc, float* entrada, int* parcelas) {
+    char buffer[50];
+    
+    printf("\n--- CONDICOES DE PAGAMENTO ---\n");
+    printf("1. A Vista (Debito imediato)\n");
+    printf("2. A Prazo (Contas a Pagar)\n");
+    ler_campo_validado("Opcao: ", buffer, 50, NULL, NULL);
+    *forma_pag = atoi(buffer);
+
+    ler_campo_validado("Data Base/Vencimento (DD/MM/AAAA): ", data_venc, 20, NULL, NULL);
+
+    // Inicializa valores opcionais
+    *entrada = 0;
+    *parcelas = 1;
+
+    if (*forma_pag == 2) {
+        ler_campo_validado("Valor de Entrada (0 se nao houver): ", buffer, 50, NULL, NULL);
+        *entrada = atof(buffer);
+
+        ler_campo_validado("Numero de Parcelas (restante): ", buffer, 50, NULL, NULL);
+        *parcelas = atoi(buffer);
     }
 }
