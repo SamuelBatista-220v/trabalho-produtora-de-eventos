@@ -7,7 +7,7 @@
 typedef struct {
     int id;
     char data[11]; // DD/MM/AAAA
-    char descricao[100];
+    char descricao[300];
     float valor; // Valor absoluto
     int tipo;    // 1=Entrada (Receita), 2=Saída (Despesa)
     float saldo_apos_transacao; // Para histórico
@@ -75,16 +75,13 @@ void liberar_listas_financeiro(ListaCaixa** l_cx, ListaContaReceber** l_cr, List
 // Estrutura auxiliar para visualização da Nota Fiscal (Input)
 typedef struct {
     int id;
-    char nome[100];
+    char nome[300];
     int qtd;
     float custo;
 } ItemCompraTemp;
 
-// Em model/financeiro.h (Adicione antes do #endif)
 
-// ...
-
-// Persistência em Texto (CSV) - NOVO
+// Persistência em Texto (CSV) - 
 StatusOperacao salvar_financeiro_txt(ListaCaixa* l_cx, ListaContaReceber* l_cr, ListaContaPagar* l_cp);
 StatusOperacao carregar_financeiro_txt(ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp);
 

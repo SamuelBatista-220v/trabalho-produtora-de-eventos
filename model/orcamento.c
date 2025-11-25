@@ -5,7 +5,7 @@
 
 static int proximo_id_orcamento = 1;
 
-// --- CRUD BÁSICO ---
+
 
 StatusOperacao inserir_orcamento(ListaOrcamento** lista, Orcamento novo) {
     ListaOrcamento* novo_no = (ListaOrcamento*) malloc(sizeof(ListaOrcamento));
@@ -45,7 +45,7 @@ void liberar_lista_orcamento(ListaOrcamento** lista) {
     *lista = NULL;
 }
 
-// --- PERSISTÊNCIA BINÁRIA (Muito simples graças aos arrays fixos) ---
+
 
 StatusOperacao salvar_orcamento_bin(ListaOrcamento* lista, const char* nome_arquivo) {
     FILE* f = fopen(nome_arquivo, "wb");
@@ -72,33 +72,6 @@ StatusOperacao carregar_orcamento_bin(ListaOrcamento** lista, const char* nome_a
     fclose(f);
     return OPERACAO_SUCESSO;
 }
-
-// --- PERSISTÊNCIA TXT (Complexa: precisa salvar listas aninhadas) ---
-// Vou simplificar: Salvaremos apenas os dados principais no CSV para leitura em Excel.
-// Se precisar restaurar o sistema fielmente pelo TXT, a lógica seria bem complexa.
-// RECOMENDAÇÃO: Use o BIN para backup do sistema e o TXT apenas para relatórios.
-
-// StatusOperacao salvar_orcamento_txt(ListaOrcamento* lista, const char* nome_arquivo) {
-//     FILE* f = fopen(nome_arquivo, "w");
-//     if (!f) return ERRO_ABRIR_ARQUIVO;
-    
-//     // Cabeçalho para ajudar a entender o CSV
-//     fprintf(f, "ID;ID_Cliente;Evento;Local;DataInicio;DataFim;Status;ValorTotal\n");
-
-//     while (lista) {
-//         Orcamento* o = &lista->conteudo;
-//         fprintf(f, "%d;%d;%s;%s;%02d/%02d/%d;%02d/%02d/%d;%d;%.2f\n",
-//             o->id, o->id_cliente, o->nome_evento, o->local,
-//             o->dia_inicio, o->mes_inicio, o->ano_inicio,
-//             o->dia_fim, o->mes_fim, o->ano_fim,
-//             o->status, o->valor_total_geral);
-//         lista = lista->prox;
-//     }
-//     fclose(f);
-//     return OPERACAO_SUCESSO;
-// }
-
-// Em model/orcamento.c
 
 
 
@@ -128,8 +101,6 @@ StatusOperacao remover_fisico_orcamento(ListaOrcamento** lista, int id) {
     free(atual); // Libera a memória
     return OPERACAO_SUCESSO;
 }
-
-// Em model/orcamento.c
 
 StatusOperacao salvar_orcamento_txt(ListaOrcamento* lista, const char* nome_arquivo) {
     FILE* f = fopen(nome_arquivo, "w");
@@ -171,7 +142,7 @@ StatusOperacao salvar_orcamento_txt(ListaOrcamento* lista, const char* nome_arqu
 }
 
 // Carregamento Simplificado (Lê estrutura base, ignora detalhes complexos para evitar bugs de parsing agora)
-// Se quiser parsing completo, seria necessário strtok complexo.
+
 StatusOperacao carregar_orcamento_txt(ListaOrcamento** lista, const char* nome_arquivo) {
     FILE* f = fopen(nome_arquivo, "r");
     if (!f) return ERRO_ABRIR_ARQUIVO;

@@ -40,7 +40,7 @@ static void ler_campo_validado(const char* prompt, char* destino, int tamanho_de
 
 int view_ler_opcao() {
     char buffer[20];
-    printf("digite a opçao: ");
+    printf("digite a opcao: ");
     if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
         if (strchr(buffer, '\n') == NULL) limpar_buffer_teclado();
         return atoi(buffer);

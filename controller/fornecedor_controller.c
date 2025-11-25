@@ -45,8 +45,7 @@ void controller_gerenciar_fornecedor(Listafornecedor** lista_fornecedor) {
                 }
                 break;
             }
-            
-            // --- CÓDIGO QUE FALTAVA ---
+
             
             case 3: { // Atualizar dados de um fornecedor
                 view_exibir_mensagem("Digite o Codigo (ID) do fornecedor a ser atualizado: ");
@@ -131,7 +130,7 @@ void controller_gerenciar_fornecedor(Listafornecedor** lista_fornecedor) {
                 break;
             }
             
-            // --- FIM DO CÓDIGO QUE FALTAVA ---
+
 
             case 7: { // Listar
                 view_imprimir_lista_fornecedor(*lista_fornecedor);

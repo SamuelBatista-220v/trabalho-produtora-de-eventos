@@ -139,7 +139,7 @@ void controller_gerenciar_clientes(ListaCliente** lista_clientes) {
                     break;
                 }
 
-                // MODEL: Chama a função de ativação.
+                // Chama a função de ativação.
                 StatusOperacao status = ativar_cliente_por_id(*lista_clientes, id_busca);
                 if (status == OPERACAO_SUCESSO) {
                     view_exibir_mensagem("\n>> SUCESSO: Cliente ativado.");

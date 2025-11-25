@@ -46,7 +46,7 @@ void controller_gerenciar_operador(Listaoperador** lista_operador) {
                 break;
             }
             
-            // --- CÓDIGO QUE FALTAVA ---
+  
             
             case 3: { // Atualizar dados de um operador
                 view_exibir_mensagem("Digite o Codigo (ID) do operador a ser atualizado: ");
@@ -131,7 +131,7 @@ void controller_gerenciar_operador(Listaoperador** lista_operador) {
                 break;
             }
             
-            // --- FIM DO CÓDIGO QUE FALTAVA ---
+
 
             case 7: { // Listar
                 view_imprimir_lista_operador(*lista_operador);

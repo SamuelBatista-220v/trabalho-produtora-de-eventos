@@ -353,7 +353,7 @@ void finalizar_evento_controller(ListaOrcamento* lista, ListaContaReceber** list
 void controller_gerenciar_orcamentos(ListaOrcamento** lista_orcamentos, ListaCliente* lista_clientes, Listarecurso* lista_recursos, Listafornecedor* lista_fornecedores, Listaequipe* lista_equipe, ListaContaReceber** lista_receber, ListaCaixa** lista_caixa) {
     int opcao = -1;
     do {
-        printf("\n=== ORCAMENTOS ===\n1. Novo\n2. Listar (Analise)\n3. Listar (Aprovados)\n4. Historico\n5. Cronograma\n6. Aprovar\n7. Finalizar\n0. Voltar\nOpcao: ");
+        printf("\n=== ORCAMENTOS ===\n1. Novo\n2. Listar (Analise)\n3. Listar (Aprovados)\n4. Historico\n5. Cronograma\n6. Aprovar\n7. Finalizar\n8. Excluir\n0. Voltar\nOpcao: ");
         opcao = view_ler_opcao();
         switch (opcao) {
             case 1: criar_novo_orcamento(lista_orcamentos, lista_clientes, lista_recursos, lista_fornecedores, lista_equipe); break;
