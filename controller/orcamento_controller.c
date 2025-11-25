@@ -17,7 +17,7 @@ long calcular_data_int(int d, int m, int a) {
 void somar_meses_data_orc(char* data_original, int meses, char* destino) {
     int d, m, a;
     // Tenta ler com barras
-    if (sscanf(data_original, "%d/%d/%d", &d, &m, &a) != 3) {
+    if (sscanf(data_original, "%d/%d/%d", &d, &m, &a) != 3) { //sscanf tentar ler tudo seguindo a data_original
         // Se falhar, tenta ler com espaços
         if (sscanf(data_original, "%d %d %d", &d, &m, &a) != 3) {
             strcpy(destino, data_original); // Falhou tudo, mantem original
@@ -41,6 +41,16 @@ int verifica_colisao_datas(Orcamento* o1, Orcamento* o2) {
     long fim2    = calcular_data_int(o2->dia_fim, o2->mes_fim, o2->ano_fim);
     return (inicio1 <= fim2 && inicio2 <= fim1);
 }
+//verifica a colisao das datas se eles se sobrepoem
+
+//O Início do Evento 1 deve ser antes (ou igual) ao Fim do Evento 2.
+//O Início do Evento 2 deve ser antes (ou igual) ao Fim do Evento 1.
+/*O sistema transforma a data (Dia, Mês, Ano) num número inteiro único no formato AAAAMMDD.
+
+Exemplo: 25/12/2025 vira 20251225.
+
+Isso permite usar operadores matemáticos (<=, >=) para saber quem vem antes ou depois*/
+
 
 int item_ja_existe(Orcamento* o, int id_item, int tipo) {
     if (tipo == 1) {
@@ -55,13 +65,19 @@ int item_ja_existe(Orcamento* o, int id_item, int tipo) {
     }
     return 0;
 }
-
+//verifica se od ids estao repetido e retornan 1 com erro
 int calcular_estoque_ocupado(ListaOrcamento* lista_orcamentos, int id_recurso, Orcamento* orcamento_atual) {
     int quantidade_ocupada = 0;
     ListaOrcamento* atual = lista_orcamentos;
     while (atual != NULL) {
+        // FILTRO 1: Status
+        // Só conta como "ocupado" se o orçamento estiver APROVADO.
+        // Orçamentos em análise (rascunhos) não reservam estoque.
         if (atual->conteudo.status == STATUS_APROVADO) {
+            //// FILTRO 2: Data
+            // Verifica se as datas do orçamento salvo colidem com o orçamento novo
             if (verifica_colisao_datas(&atual->conteudo, orcamento_atual)) {
+                // BUSCA: Procura se este orçamento usa o recurso que queremos
                 for (int i = 0; i < atual->conteudo.qtd_recursos_selecionados; i++) {
                     if (atual->conteudo.lista_recursos[i].id_recurso == id_recurso) {
                         quantidade_ocupada += atual->conteudo.lista_recursos[i].quantidade;
@@ -71,12 +87,15 @@ int calcular_estoque_ocupado(ListaOrcamento* lista_orcamentos, int id_recurso, O
         }
         atual = atual->prox;
     }
-    return quantidade_ocupada;
+    return quantidade_ocupada; //retorna a quantidade ocupada 
 }
 
 int obter_qtd_no_orcamento_atual(Orcamento* o, int id_rec) {
+    // Percorre a lista de itens que já foram adicionados a este orçamento
     for(int i=0; i < o->qtd_recursos_selecionados; i++) 
-        if(o->lista_recursos[i].id_recurso == id_rec) return o->lista_recursos[i].quantidade;
+    // procura o produto pelo id
+
+        if(o->lista_recursos[i].id_recurso == id_rec) return o->lista_recursos[i].quantidade; //Retorna a quantidade que já foi reservada
     return 0;
 }
 
@@ -90,9 +109,14 @@ void listar_cronograma_recurso(ListaOrcamento* lista, Listarecurso* l_rec) {
     printf("\n=== CRONOGRAMA: %s ===\n", r->conteudo.descricao);
     int encontrou = 0;
     while (lista != NULL) {
+        // FILTRO IMPORTANTE: Só olha para orçamentos APROVADOS
         if (lista->conteudo.status == STATUS_APROVADO) {
+            // Percorre a lista de itens DENTRO deste orçamento
             for(int i=0; i < lista->conteudo.qtd_recursos_selecionados; i++) {
+                // Verifica se o item atual é o que estamos procurando (pelo ID)
                 if (lista->conteudo.lista_recursos[i].id_recurso == id) {
+
+                    // SE ACHOU: Mostra na tela as datas e a quantidade reservada
                     view_exibir_ocupacao_recurso(id, r->conteudo.descricao, 
                         lista->conteudo.dia_inicio, lista->conteudo.mes_inicio, lista->conteudo.ano_inicio,
                         lista->conteudo.dia_fim, lista->conteudo.mes_fim, lista->conteudo.ano_fim,
@@ -105,6 +129,7 @@ void listar_cronograma_recurso(ListaOrcamento* lista, Listarecurso* l_rec) {
     }
     if (!encontrou) printf(">> Livre.\n");
 }
+//verifica pelo id os recursos 
 
 void criar_novo_orcamento(ListaOrcamento** lista_orc, ListaCliente* l_cli, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq) {
     if (!l_cli || !l_rec) { view_exibir_mensagem(">> Cadastre Clientes e Recursos."); return; }

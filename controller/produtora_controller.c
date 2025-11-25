@@ -55,12 +55,9 @@ void controller_gerenciar_produtora(Listaprodutora** lista_produtora) {
                 break;
             }
 
-            // REMOVIDO: case 4 (Desativar)
-            // REMOVIDO: case 5 (Remover)
-            // REMOVIDO: case 6 (Ativar)
-            
-            case 3: { // Listar (Mantido para fins de teste)
-                view_exibir_mensagem("[Modo Teste] Listando todas as produtoras registadas...");
+      //funçao sem utilidada 
+            case 3: { 
+                view_exibir_mensagem("[Teste] Listando todas as produtoras registadas...");
                 view_imprimir_lista_produtora(*lista_produtora);
                 break;
             }

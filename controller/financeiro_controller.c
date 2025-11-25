@@ -7,7 +7,7 @@
 #include "../view/receber_dados.h"
 #include "../view/mostrar_dados.h"
 
-float arredondar_duas_casas(float valor) { // funçao basica de arrendondamento 
+float arredondar_duas_casas(float valor) { // funçao basica de arrendondamento sem o math
     return (float)((int)(valor * 100 + 0.5)) / 100.0;
 }
 

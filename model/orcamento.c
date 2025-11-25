@@ -118,7 +118,7 @@ StatusOperacao salvar_orcamento_txt(ListaOrcamento* lista, const char* nome_arqu
             o->status, o->valor_total_geral);
 
         // Salva Recursos: "ID:Qtd|ID:Qtd"
-        if (o->qtd_recursos_selecionados == 0) fprintf(f, "NONE");
+        if (o->qtd_recursos_selecionados == 0) fprintf(f, "NONE"); //none e para verifica se a erro tipo ;;
         else {
             for(int i=0; i<o->qtd_recursos_selecionados; i++) {
                 fprintf(f, "%d:%d|", o->lista_recursos[i].id_recurso, o->lista_recursos[i].quantidade);
@@ -154,7 +154,7 @@ StatusOperacao carregar_orcamento_txt(ListaOrcamento** lista, const char* nome_a
     Orcamento o;
     // Lemos apenas os dados principais para restaurar o histórico básico
     // O %*s ignora as colunas de itens complexos
-    while (fscanf(f, "%d;%d;%[^;];%[^;];%d/%d/%d;%d/%d/%d;%d;%f;%*[^;];%*s\n",
+    while (fscanf(f, "%d;%d;%[^;];%[^;];%d/%d/%d;%d/%d/%d;%d;%f;%*[^;];%*s\n", //ler formatado
         &o.id, &o.id_cliente, o.nome_evento, o.local,
         &o.dia_inicio, &o.mes_inicio, &o.ano_inicio,
         &o.dia_fim, &o.mes_fim, &o.ano_fim,
