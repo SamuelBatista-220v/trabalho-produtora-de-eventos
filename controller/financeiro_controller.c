@@ -4,7 +4,6 @@
 #include <string.h>
 #include <math.h>
 #include "financeiro_controller.h"
-#include "../view/view.h"
 #include "../view/receber_dados.h"
 #include "../view/mostrar_dados.h"
 
