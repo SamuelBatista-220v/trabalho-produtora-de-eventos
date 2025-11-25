@@ -31,18 +31,11 @@ void view_imprimir_lista_operador(Listaoperador* lista);
 void view_imprimir_operador_unico(Listaoperador* no_operador);
 
 
-// Adicione no topo
 #include "../model/orcamento.h"
 
-// // Adicione no final
-// void view_imprimir_lista_orcamento(ListaOrcamento* lista);
-// void view_imprimir_orcamento_unico(Orcamento* o); // Alterado para receber Orcamento* direto
 
-
-// void view_imprimir_lista_orcamento_por_status(ListaOrcamento* lista, int status_filtro);
 void view_exibir_ocupacao_recurso(int id_recurso, char* nome, int dia_i, int mes_i, int ano_i, int dia_f, int mes_f, int ano_f, int qtd);
 
-// NOVOS PROTÓTIPOS COM AS LISTAS
 void view_imprimir_orcamento_unico(Orcamento* o, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq);
 
 void view_imprimir_lista_orcamento(ListaOrcamento* lista, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq);
@@ -53,15 +46,11 @@ void view_exibir_ocupacao_recurso(int id_recurso, char* nome, int dia_i, int mes
 
 
 
-// ... includes anteriores ...
-#include "../model/financeiro.h" // Necessário para reconhecer as listas financeiras
+#include "../model/financeiro.h" 
 
-// ... protótipos anteriores ...
 
-// Novas funções financeiras
 void view_imprimir_relatorio_financeiro(ListaContaPagar* l_cp, ListaContaReceber* l_cr);
 void view_imprimir_extrato_caixa_detalhado(ListaCaixa* lista);
 
-// NOVA FUNÇÃO
 void view_imprimir_nota_fiscal_detalhada(void* lista_itens, int qtd_itens, float total_prod, float total_frete, float total_imp);
-#endif // MOSTRAR_DADOS
+#endif 

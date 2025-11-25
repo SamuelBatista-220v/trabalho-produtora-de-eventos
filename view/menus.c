@@ -1,40 +1,8 @@
 #include <stdio.h>
 #include "menus.h"
 
-// void view_exibir_menu_principal() {
-//     printf("\n ====== SISTEMA PRODUTORA DE EVENTOS ========\n");
-//     printf("   |  1. Gerenciar Clientes                    |\n");
-//     printf("   |  2. Gerenciar Equipe                      |\n");
-//     printf("   |  0. Sair do Sistema                        |\n");
-//     printf("   ==========================================\n");
-// }
-//  void view_exibir_menu_principal() {
-//     printf("\n+-----------------------------------------------+\n");
-//     printf("|          MENU PRINCIPAL                       |\n");
-//     printf("+-----------------------------------------------+\n");
-//     printf("| 1. Gerenciar dados da produtora               |\n");
-//     printf("| 2. Gerenciar clientes                         |\n");
-//     printf("| 3. Gerenciar equipe interna                   |\n");
-//     printf("| 4. Gerenciar recursos e equipamentos          |\n");
-//     printf("| 5. Gerenciar fornecedores                     |\n");
-//     printf("| 6. Gerenciar operadores do sistema            |\n");
-//     printf("+-----------------------------------------------+\n");
-//     printf("| 0. Sair do sistema                            |\n");
-//     printf("+-----------------------------------------------+\n");
-// }
-// void view_exibir_menu_principal() {
-//     printf("\n ====== SISTEMA PRODUTORA DE EVENTOS ========\n");
-//     printf("   |  1. Gerenciar Produtora (Principal)    |\n"); // Ajustei conforme seu controller
-//     printf("   |  2. Gerenciar Clientes                 |\n");
-//     printf("   |  3. Gerenciar Equipe                   |\n");
-//     printf("   |  4. Gerenciar Recursos                 |\n");
-//     printf("   |  5. Gerenciar Fornecedores             |\n");
-//     printf("   |  6. Gerenciar Operadores               |\n");
-//     printf("   |----------------------------------------|\n");
-//     printf("   |  7. Mudar Modo de Salvamento (TXT/BIN) |\n"); // <--- NOVA OPÇÃO
-//     printf("   |  0. Sair e Salvar                      |\n");
-//     printf("   ==========================================\n");
-// }
+
+
 void view_exibir_menu_principal() {
     printf("\n ====== SISTEMA PRODUTORA DE EVENTOS ========\n");
     printf("   |  1. Gerenciar Produtora (Principal)    |\n");
@@ -46,26 +14,11 @@ void view_exibir_menu_principal() {
     printf("   |----------------------------------------|\n");
     printf("   |  7. Mudar Modo de Salvamento (TXT/BIN) |\n");
     printf("   |  8. GESTAO DE ORCAMENTOS E EVENTOS     |\n"); 
-    printf("   |  9. MODULO FINANCEIRO & ESTOQUE        |\n");// <--- AQUI
+    printf("   |  9. MODULO FINANCEIRO & ESTOQUE        |\n");
     printf("   |  0. Sair e Salvar                      |\n");
     printf("   ==========================================\n");
 }
-//  void view_exibir_menu_produtora() {
-//     printf("\n+----------------------------------------------+\n");
-//     printf("|          MODULO DA PRODUTORA                  |\n");
-//     printf("+-----------------------------------------------+\n");
-//     printf("| 1. Inserir novo membro                        |\n");
-//     printf("| 2. Buscar membro por Codigo                   |\n");
-//     printf("| 3. Atualizar dados de um membro               |\n");
-//     printf("| 4. Desativar membro                           |\n");
-//     printf("| 5. Remover membro (exclusao permanente)       |\n");
-//     printf("| 6. Ativar membro                              |\n");
-//     printf("| 7. Listar todos os membros                    |\n");
-//     printf("+-----------------------------------------------+\n");
-//     printf("| 0. Voltar ao menu principal                   |\n");
-//     printf("+-----------------------------------------------+\n");
-// }
-// Em: view/menus.c
+
 
  void view_exibir_menu_produtora() {
     printf("\n+-----------------------------------------------+\n");
@@ -73,7 +26,7 @@ void view_exibir_menu_principal() {
     printf("+-----------------------------------------------+\n");
     printf("| 1. Ver dados da Produtora                     |\n");
     printf("| 2. Atualizar dados da Produtora               |\n");
-    printf("| 7. Listar todos os membros (Apenas para teste)|\n"); // Mantido para depuração
+    printf("| 3. Listar todos os membros (Apenas para teste)|\n"); 
     printf("+-----------------------------------------------+\n");
     printf("| 0. Voltar ao menu principal                   |\n");
     printf("+-----------------------------------------------+\n");
@@ -171,15 +124,4 @@ void view_exibir_menu_principal() {
     printf("+----------------------------------------------+\n");
 }
 
-
-
-
-// void view_exibir_menu_equipe() {
-//     printf("\n ====== Modulo de Equipe ========\n");
-//     printf("   |  1. Inserir novo membro               |\n");
-//     printf("   |  2. Listar membros da equipe          |\n");
-//     // Futuramente, adicionar opções de buscar, atualizar, remover...
-//     printf("   |  0. Voltar ao menu principal          |\n");
-//     printf("   ==================================\n");
-// }
 
