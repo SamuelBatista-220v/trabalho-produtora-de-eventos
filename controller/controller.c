@@ -26,6 +26,9 @@
 #include "orcamento_controller.h" 
 #include "financeiro_controller.h" // Financeiro
 
+// No topo
+#include "relatorios_controller.h"
+
 static int modo_armazenamento = 1; 
 
 
@@ -133,6 +136,18 @@ void controller_iniciar_sistema() {
                 controller_gerenciar_financeiro(&lista_caixa, &lista_receber, &lista_pagar, lista_recurso, lista_produtora);
                 break;
 
+               case 10: 
+                controller_menu_relatorios(
+                    lista_cliente, 
+                    lista_orcamento, 
+                    lista_caixa, 
+                    lista_receber, 
+                    lista_pagar,
+                    lista_recurso,
+                    lista_fornecedor,
+                    lista_equipe
+                );
+                break;
             case 0: 
                 view_exibir_mensagem("\nSalvando dados e saindo...");
                 salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, 

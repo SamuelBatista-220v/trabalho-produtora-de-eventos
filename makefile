@@ -1,6 +1,3 @@
-# # =============================================================================
-# # Makefile para o projeto de Gestão de Eventos
-# # =============================================================================
 
 # # --- 1. CONFIGURAÇÕES E VARIÁVEIS ---
 # CC = gcc
@@ -10,27 +7,32 @@
 # # --- 2. DEFINIÇÃO DOS ARQUIVOS ---
 # VPATH = model:view:controller:validacoes
 
-# # CORREÇÃO: Lista completa de todos os arquivos .c do projeto
+# # LISTA COMPLETA DE ARQUIVOS (Incluindo Financeiro e Orcamento)
 # SRCS =  main.c \
-# 		model/produtora.c \
-# 		model/recurso.c \
-# 		model/operador.c \
+#         model/produtora.c \
+#         model/recurso.c \
+#         model/operador.c \
 #         model/cliente.c \
 #         model/equipe.c \
 #         model/fornecedor.c \
+#         model/orcamento.c \
+#         model/financeiro.c \
 #         view/formatacao.c \
 #         view/menus.c \
 #         view/mostrar_dados.c \
 #         view/receber_dados.c \
-# 		controller/produtora_controller.c \
-# 		controller/recurso_controller.c \
-# 		controller/operador_controller.c \
+#         controller/produtora_controller.c \
+#         controller/recurso_controller.c \
+#         controller/operador_controller.c \
 #         controller/cliente_controller.c \
 #         controller/equipe_controller.c \
 #         controller/fornecedor_controller.c \
+#         controller/orcamento_controller.c \
+#         controller/financeiro_controller.c \
 #         controller/controller.c \
 #         validacoes/validacoes.c
 
+# # Gera a lista de objetos (.o) automaticamente
 # OBJS = $(notdir $(SRCS:.c=.o))
 
 # # --- 3. REGRAS DE COMPILAÇÃO ---
@@ -46,24 +48,17 @@
 # 	@echo "Compilando $< -> $@"
 # 	$(CC) $(CFLAGS) -c $< -o $@
 
-# # --- 4. REGRAS AUXILIARES E DE ATALHO ---
+# # --- 4. REGRAS AUXILIARES ---
 # run: $(TARGET)
-# 	@echo "----------------------------------------"
-# 	@echo ">> Executando o programa..."
-# 	@echo "----------------------------------------"
+# 	@echo ">> Executando..."
 # 	./$(TARGET)
 
 # clean:
-# 	@echo "----------------------------------------"
-# 	@echo ">> Limpando arquivos compilados..."
-# 	@echo "----------------------------------------"
+# 	@echo ">> Limpando arquivos..."
 # 	del $(TARGET) $(OBJS)
 
-# .PHONY: all clean run
+# .PHONY: all clean run7
 
-# =============================================================================
-# Makefile para o projeto de Gestão de Eventos
-# =============================================================================
 # =============================================================================
 # Makefile para o projeto de Gestão de Eventos
 # =============================================================================
@@ -74,9 +69,10 @@ TARGET = produtora.exe
 CFLAGS = -Wall -g -I. -Imodel -Iview -Icontroller -Ivalidacoes
 
 # --- 2. DEFINIÇÃO DOS ARQUIVOS ---
+# O VPATH diz ao make onde procurar os arquivos .c se não estiverem na raiz
 VPATH = model:view:controller:validacoes
 
-# LISTA COMPLETA DE ARQUIVOS (Incluindo Financeiro e Orcamento)
+# LISTA COMPLETA DE ARQUIVOS (Incluindo Financeiro, Orcamento e Relatorios)
 SRCS =  main.c \
         model/produtora.c \
         model/recurso.c \
@@ -90,6 +86,7 @@ SRCS =  main.c \
         view/menus.c \
         view/mostrar_dados.c \
         view/receber_dados.c \
+        view/relatorios_view.c \
         controller/produtora_controller.c \
         controller/recurso_controller.c \
         controller/operador_controller.c \
@@ -98,10 +95,11 @@ SRCS =  main.c \
         controller/fornecedor_controller.c \
         controller/orcamento_controller.c \
         controller/financeiro_controller.c \
+        controller/relatorios_controller.c \
         controller/controller.c \
         validacoes/validacoes.c
 
-# Gera a lista de objetos (.o) automaticamente
+# Gera a lista de objetos (.o) automaticamente retirando o caminho das pastas
 OBJS = $(notdir $(SRCS:.c=.o))
 
 # --- 3. REGRAS DE COMPILAÇÃO ---
@@ -113,6 +111,7 @@ $(TARGET): $(OBJS)
 	@echo "----------------------------------------"
 	$(CC) $(OBJS) -o $(TARGET)
 
+# Regra genérica para compilar qualquer .c em .o
 %.o: %.c
 	@echo "Compilando $< -> $@"
 	$(CC) $(CFLAGS) -c $< -o $@
