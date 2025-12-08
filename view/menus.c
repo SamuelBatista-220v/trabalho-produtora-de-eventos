@@ -154,3 +154,25 @@ void view_exibir_menu_orcamentos() {
     printf("0. Voltar\n");
     printf("Opcao: ");
 }
+
+void view_exibir_menu_xml() {
+    printf("\n=== IMPORTACAO E EXPORTACAO (XML) ===\n");
+    printf("1. Exportar Dados (Gerar XML)\n");
+    printf("2. Importar Dados (Ler XML)\n");
+    printf("0. Voltar\n");
+    printf("Opcao: ");
+}
+
+void view_exibir_menu_xml_tabelas() {
+    printf("\n--- Selecione a Tabela ---\n");
+    printf("1. TUDO (Backup Completo)\n");
+    printf("2. Clientes\n");
+    printf("3. Equipamentos (Recursos)\n");
+    printf("4. Eventos (Orcamentos)\n");
+    printf("5. Fornecedores\n");
+    printf("6. Equipe\n");
+    printf("7. Operadores\n");
+    printf("8. Financeiro (Caixa e Contas)\n");
+    printf("0. Cancelar\n");
+    printf("Opcao: ");
+}

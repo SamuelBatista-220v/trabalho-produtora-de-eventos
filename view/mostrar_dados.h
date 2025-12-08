@@ -1,76 +1,3 @@
-// #ifndef MOSTRAR_DADOS_H
-// #define MOSTRAR_DADOS_H
-
-
-// #include "../model/produtora.h"
-// #include "../model/cliente.h"
-// #include "../model/equipe.h"
-// #include "../model/recurso.h"
-// #include "../model/fornecedor.h"
-// #include "../model/produtora.h"
-// #include "../model/operador.h"
-
-// void view_exibir_mensagem(const char* mensagem);
-
-// void view_imprimir_lista_produtora(Listaprodutora* lista);
-// void view_imprimir_produtora_unico(Listaprodutora* no_produtora);
-
-// void view_imprimir_lista(ListaCliente* lista);
-// void view_imprimir_cliente_unico(ListaCliente* no_cliente);
-
-// void view_imprimir_equipe_unico(Listaequipe* no_equipe);
-// void view_imprimir_lista_equipe(Listaequipe* lista);
-
-// void view_imprimir_lista_recurso(Listarecurso* lista);
-// void view_imprimir_recurso_unico(Listarecurso* no_recurso);
-
-// void view_imprimir_fornecedor_unico(Listafornecedor* no_fornecedor);
-// void view_imprimir_lista_fornecedor(Listafornecedor* lista);
-
-// void view_imprimir_lista_operador(Listaoperador* lista);
-// void view_imprimir_operador_unico(Listaoperador* no_operador);
-
-
-// #include "../model/orcamento.h"
-
-
-// void view_exibir_ocupacao_recurso(int id_recurso, char* nome, int dia_i, int mes_i, int ano_i, int dia_f, int mes_f, int ano_f, int qtd);
-
-// void view_imprimir_orcamento_unico(Orcamento* o, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq);
-
-// void view_imprimir_lista_orcamento(ListaOrcamento* lista, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq);
-
-// void view_imprimir_lista_orcamento_por_status(ListaOrcamento* lista, int status_filtro, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq);
-
-// void view_exibir_ocupacao_recurso(int id_recurso, char* nome, int dia_i, int mes_i, int ano_i, int dia_f, int mes_f, int ano_f, int qtd);
-
-
-
-// #include "../model/financeiro.h" 
-
-
-// void view_imprimir_relatorio_financeiro(ListaContaPagar* l_cp, ListaContaReceber* l_cr);
-// void view_imprimir_extrato_caixa_detalhado(ListaCaixa* lista);
-
-// void view_imprimir_nota_fiscal_detalhada(void* lista_itens, int qtd_itens, float total_prod, float total_frete, float total_imp);
-
-// // ... (código existente) ...
-
-// // --- NOVAS FUNÇÕES GENÉRICAS PARA CONTROLLERS ---
-// void view_exibir_cabecalho_atualizacao(const char* entidade, int id);
-// void view_exibir_erro_busca_id(const char* entidade, int id);
-// void view_exibir_msg_retornando();
-
-// void view_exibir_cabecalho_nota_fiscal();
-// void view_exibir_atualizacao_estoque(const char* nome, int qtd_antiga, int qtd_nova, float novo_preco);
-// void view_exibir_parcela_gerada(int num, int total, float valor, const char* vencto);
-// void view_exibir_confirmacao_pagamento(float valor);
-// void view_exibir_confirmacao_recebimento(float valor);
-
-// void view_exibir_sucesso_pagamento();
-// void view_exibir_sucesso_recebimento();
-
-// #endif 
 
 #ifndef MOSTRAR_DADOS_H
 #define MOSTRAR_DADOS_H
@@ -180,6 +107,19 @@ void view_exibir_prompt_valor_servico();
 void view_exibir_sucesso_criacao_orcamento(float total);
 void view_exibir_pergunta_adicionar_fornecedor();
 void view_exibir_pergunta_adicionar_equipe();
+
+
+
+void view_generico_imprimir_linha(const char* linha);
+
+// Imprime um título padronizado
+void view_generico_imprimir_titulo(const char* titulo);
+
+// Imprime um rodapé com valor total (Genérico para qualquer soma monetária)
+void view_generico_imprimir_total(double valor, const char* texto_descricao);
+
+// Imprime o cabeçalho de uma tabela (colunas)
+void view_relatorio_imprimir_cabecalho_tabela(const char* colunas);
 #endif
 
 

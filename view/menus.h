@@ -14,4 +14,8 @@ void view_exibir_menu_financeiro();
 // ...
 void view_exibir_menu_orcamentos(); // Adicione esta linha
 
+// --- NOVOS MENUS XML ---
+void view_exibir_menu_xml();
+void view_exibir_menu_xml_tabelas();
+
 #endif // MENUS_Hs

@@ -641,10 +641,10 @@ StatusOperacao carregar_orcamento_txt(ListaOrcamento** lista, const char* nome_a
     return OPERACAO_SUCESSO;
 }
 
+// CORREÇÃO AQUI: Removemos o print. Apenas retorna 0 se erro, 1 se sucesso.
 int adicionar_recurso_ao_orcamento(Orcamento* orc, int id_recurso, int quantidade, float preco_total_item) {
     if (orc->qtd_recursos_selecionados >= MAX_ITENS_ORCAMENTO) {
-        printf("Erro: Limite de itens no orcamento atingido!\n");
-        return 0;
+        return 0; // Erro: Limite atingido
     }
     int i = orc->qtd_recursos_selecionados;
     orc->lista_recursos[i].id_recurso = id_recurso;
@@ -652,5 +652,5 @@ int adicionar_recurso_ao_orcamento(Orcamento* orc, int id_recurso, int quantidad
     orc->valor_total_recursos += preco_total_item;
     orc->valor_total_geral += preco_total_item;
     orc->qtd_recursos_selecionados++; 
-    return 1;
+    return 1; // Sucesso
 }

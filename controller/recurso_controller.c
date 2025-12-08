@@ -45,7 +45,7 @@ void controller_gerenciar_recurso(Listarecurso** lista_recurso) {
                 break;
             }
             
-            // --- CÓDIGO QUE FALTAVA ---
+
             
             case 3: { // Atualizar dados de um recurso
                 view_exibir_mensagem("Digite o Codigo (ID) do recurso a ser atualizado: ");
@@ -130,8 +130,6 @@ void controller_gerenciar_recurso(Listarecurso** lista_recurso) {
                 break;
             }
             
-            // --- FIM DO CÓDIGO QUE FALTAVA ---
-
             case 7: { // Listar
                 view_imprimir_lista_recurso(*lista_recurso);
                 break;

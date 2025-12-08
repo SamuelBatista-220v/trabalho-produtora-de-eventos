@@ -411,9 +411,9 @@ void view_imprimir_nota_fiscal_detalhada(void* lista_itens, int qtd_itens, float
     printf("==========================================================================\n");
 }
 
-// ... (código existente) ...
 
-// --- IMPLEMENTAÇÃO DAS NOVAS FUNÇÕES ---
+//implementaçoes nao tao genericas mas funcionam bem
+
 
 void view_exibir_cabecalho_atualizacao(const char* entidade, int id) {
     printf("\n--- Digite os NOVOS dados para %s (ID: %d) ---\n", entidade, id);
@@ -428,9 +428,7 @@ void view_exibir_msg_retornando() {
 }
 
 
-
-// (No final do arquivo view/mostrar_dados.c)
-// --- IMPLEMENTAÇÕES NOVAS DO FINANCEIRO (Adicione no final de view/mostrar_dados.c) ---
+// --- IMPLEMENTAÇÕES NOVAS DO FINANCEIRO 
 
 void view_exibir_cabecalho_nota_fiscal() {
     printf("\n--- SELECIONAR ITENS DA NOTA ---\n");
@@ -474,9 +472,6 @@ void view_exibir_sucesso_recebimento() {
 
 
 
-
-
-// ... (Mantenha o código existente) ...
 
 // --- IMPLEMENTAÇÃO GENÉRICA INTELIGENTE ---
 
@@ -522,7 +517,6 @@ void view_exibir_confirmacao_acao(const char* acao, const char* nome_objeto) {
     printf("\nTem a certeza que deseja %s '%s'? (1-Sim / 0-Nao): ", acao, nome_objeto);
 }
 
-// ... código anterior ...
 
 void view_exibir_resumo_evento(const char* nome, float total) {
     printf("\n--- RESUMO: %s ---\nTOTAL: R$ %.2f\n", nome, total);
@@ -582,4 +576,26 @@ void view_exibir_prompt_valor_servico() {
 
 void view_exibir_sucesso_criacao_orcamento(float total) {
     printf(">> CRIADO! Total: R$ %.2f\n", total);
+}
+
+void view_generico_imprimir_linha(const char* linha) {
+    printf("%s\n", linha);
+}
+
+void view_generico_imprimir_titulo(const char* titulo) {
+    printf("\n========================================\n");
+    printf(" RELATORIO: %s\n", titulo);
+    printf("========================================\n");
+}
+
+void view_generico_imprimir_total(double valor, const char* texto_descricao) {
+    printf("----------------------------------------\n");
+    printf(" %s: R$ %.2f\n", texto_descricao, valor);
+    printf("----------------------------------------\n");
+}
+
+void view_relatorio_imprimir_cabecalho_tabela(const char* colunas) {
+    printf("-------------------------------------------------------------------------\n");
+    printf(" %s\n", colunas);
+    printf("-------------------------------------------------------------------------\n");
 }

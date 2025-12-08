@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,6 +6,8 @@
 #include "xml_controller.h"
 #include "../view/receber_dados.h"
 #include "../view/formatacao.h" 
+#include "../view/menus.h" 
+#include "../view/mostrar_dados.h" 
 
 // --- FUNÇÕES AUXILIARES ---
 
@@ -27,7 +30,7 @@ int xml_extrair_tag(const char* linha, const char* tag, char* destino) {
         char* fim = strstr(inicio, tag_fim);
         if (fim) {
             int len = fim - inicio;
-            if(len >= 2000) len = 1999; // Aumentado para caber listas longas
+            if(len >= 2000) len = 1999;
             strncpy(destino, inicio, len);
             destino[len] = '\0';
             trim(destino);
@@ -97,28 +100,23 @@ void exportar_eventos(FILE* f, ListaOrcamento* lista) {
         fprintf(f, "      <total>%.2f</total>\n", o->valor_total_geral);
         fprintf(f, "      <ativo>%d</ativo>\n", o->ativo);
 
-        // --- SALVAR ITENS (CORREÇÃO CRÍTICA) ---
-        // Recursos
         fprintf(f, "      <itens_recursos>");
         for(int i=0; i<o->qtd_recursos_selecionados; i++) {
             fprintf(f, "%d:%d:%.2f|", o->lista_recursos[i].id_recurso, o->lista_recursos[i].quantidade, o->lista_recursos[i].valor_unitario_momento);
         }
         fprintf(f, "</itens_recursos>\n");
 
-        // Equipe
         fprintf(f, "      <itens_equipe>");
         for(int i=0; i<o->qtd_equipe_selecionada; i++) {
             fprintf(f, "%d:%d:%.2f|", o->lista_equipe[i].id_membro_equipe, o->lista_equipe[i].dias_trabalhados, o->lista_equipe[i].valor_diaria_momento);
         }
         fprintf(f, "</itens_equipe>\n");
 
-        // Servicos
         fprintf(f, "      <itens_servicos>");
         for(int i=0; i<o->qtd_servicos_selecionados; i++) {
             fprintf(f, "%d:%.2f|", o->lista_servicos[i].id_fornecedor, o->lista_servicos[i].valor_combinado);
         }
         fprintf(f, "</itens_servicos>\n");
-        // ---------------------------------------
 
         fprintf(f, "    </registro>\n");
         lista = lista->prox;
@@ -233,7 +231,7 @@ void executar_exportacao(int selecao,
     ListaCaixa* l_cx, ListaContaReceber* l_cr, ListaContaPagar* l_cp) 
 {
     FILE* f = fopen("dados_sistema.xml", "w");
-    if (!f) { printf(">> Erro ao criar arquivo.\n"); return; }
+    if (!f) { view_exibir_mensagem("Erro ao criar arquivo."); return; }
 
     fprintf(f, "<dados>\n");
     if (selecao == 1 || selecao == 2) exportar_clientes(f, l_cli);
@@ -246,13 +244,13 @@ void executar_exportacao(int selecao,
     
     fprintf(f, "</dados>\n");
     fclose(f);
-    printf("\n>> SUCESSO: Dados exportados para 'dados_sistema.xml'!\n");
+    view_exibir_mensagem("SUCESSO: Dados exportados para 'dados_sistema.xml'!");
 }
 
 // --- IMPORTAÇÃO ---
 
 void importar_clientes(FILE* f, ListaCliente** lista) {
-    char buffer[2048], valor[500]; // Buffers aumentados
+    char buffer[2048], valor[500]; 
     Cliente t; memset(&t, 0, sizeof(Cliente));
     int dentro = 0;
     while(fgets(buffer, sizeof(buffer), f)) {
@@ -273,7 +271,7 @@ void importar_clientes(FILE* f, ListaCliente** lista) {
             if(xml_extrair_tag(buffer, "ativo", valor)) t.ativo = atoi(valor);
         }
     }
-    printf(">> Clientes importados.\n");
+    view_exibir_mensagem("Clientes importados.");
 }
 
 void importar_equipamentos(FILE* f, Listarecurso** lista) {
@@ -294,11 +292,11 @@ void importar_equipamentos(FILE* f, Listarecurso** lista) {
             if(xml_extrair_tag(buffer, "ativo", valor)) t.ativo = atoi(valor);
         }
     }
-    printf(">> Equipamentos importados.\n");
+    view_exibir_mensagem("Equipamentos importados.");
 }
 
 void importar_eventos(FILE* f, ListaOrcamento** lista) {
-    char buffer[2048], valor[2000]; // Buffer gigante para caber a string de itens
+    char buffer[2048], valor[2000]; 
     Orcamento t; memset(&t, 0, sizeof(Orcamento));
     int dentro = 0;
     while(fgets(buffer, sizeof(buffer), f)) {
@@ -323,7 +321,6 @@ void importar_eventos(FILE* f, ListaOrcamento** lista) {
             if(xml_extrair_tag(buffer, "data_inicio", valor)) sscanf(valor, "%d/%d/%d", &t.dia_inicio, &t.mes_inicio, &t.ano_inicio);
             if(xml_extrair_tag(buffer, "data_fim", valor)) sscanf(valor, "%d/%d/%d", &t.dia_fim, &t.mes_fim, &t.ano_fim);
 
-            // --- IMPORTAR ITENS (PARSING MANUAL DA STRING) ---
             if(xml_extrair_tag(buffer, "itens_recursos", valor)) {
                 char* ptr = valor; int id, qtd, n; float val;
                 while(sscanf(ptr, "%d:%d:%f|%n", &id, &qtd, &val, &n) == 3) {
@@ -361,7 +358,7 @@ void importar_eventos(FILE* f, ListaOrcamento** lista) {
             }
         }
     }
-    printf(">> Eventos importados.\n");
+    view_exibir_mensagem("Eventos importados.");
 }
 
 void importar_fornecedores(FILE* f, Listafornecedor** lista) {
@@ -385,7 +382,7 @@ void importar_fornecedores(FILE* f, Listafornecedor** lista) {
             if(xml_extrair_tag(buffer, "ativo", valor)) t.ativo = atoi(valor);
         }
     }
-    printf(">> Fornecedores importados.\n");
+    view_exibir_mensagem("Fornecedores importados.");
 }
 
 void importar_equipe(FILE* f, Listaequipe** lista) {
@@ -405,7 +402,7 @@ void importar_equipe(FILE* f, Listaequipe** lista) {
             if(xml_extrair_tag(buffer, "ativo", valor)) t.ativo = atoi(valor);
         }
     }
-    printf(">> Equipe importada.\n");
+    view_exibir_mensagem("Equipe importada.");
 }
 
 void importar_operadores(FILE* f, Listaoperador** lista) {
@@ -424,7 +421,7 @@ void importar_operadores(FILE* f, Listaoperador** lista) {
             if(xml_extrair_tag(buffer, "ativo", valor)) t.ativo = atoi(valor);
         }
     }
-    printf(">> Operadores importados.\n");
+    view_exibir_mensagem("Operadores importados.");
 }
 
 void importar_financeiro(FILE* f, ListaCaixa** cx, ListaContaReceber** cr, ListaContaPagar** cp) {
@@ -481,7 +478,7 @@ void importar_financeiro(FILE* f, ListaCaixa** cx, ListaContaReceber** cr, Lista
             if(xml_extrair_tag(buffer, "status", valor)) p.status = atoi(valor);
         }
     }
-    printf(">> Financeiro importado.\n");
+    view_exibir_mensagem("Financeiro importado.");
 }
 
 void executar_importacao(int selecao,
@@ -490,10 +487,10 @@ void executar_importacao(int selecao,
     ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp) 
 {
     FILE* f = fopen("dados_sistema.xml", "r");
-    if (!f) { printf(">> Erro: Arquivo 'dados_sistema.xml' nao encontrado.\n"); return; }
+    if (!f) { view_exibir_mensagem("Erro: Arquivo 'dados_sistema.xml' nao encontrado."); return; }
 
     char buffer[2048];
-    printf("\n>> Iniciando IMPORTACAO SELETIVA...\n");
+    view_exibir_mensagem("Iniciando IMPORTACAO SELETIVA...");
 
     if (selecao == 1 || selecao == 2) { fseek(f, 0, SEEK_SET); while(fgets(buffer,2048,f)) if(strstr(buffer,"<tabela-cliente>")) importar_clientes(f, l_cli); }
     if (selecao == 1 || selecao == 3) { fseek(f, 0, SEEK_SET); while(fgets(buffer,2048,f)) if(strstr(buffer,"<tabela-equipamento>")) importar_equipamentos(f, l_rec); }
@@ -504,7 +501,7 @@ void executar_importacao(int selecao,
     if (selecao == 1 || selecao == 8) { fseek(f, 0, SEEK_SET); importar_financeiro(f, l_cx, l_cr, l_cp); }
 
     fclose(f);
-    printf(">> Importacao Concluida!\n");
+    view_exibir_mensagem("Importacao Concluida!");
 }
 
 void controller_menu_xml(
@@ -514,24 +511,12 @@ void controller_menu_xml(
 ) {
     int opcao = 0;
     do {
-        printf("\n=== IMPORTACAO E EXPORTACAO (XML) ===\n");
-        printf("1. Exportar Dados (Gerar XML)\n");
-        printf("2. Importar Dados (Ler XML)\n");
-        printf("0. Voltar\n");
+        view_exibir_menu_xml();
         opcao = view_ler_opcao();
 
         if (opcao == 1 || opcao == 2) {
             int sub_op = 0;
-            printf("\n--- Selecione a Tabela ---\n");
-            printf("1. TUDO (Backup Completo)\n");
-            printf("2. Clientes\n");
-            printf("3. Equipamentos (Recursos)\n");
-            printf("4. Eventos (Orcamentos)\n");
-            printf("5. Fornecedores\n");
-            printf("6. Equipe\n");
-            printf("7. Operadores\n");
-            printf("8. Financeiro (Caixa e Contas)\n");
-            printf("0. Cancelar\n");
+            view_exibir_menu_xml_tabelas();
             sub_op = view_ler_opcao();
 
             if (sub_op > 0 && sub_op <= 8) {

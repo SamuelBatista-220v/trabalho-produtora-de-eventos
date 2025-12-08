@@ -288,51 +288,7 @@ while (1) {
     
     view_exibir_sucesso_criacao_orcamento(novo.valor_total_geral); // VIEW
 }
-//     if (l_for) {
-//         view_exibir_mensagem("\nFornecedores? (1-Sim)");
-//         if (view_ler_opcao() == 1) {
-//             while(1) {
-//                 view_imprimir_lista_fornecedor(l_for);
-//                 printf("ID (0 fim): "); int id = view_ler_opcao();
-//                 if(id==0) break;
-//                 if(item_ja_existe(&novo, id, 2)) continue;
-//                 if(buscar_fornecedor_por_id(l_for, id)) {
-//                     int idx = novo.qtd_servicos_selecionados;
-//                     novo.lista_servicos[idx].id_fornecedor = id;
-//                     printf("Desc: "); char d[100]; fgets(d, 100, stdin); d[strcspn(d, "\n")]=0; strcpy(novo.lista_servicos[idx].descricao_servico, d);
-//                     printf("Valor: "); char v[20]; fgets(v, 20, stdin); novo.lista_servicos[idx].valor_combinado = atof(v);
-//                     novo.valor_total_servicos += novo.lista_servicos[idx].valor_combinado;
-//                     novo.qtd_servicos_selecionados++;
-//                 }
-//             }
-//         }
-//     }
-//     if (l_eq) {
-//         view_exibir_mensagem("\nEquipe? (1-Sim) (0-Nao)");
-//         if (view_ler_opcao() == 1) {
-//             while(1) {
-//                 view_imprimir_lista_equipe(l_eq);
-//                 printf("ID (0 fim): "); int id = view_ler_opcao();
-//                 if(id==0) break;
-//                 if(item_ja_existe(&novo, id, 3)) continue;
-//                 Listaequipe* eq = buscar_equipe_por_id(l_eq, id);
-//                 if(eq) {
-//                     int idx = novo.qtd_equipe_selecionada;
-//                     novo.lista_equipe[idx].id_membro_equipe = id;
-//                     novo.lista_equipe[idx].valor_diaria_momento = eq->conteudo.valor_diaria;
-//                     novo.lista_equipe[idx].dias_trabalhados = novo.qtd_dias;
-//                     float custo = eq->conteudo.valor_diaria * novo.qtd_dias;
-//                     novo.valor_total_equipe += custo;
-//                     novo.qtd_equipe_selecionada++;
-//                 }
-//             }
-//         }
-//     }
 
-//     novo.valor_total_geral = novo.valor_total_recursos + novo.valor_total_servicos + novo.valor_total_equipe;
-//     inserir_orcamento(lista_orc, novo);
-//     printf(">> CRIADO! Total: R$ %.2f\n", novo.valor_total_geral);
-// }
 
 void aprovar_orcamento_controller(ListaOrcamento* lista) {
     view_exibir_mensagem("ID:"); int id = view_ler_opcao();
@@ -415,7 +371,7 @@ void finalizar_evento_controller(ListaOrcamento* lista, ListaContaReceber** list
                 strcpy(lanc.data, dt_base);
                 inserir_caixa(lista_caixa, lanc);
                 
-                // Substitui printf(">> Entrada de R$ %.2f...");
+               
                 view_exibir_sucesso_entrada_caixa(entrada);
             }
 

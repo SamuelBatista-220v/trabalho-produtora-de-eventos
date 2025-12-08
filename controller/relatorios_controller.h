@@ -64,7 +64,7 @@ void processar_relatorio_clientes(ListaCliente* lista);
 void processar_relatorio_caixa(ListaCaixa* lista);
 void processar_balanco_financeiro(ListaContaReceber* l_cr, ListaContaPagar* l_cp);
 
-// --- NOVA FUNÇÃO (OPÇÃO 4 CORRIGIDA) ---
+
 void processar_relatorio_cronograma_geral(ListaOrcamento* l_orc, Listarecurso* l_rec);
 
 #endif

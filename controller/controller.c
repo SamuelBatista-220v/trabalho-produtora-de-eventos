@@ -184,7 +184,7 @@ case 11:
     liberar_lista_operador(&lista_operador);
     liberar_lista_orcamento(&lista_orcamento);
     
-    // ESTAVA FALTANDO: Liberar o financeiro
+
     liberar_listas_financeiro(&lista_caixa, &lista_receber, &lista_pagar);
     
     view_exibir_mensagem("Memoria liberada. Ate logo!");
