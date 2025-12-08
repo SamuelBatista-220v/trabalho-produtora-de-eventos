@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stddef.h> // Para size_t
 #include "formatacao.h"
+#include <stdlib.h> // Necessário para atof
+#include <locale.h> 
 
 
 void imprimir_cpf_formatado(const char* cpf) {
@@ -32,4 +34,23 @@ void imprimir_telefone_formatado(const char* telefone) {
     } else {
         printf("%s", telefone);
     }
+}
+
+// Implementação centralizada da conversão segura
+float string_para_float_universal(char* str) {
+    if (!str || strlen(str) == 0) return 0.0f;
+    
+    char buffer[50];
+    strncpy(buffer, str, 49);
+    buffer[49] = '\0';
+    
+    struct lconv * lc = localeconv();
+    char sep_sistema = *lc->decimal_point; 
+    
+    for(int i=0; buffer[i] != '\0'; i++) {
+        if (buffer[i] == '.' || buffer[i] == ',') {
+            buffer[i] = sep_sistema;
+        }
+    }
+    return (float)atof(buffer);
 }

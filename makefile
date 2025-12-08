@@ -96,6 +96,7 @@ SRCS =  main.c \
         controller/orcamento_controller.c \
         controller/financeiro_controller.c \
         controller/relatorios_controller.c \
+        controller/xml_controller.c \
         controller/controller.c \
         validacoes/validacoes.c
 

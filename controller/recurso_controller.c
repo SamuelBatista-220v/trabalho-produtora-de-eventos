@@ -36,9 +36,8 @@ void controller_gerenciar_recurso(Listarecurso** lista_recurso) {
                         view_exibir_mensagem("\n>> recurso encontrado:");
                         view_imprimir_recurso_unico(recurso_encontrado);
                     } else {
-                        char msg_erro[100];
-                        sprintf(msg_erro, "\n>> AVISO: recurso com Codigo %d nao encontrado.", id_busca);
-                        view_exibir_mensagem(msg_erro);
+
+                        view_exibir_erro_busca_id("Recurso", id_busca);
                     }
                 } else {
                     view_exibir_mensagem(">> Codigo invalido.");
@@ -61,7 +60,7 @@ void controller_gerenciar_recurso(Listarecurso** lista_recurso) {
                 if (no_recurso == NULL) {
                     view_exibir_mensagem("\n>> ERRO: recurso nao encontrado.");
                 } else {
-                    printf("\n--- Digite os NOVOS dados para o recurso de ID %d ---\n", id_busca);
+                    view_exibir_cabecalho_atualizacao("Recurso", id_busca);
                     recurso recurso_atualizado;
                     view_ler_dados_recurso(&recurso_atualizado); 
                     
@@ -138,8 +137,7 @@ void controller_gerenciar_recurso(Listarecurso** lista_recurso) {
                 break;
             }
             case 0:
-                view_exibir_mensagem("\nRetornando ao menu principal...");
-                break;
+     view_exibir_msg_retornando();
             default:
                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
                 break;

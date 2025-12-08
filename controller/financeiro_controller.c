@@ -6,6 +6,7 @@
 #include "financeiro_controller.h"
 #include "../view/receber_dados.h"
 #include "../view/mostrar_dados.h"
+#include "../view/menus.h"
 
 float arredondar_duas_casas(float valor) { // funçao basica de arrendondamento sem o math
     return (float)((int)(valor * 100 + 0.5)) / 100.0;
@@ -85,7 +86,7 @@ void processar_entrada_nota_fiscal(Listarecurso* lista_recursos, ListaContaPagar
      // pq temporario? pq assim o codigo nao sera corrompido se abortar a compra no meio do caminho
     // 3. Loop de Itens
     while (1) {
-        printf("\n--- SELECIONAR ITENS DA NOTA ---\n");
+       view_exibir_cabecalho_nota_fiscal();
         view_imprimir_lista_recurso(lista_recursos);
         
         int id, qtd; float custo;
@@ -121,7 +122,8 @@ void processar_entrada_nota_fiscal(Listarecurso* lista_recursos, ListaContaPagar
     // CORREÇÃO VISUAL)
     view_imprimir_nota_fiscal_detalhada(itens, n_itens, v_prod, v_frete, v_imp);
 
-    printf("\nConfirma a entrada desta Nota Fiscal? (1-Sim / 0-Cancelar): ");
+    // printf("\nConfirma a entrada desta Nota Fiscal? (1-Sim / 0-Cancelar): ");
+    view_exibir_confirmacao_entrada_nota();
     if (view_ler_opcao() != 1) return;
 
     //  Cálculos e Atualização de Estoque
@@ -129,7 +131,7 @@ void processar_entrada_nota_fiscal(Listarecurso* lista_recursos, ListaContaPagar
     float imp_un = (qtd_total_pecas > 0) ? v_imp / qtd_total_pecas : 0;
     float total_nota = v_prod + v_frete + v_imp;
 // ? e como se fosse um if simplificado
-    printf("\n>> Atualizando Estoque e Precos...\n");
+    view_exibir_mensagem("\n>> Atualizando Estoque e Precos...\n");
     for (int i = 0; i < n_itens; i++) {
         Listarecurso* r = buscar_recurso_por_id(lista_recursos, itens[i].id);
         // r de recruso
@@ -141,8 +143,9 @@ void processar_entrada_nota_fiscal(Listarecurso* lista_recursos, ListaContaPagar
         float novo_preco = r->conteudo.preco_de_custo + frete_un + imp_un + lucro;
         r->conteudo.valor_da_locacao = arredondar_duas_casas(novo_preco);
         
-        printf("   [%s] Estoque: %d->%d | Novo Aluguel: R$ %.2f\n", 
-               r->conteudo.descricao, est_antigo, r->conteudo.quantidade, r->conteudo.valor_da_locacao);
+        // printf("   [%s] Estoque: %d->%d | Novo Aluguel: R$ %.2f\n", 
+        //        r->conteudo.descricao, est_antigo, r->conteudo.quantidade, r->conteudo.valor_da_locacao);
+               view_exibir_atualizacao_estoque(r->conteudo.descricao, est_antigo, r->conteudo.quantidade, r->conteudo.valor_da_locacao);
     }
 
     // Pagamento (Mantido igual, pois já estava correto com parcelas)
@@ -180,7 +183,8 @@ void processar_entrada_nota_fiscal(Listarecurso* lista_recursos, ListaContaPagar
                 strcpy(cp.data_vencimento, dt_parc);
 
                 inserir_conta_pagar(lista_pagar, cp);
-                printf(" -> Parcela %d: R$ %.2f (Venc: %s)\n", i, cp.valor_total, cp.data_vencimento);
+                // printf(" -> Parcela %d: R$ %.2f (Venc: %s)\n", i, cp.valor_total, cp.data_vencimento);
+                view_exibir_parcela_gerada(i, parcelas, cp.valor_total, cp.data_vencimento);
             }
         }
     }
@@ -200,13 +204,14 @@ void realizar_pagamento_conta(ListaContaPagar** l_cp, ListaCaixa** l_cx) {
     ListaContaPagar* conta = buscar_conta_pagar_por_id(*l_cp, id);
     
     if (conta) {
-        printf("Pagar R$ %.2f? (1-Sim): ", conta->conteudo.valor_total);
+        // printf("Pagar R$ %.2f? (1-Sim): ", conta->conteudo.valor_total);
+        view_exibir_confirmacao_pagamento(conta->conteudo.valor_total);
         if (view_ler_opcao() == 1) {
             // 1. Lança no Caixa (Histórico)
             LancamentoCaixa lanc; lanc.id=0; lanc.tipo=2; lanc.valor=conta->conteudo.valor_total;
             sprintf(lanc.descricao, "PGTO: %s", conta->conteudo.descricao);
             
-            printf("Data (DD/MM/AAAA): "); 
+            view_exibir_mensagem("Data (DD/MM/AAAA): "); 
             char buf[20]; fgets(buf, 20, stdin); buf[strcspn(buf, "\n")] = 0;
             strcpy(lanc.data, buf);
             
@@ -229,13 +234,13 @@ void realizar_recebimento_conta(ListaContaReceber** l_cr, ListaCaixa** l_cx) {
     ListaContaReceber* conta = buscar_conta_receber_por_id(*l_cr, id);
     
     if (conta) {
-        printf("Receber R$ %.2f? (1-Sim): ", conta->conteudo.valor_total);
+         view_exibir_confirmacao_recebimento(conta->conteudo.valor_total);
         if (view_ler_opcao() == 1) {
             // 1. Lança no Caixa (Histórico)
             LancamentoCaixa lanc; lanc.id=0; lanc.tipo=1; lanc.valor=conta->conteudo.valor_total;
             sprintf(lanc.descricao, "RECTO: %s", conta->conteudo.descricao);
             
-            printf("Data (DD/MM/AAAA): "); 
+            view_exibir_mensagem("Data (DD/MM/AAAA): "); 
             char buf[20]; fgets(buf, 20, stdin); buf[strcspn(buf, "\n")] = 0;
             strcpy(lanc.data, buf);
             
@@ -257,7 +262,9 @@ void exibir_extrato_caixa(ListaCaixa* lista) {
 void controller_gerenciar_financeiro(ListaCaixa** l_cx, ListaContaReceber** l_cr, ListaContaPagar** l_cp, Listarecurso* l_rec, Listaprodutora* l_prod) {
     int opcao = -1;
     do {
-        printf("\n=== FINANCEIRO ===\n1. Nota Fiscal (Compra)\n2. Listar Contas Pendentes\n3. Pagar Conta\n4. Receber Fatura\n5. Extrato Caixa\n0. Voltar\nOpcao: ");
+        // view_exibir_mensagem("\n=== FINANCEIRO ===\n1. Nota Fiscal (Compra)\n2. Listar Contas Pendentes\n3. Pagar Conta\n4. Receber Fatura\n5. Extrato Caixa\n0. Voltar\nOpcao: ");
+        // --- AQUI ESTÁ A MUDANÇA ---
+        view_exibir_menu_financeiro(); // Chama a View limpa
         opcao = view_ler_opcao();
         switch(opcao) {
             case 1: processar_entrada_nota_fiscal(l_rec, l_cp, l_prod, l_cx); break;

@@ -9,4 +9,9 @@ void view_exibir_menu_recurso();
 void view_exibir_menu_fornecedor();
 void view_exibir_menu_operador();
 
+void view_exibir_menu_financeiro();
+
+// ...
+void view_exibir_menu_orcamentos(); // Adicione esta linha
+
 #endif // MENUS_Hs

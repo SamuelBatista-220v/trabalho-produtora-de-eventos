@@ -14,7 +14,13 @@ StatusOperacao inserir_fornecedor(Listafornecedor** lista, fornecedor novo_forne
         return ERRO_ALOCACAO_MEMORIA;
     }
 
-    novo_fornecedor.id = proximo_id_fornecedor++; // Atribui e incrementa o ID global
+   if (novo_fornecedor.id > 0) {
+        if (novo_fornecedor.id >= proximo_id_fornecedor) {
+            proximo_id_fornecedor = novo_fornecedor.id + 1;
+        }
+    } else {
+        novo_fornecedor.id = proximo_id_fornecedor++;
+    } // Atribui e incrementa o ID global
     novo_no->conteudo = novo_fornecedor;
     novo_no->prox = NULL;
 //Se a lista estiver vazia (*lista == NULL), o novo nó se torna a cabeça (*lista = novo_no

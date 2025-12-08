@@ -1,25 +1,70 @@
+
+
+// #ifndef RELATORIOS_CONTROLLER_H
+// #define RELATORIOS_CONTROLLER_H
+
+// #include "../model/cliente.h"
+// #include "../model/orcamento.h"
+// #include "../model/financeiro.h"
+// #include "../model/produtora.h"
+// #include "../model/fornecedor.h"
+// #include "../model/recurso.h"
+// #include "../model/equipe.h"
+
+// // Menu Principal
+// void controller_menu_relatorios(
+//     ListaCliente* l_cli, 
+//     ListaOrcamento* l_orc, 
+//     ListaCaixa* l_cx,
+//     ListaContaReceber* l_cr, 
+//     ListaContaPagar* l_cp,
+//     Listarecurso* l_rec,
+//     Listafornecedor* l_for,
+//     Listaequipe* l_eq
+// );
+
+// // Funções Internas (agora expostas para garantir consistência)
+// void processar_relatorio_eventos(ListaOrcamento* lista, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq);
+// void processar_relatorio_financeiro_completo(void* lista, int tipo_conta, ListaCliente* l_cli, Listafornecedor* l_for);
+// void processar_relatorio_recursos_completo(Listarecurso* lista);
+// void processar_relatorio_clientes(ListaCliente* lista);
+// void processar_relatorio_caixa(ListaCaixa* lista);
+// void processar_balanco_financeiro(ListaContaReceber* l_cr, ListaContaPagar* l_cp);
+
+// #endif
+
 #ifndef RELATORIOS_CONTROLLER_H
 #define RELATORIOS_CONTROLLER_H
 
-// Incluir TODOS os models para que os tipos sejam reconhecidos
 #include "../model/cliente.h"
 #include "../model/orcamento.h"
-#include "../model/financeiro.h"   // <--- Essencial para ListaContaReceber
+#include "../model/financeiro.h"
 #include "../model/produtora.h"
 #include "../model/fornecedor.h"
 #include "../model/recurso.h"
 #include "../model/equipe.h"
 
-// Protótipo atualizado com TODOS os parâmetros
+// Menu Principal
 void controller_menu_relatorios(
     ListaCliente* l_cli, 
     ListaOrcamento* l_orc, 
     ListaCaixa* l_cx,
-    ListaContaReceber* l_cr, // <--- Agora aceita receber
+    ListaContaReceber* l_cr, 
     ListaContaPagar* l_cp,
     Listarecurso* l_rec,
     Listafornecedor* l_for,
     Listaequipe* l_eq
 );
+
+// Funções Internas
+void processar_relatorio_eventos(ListaOrcamento* lista, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq);
+void processar_relatorio_financeiro_completo(void* lista, int tipo_conta, ListaCliente* l_cli, Listafornecedor* l_for);
+void processar_relatorio_recursos_completo(Listarecurso* lista);
+void processar_relatorio_clientes(ListaCliente* lista);
+void processar_relatorio_caixa(ListaCaixa* lista);
+void processar_balanco_financeiro(ListaContaReceber* l_cr, ListaContaPagar* l_cp);
+
+// --- NOVA FUNÇÃO (OPÇÃO 4 CORRIGIDA) ---
+void processar_relatorio_cronograma_geral(ListaOrcamento* l_orc, Listarecurso* l_rec);
 
 #endif

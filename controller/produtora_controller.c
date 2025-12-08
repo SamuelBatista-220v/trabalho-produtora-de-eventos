@@ -38,7 +38,7 @@ void controller_gerenciar_produtora(Listaprodutora** lista_produtora) {
                 if (no_produtora == NULL) {
                     view_exibir_mensagem("\n>> ERRO: Produtora (ID 1) nao encontrada.");
                 } else {
-                    printf("\n--- Digite os NOVOS dados para a Produtora ---\n");
+                   view_exibir_cabecalho_atualizacao("Produtora", ID_PRODUTORA);
                     produtora produtora_atualizado;
                     view_ler_dados_produtora(&produtora_atualizado); 
                     
@@ -62,7 +62,7 @@ void controller_gerenciar_produtora(Listaprodutora** lista_produtora) {
                 break;
             }
             case 0:
-                view_exibir_mensagem("\nRetornando ao menu principal...");
+                view_exibir_msg_retornando();
                 break;
             default:
                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");

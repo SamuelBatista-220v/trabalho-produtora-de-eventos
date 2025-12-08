@@ -24,4 +24,14 @@ void view_ler_totais_nota_fiscal(float* produtos, float* frete, float* impostos)
 int view_ler_item_nota_fiscal(int* id_rec, int* qtd, float* custo);
 void view_ler_dados_pagamento(int* forma_pag, char* data_venc, float* entrada, int* parcelas);
 
-#endif 
+// ...
+void view_ler_texto_generico(const char* label, char* destino, int tamanho);
+void view_ler_float_generico(const char* label, float* destino);
+void view_ler_data_generica(const char* label, char* destino);
+
+// ...
+void view_ler_texto_simples(char* destino, int tamanho);
+void view_ler_float_simples(float* destino);
+#endif
+
+

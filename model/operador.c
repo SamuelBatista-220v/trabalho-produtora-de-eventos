@@ -14,7 +14,13 @@ StatusOperacao inserir_operador(Listaoperador** lista, operador novo_operador) {
         return ERRO_ALOCACAO_MEMORIA;
     }
 //Atribui ID e Inicializa o Nó
-    novo_operador.id = proximo_id_operador++; // Atribui e incrementa o ID global
+if (novo_operador.id > 0) {
+        if (novo_operador.id >= proximo_id_operador) {
+            proximo_id_operador = novo_operador.id + 1;
+        }
+    } else {
+        novo_operador.id = proximo_id_operador++;
+    }// Atribui e incrementa o ID global
     novo_no->conteudo = novo_operador;
     novo_no->prox = NULL;
 

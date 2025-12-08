@@ -17,7 +17,13 @@ StatusOperacao inserir_recurso(Listarecurso** lista, recurso novo_recurso) {
         return ERRO_ALOCACAO_MEMORIA;
     }
 
-    novo_recurso.id = proximo_id_recurso++; // Atribui e incrementa o ID global
+ if (novo_recurso.id > 0) {
+        if (novo_recurso.id >= proximo_id_recurso) {
+            proximo_id_recurso = novo_recurso.id + 1;
+        }
+    } else {
+        novo_recurso.id = proximo_id_recurso++;
+    }// Atribui e incrementa o ID global
     novo_no->conteudo = novo_recurso;//copia os dados do recurso
     novo_no->prox = NULL;// Define o novo nó como o último.
 

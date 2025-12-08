@@ -36,9 +36,7 @@ void controller_gerenciar_operador(Listaoperador** lista_operador) {
                         view_exibir_mensagem("\n>> operador encontrado:");
                         view_imprimir_operador_unico(operador_encontrado);
                     } else {
-                        char msg_erro[100];
-                        sprintf(msg_erro, "\n>> AVISO: operador com Codigo %d nao encontrado.", id_busca);
-                        view_exibir_mensagem(msg_erro);
+                        view_exibir_erro_busca_id("Operador", id_busca);
                     }
                 } else {
                     view_exibir_mensagem(">> Codigo invalido.");
@@ -61,7 +59,7 @@ void controller_gerenciar_operador(Listaoperador** lista_operador) {
                 if (no_operador == NULL) {
                     view_exibir_mensagem("\n>> ERRO: operador nao encontrado.");
                 } else {
-                    printf("\n--- Digite os NOVOS dados para o operador de ID %d ---\n", id_busca);
+                   view_exibir_cabecalho_atualizacao("Operador", id_busca);
                     operador operador_atualizado;
                     view_ler_dados_operador(&operador_atualizado); 
                     
@@ -138,7 +136,7 @@ void controller_gerenciar_operador(Listaoperador** lista_operador) {
                 break;
             }
             case 0:
-                view_exibir_mensagem("\nRetornando ao menu principal...");
+                view_exibir_msg_retornando();
                 break;
             default:
                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");

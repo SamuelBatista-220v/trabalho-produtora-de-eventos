@@ -17,6 +17,7 @@ void view_exibir_menu_principal() {
     printf("   |  9. MODULO FINANCEIRO & ESTOQUE        |\n");
     printf("   |----------------------------------------|\n");
     printf("   |  10. RELATORIOS E FEEDBACK             |\n");
+    printf("   |  11. IMPORTAR / EXPORTAR DADOS (XML)   |\n");
     printf("   |----------------------------------------|\n");
     printf("   |  0. Sair e Salvar                      |\n");
     printf("   ==========================================\n");
@@ -128,3 +129,28 @@ void view_exibir_menu_principal() {
 }
 
 
+// (No final do arquivo view/menus.c)
+void view_exibir_menu_financeiro() {
+    printf("\n=== FINANCEIRO ===\n");
+    printf("1. Nota Fiscal (Compra)\n");
+    printf("2. Listar Contas Pendentes\n");
+    printf("3. Pagar Conta\n");
+    printf("4. Receber Fatura\n");
+    printf("5. Extrato Caixa\n");
+    printf("0. Voltar\n");
+}
+
+// ...
+void view_exibir_menu_orcamentos() {
+    printf("\n=== GESTAO DE ORCAMENTOS E EVENTOS ===\n");
+    printf("1. Novo Orcamento\n");
+    printf("2. Listar (Em Analise)\n");
+    printf("3. Listar (Aprovados)\n");
+    printf("4. Listar (Finalizados/Historico)\n");
+    printf("5. Cronograma de Recurso\n");
+    printf("6. Aprovar Orcamento\n");
+    printf("7. Finalizar Evento (Financeiro)\n");
+    printf("8. Excluir Orcamento\n");
+    printf("0. Voltar\n");
+    printf("Opcao: ");
+}

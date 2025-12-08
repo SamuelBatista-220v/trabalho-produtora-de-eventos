@@ -23,7 +23,14 @@ StatusOperacao inserir_cliente(ListaCliente** lista, Cliente novo_cliente) {
     //id unico atribui valor do próximo_id ao campo id do cliente em seguida incrementa proximo_id++ para próximo cliente
     //conteúdo copia todos os dados do cliente para o campo conteúdo dentro do novo nó
     //ponteiro prox define o ponteiro prox do novo nó como NULL de canto que ele é o último nó da lista por enquanto
-    novo_cliente.id = proximo_id++;
+    // Se o cliente já tem ID (veio do arquivo), respeita e atualiza o contador
+    if (novo_cliente.id > 0) {
+        if (novo_cliente.id >= proximo_id) {
+            proximo_id = novo_cliente.id + 1;
+        }
+    } else {
+        novo_cliente.id = proximo_id++; // Se é novo (ID 0), gera sequencial
+    }
     novo_no->conteudo = novo_cliente;
     novo_no->prox = NULL;
     //verifica se o ponteiro de início da lista é NULL, se for, significa que a lista está vazia

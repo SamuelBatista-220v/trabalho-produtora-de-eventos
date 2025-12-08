@@ -16,8 +16,13 @@ StatusOperacao inserir_produtora(Listaprodutora** lista, produtora novo_produtor
     if (novo_no == NULL) {
         return ERRO_ALOCACAO_MEMORIA;// Falha ao alocar memória.
     }
-
-    novo_produtora.id = proximo_id_produtora++; // Atribui e incrementa o ID global
+if (novo_produtora.id > 0) {
+        if (novo_produtora.id >= proximo_id_produtora) {
+            proximo_id_produtora = novo_produtora.id + 1;
+        }
+    } else {
+        novo_produtora.id = proximo_id_produtora++;
+    } // Atribui e incrementa o ID global
     novo_no->conteudo = novo_produtora;// Copia os dados para o conteúdo do nó.
     novo_no->prox = NULL;// O novo nó sempre começa apontando para NULL (será o último).
 

@@ -43,9 +43,12 @@ void controller_gerenciar_clientes(ListaCliente** lista_clientes) {
                         view_imprimir_cliente_unico(cliente_encontrado);// VIEW: Imprime os dados.
                     } else {
                         // Formata a mensagem de erro com o ID específico.
-                        char msg_erro[100];
-                        sprintf(msg_erro, "\n>> AVISO: Cliente com Codigo %d nao encontrado.", id_busca);
-                        view_exibir_mensagem(msg_erro);
+                        // char msg_erro[100];
+                        // sprintf(msg_erro, "\n>> AVISO: Cliente com Codigo %d nao encontrado.", id_busca);
+                        // view_exibir_mensagem(msg_erro);
+
+                        // CORREÇÃO: Usa a View para mostrar erro formatado
+                        view_exibir_erro_busca_id("Cliente", id_busca);
                     }
                 } else {
                     view_exibir_mensagem(">> Codigo invalido.");
@@ -69,8 +72,11 @@ void controller_gerenciar_clientes(ListaCliente** lista_clientes) {
                 if (no_cliente == NULL) {
                     view_exibir_mensagem("\n>> ERRO: Cliente nao encontrado.");
                 } else {
-                    printf("\n--- Digite os NOVOS dados para o cliente de ID %d ---\n", id_busca);
-                    // VIEW: Coleta os novos dados.
+                    // printf("\n--- Digite os NOVOS dados para o cliente de ID %d ---\n", id_busca);
+                    // // VIEW: Coleta os novos dados.
+                    // CORREÇÃO: Usa a View para o cabeçalho
+                    view_exibir_cabecalho_atualizacao("Cliente", id_busca);
+
                     Cliente cliente_atualizado;
                     view_ler_dados_cliente(&cliente_atualizado); 
 
@@ -158,8 +164,10 @@ void controller_gerenciar_clientes(ListaCliente** lista_clientes) {
                 break;
             }
             case 0:
-                view_exibir_mensagem("\nRetornando ao menu principal...");
-                break;
+                // view_exibir_mensagem("\nRetornando ao menu principal...");
+                // break;
+                // CORREÇÃO: Mensagem padronizada
+                view_exibir_msg_retornando();
             default:
                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");
                 break;

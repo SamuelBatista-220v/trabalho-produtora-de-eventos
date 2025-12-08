@@ -15,7 +15,13 @@ StatusOperacao inserir_equipe(Listaequipe** lista, equipe nova_equipe) {
         return ERRO_ALOCACAO_MEMORIA;
     }
 
-    nova_equipe.id = proximo_id_equipe++;
+if (nova_equipe.id > 0) {
+        if (nova_equipe.id >= proximo_id_equipe) {
+            proximo_id_equipe = nova_equipe.id + 1;
+        }
+    } else {
+        nova_equipe.id = proximo_id_equipe++;
+    }
     novo_no->conteudo = nova_equipe;
     novo_no->prox = NULL;
 

@@ -346,32 +346,11 @@
 #include <string.h>
 #include <locale.h> // Importante para corrigir o erro de Ponto/Virgula
 #include "orcamento.h"
+#include "../view/formatacao.h" // <--- ADICIONE ISSO AQUI
 
 static int proximo_id_orcamento = 1;
 
-// --- FUNÇÃO AUXILIAR PARA BLINDAR A LEITURA DE FLOAT ---
-// Converte string para float independente se o PC usa ponto ou virgula
-float string_para_float_universal(char* str) {
-    if (!str || strlen(str) == 0) return 0.0f;
-    
-    char buffer[50];
-    strncpy(buffer, str, 49);
-    buffer[49] = '\0';
-    
-    // Descobre qual o separador decimal do sistema (Ponto ou Virgula?)
-    struct lconv * lc = localeconv();
-    char sep_sistema = *lc->decimal_point; // Pega o separador atual
-    
-    // Varre a string e troca qualquer ponto ou virgula pelo separador do sistema
-    for(int i=0; buffer[i] != '\0'; i++) {
-        if (buffer[i] == '.' || buffer[i] == ',') {
-            buffer[i] = sep_sistema;
-        }
-    }
-    
-    return (float)atof(buffer);
-}
-// -------------------------------------------------------
+
 
 StatusOperacao inserir_orcamento(ListaOrcamento** lista, Orcamento novo) {
     ListaOrcamento* novo_no = (ListaOrcamento*) malloc(sizeof(ListaOrcamento));

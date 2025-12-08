@@ -36,9 +36,7 @@ void controller_gerenciar_fornecedor(Listafornecedor** lista_fornecedor) {
                         view_exibir_mensagem("\n>> fornecedor encontrado:");
                         view_imprimir_fornecedor_unico(fornecedor_encontrado);
                     } else {
-                        char msg_erro[100];
-                        sprintf(msg_erro, "\n>> AVISO: fornecedor com Codigo %d nao encontrado.", id_busca);
-                        view_exibir_mensagem(msg_erro);
+                        view_exibir_erro_busca_id("Fornecedor", id_busca);
                     }
                 } else {
                     view_exibir_mensagem(">> Codigo invalido.");
@@ -60,7 +58,7 @@ void controller_gerenciar_fornecedor(Listafornecedor** lista_fornecedor) {
                 if (no_fornecedor == NULL) {
                     view_exibir_mensagem("\n>> ERRO: fornecedor nao encontrado.");
                 } else {
-                    printf("\n--- Digite os NOVOS dados para o fornecedor de ID %d ---\n", id_busca);
+                view_exibir_cabecalho_atualizacao("Fornecedor", id_busca);
                     fornecedor fornecedor_atualizado;
                     view_ler_dados_fornecedor(&fornecedor_atualizado); 
                     
@@ -137,7 +135,7 @@ void controller_gerenciar_fornecedor(Listafornecedor** lista_fornecedor) {
                 break;
             }
             case 0:
-                view_exibir_mensagem("\nRetornando ao menu principal...");
+               view_exibir_msg_retornando();
                 break;
             default:
                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");

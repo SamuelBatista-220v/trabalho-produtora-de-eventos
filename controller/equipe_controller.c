@@ -45,9 +45,7 @@ void controller_gerenciar_equipe(Listaequipe** lista_equipe) {
                         view_exibir_mensagem("\n>> equipe encontrado:");
                         view_imprimir_equipe_unico(equipe_encontrado);
                     } else {
-                        char msg_erro[100];
-                        sprintf(msg_erro, "\n>> AVISO: equipe com Codigo %d nao encontrado.", id_busca);
-                        view_exibir_mensagem(msg_erro);
+                        view_exibir_erro_busca_id("Equipe", id_busca);  
                     }
                 } else {
                     view_exibir_mensagem(">> Codigo invalido.");
@@ -70,7 +68,7 @@ void controller_gerenciar_equipe(Listaequipe** lista_equipe) {
                 if (no_equipe == NULL) {
                     view_exibir_mensagem("\n>> ERRO: equipe nao encontrado.");
                 } else {
-                    printf("\n--- Digite os NOVOS dados para o equipe de ID %d ---\n", id_busca);
+                    view_exibir_cabecalho_atualizacao("Equipe", id_busca);
                     equipe equipe_atualizado;
                     view_ler_dados_equipe(&equipe_atualizado); 
                     
@@ -147,7 +145,8 @@ void controller_gerenciar_equipe(Listaequipe** lista_equipe) {
                 break;
             }
             case 0:
-                view_exibir_mensagem("\nRetornando ao menu principal...");
+                // CORREÇÃO: Mensagem padronizada
+                view_exibir_msg_retornando();
                 break;
             default:
                 view_exibir_mensagem("\n>> Opcao invalida! Tente novamente.");

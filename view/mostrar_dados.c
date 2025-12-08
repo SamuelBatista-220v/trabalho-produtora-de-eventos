@@ -410,3 +410,176 @@ void view_imprimir_nota_fiscal_detalhada(void* lista_itens, int qtd_itens, float
     printf(" (=) TOTAL A PAGAR  : R$ %.2f\n", total_prod + total_frete + total_imp);
     printf("==========================================================================\n");
 }
+
+// ... (código existente) ...
+
+// --- IMPLEMENTAÇÃO DAS NOVAS FUNÇÕES ---
+
+void view_exibir_cabecalho_atualizacao(const char* entidade, int id) {
+    printf("\n--- Digite os NOVOS dados para %s (ID: %d) ---\n", entidade, id);
+}
+
+void view_exibir_erro_busca_id(const char* entidade, int id) {
+    printf("\n>> AVISO: %s com Codigo %d nao encontrado.\n", entidade, id);
+}
+
+void view_exibir_msg_retornando() {
+    printf("\n>> Retornando ao menu principal...\n");
+}
+
+
+
+// (No final do arquivo view/mostrar_dados.c)
+// --- IMPLEMENTAÇÕES NOVAS DO FINANCEIRO (Adicione no final de view/mostrar_dados.c) ---
+
+void view_exibir_cabecalho_nota_fiscal() {
+    printf("\n--- SELECIONAR ITENS DA NOTA ---\n");
+}
+
+void view_exibir_item_adicionado_nota() {
+    printf(">> Item adicionado a lista temporaria.\n");
+}
+
+void view_exibir_atualizacao_estoque(const char* nome, int qtd_antiga, int qtd_nova, float novo_preco) {
+    printf("   [%s] Estoque: %d->%d | Novo Aluguel: R$ %.2f\n", nome, qtd_antiga, qtd_nova, novo_preco);
+}
+
+void view_exibir_confirmacao_entrada_nota() {
+    printf("\nConfirma a entrada desta Nota Fiscal? (1-Sim / 0-Cancelar): ");
+}
+
+void view_exibir_pagamento_avista_sucesso() {
+    printf(">> Pago a vista (Caixa).\n");
+}
+
+void view_exibir_parcela_gerada(int num, int total, float valor, const char* vencto) {
+    printf(" -> Parcela %d/%d: R$ %.2f (Venc: %s)\n", num, total, valor, vencto);
+}
+
+void view_exibir_confirmacao_pagamento(float valor) {
+    printf("Pagar R$ %.2f? (1-Sim): ", valor);
+}
+
+void view_exibir_confirmacao_recebimento(float valor) {
+    printf("Receber R$ %.2f? (1-Sim): ", valor);
+}
+
+void view_exibir_sucesso_pagamento() {
+    printf(">> Pago e removido da lista de pendencias!\n");
+}
+
+void view_exibir_sucesso_recebimento() {
+    printf(">> Recebido e removido da lista!\n");
+}
+
+
+
+
+
+// ... (Mantenha o código existente) ...
+
+// --- IMPLEMENTAÇÃO GENÉRICA INTELIGENTE ---
+
+void view_exibir_titulo(const char* titulo) {
+    printf("\n=== %s ===\n", titulo);
+}
+
+void view_exibir_alerta(const char* tipo, const char* mensagem) {
+    // Ex: ">> ERRO: Recurso nao encontrado."
+    printf(">> %s: %s\n", tipo, mensagem);
+}
+
+void view_exibir_linha_detalhe(const char* rotulo, const char* valor) {
+    printf(" - %-20s: %s\n", rotulo, valor);
+}
+
+
+// --- ESPECÍFICAS NECESSÁRIAS ---
+
+void view_exibir_status_estoque(const char* nome, int total, int ocupado, int carrinho, int disponivel) {
+    printf("\n>> Item: %s\n", nome);
+    printf("   Estoque Total: %d | Ocupado (Outros): %d | No Carrinho: %d\n", total, ocupado, carrinho);
+    printf("   >> DISPONIVEL AGORA: %d\n", disponivel);
+}
+
+void view_exibir_item_carrinho_orcamento(const char* nome, int id, int qtd) {
+    printf(" - [ID %d] %s: %d unidades\n", id, nome, qtd);
+}
+
+void view_exibir_detalhes_estoque(const char* nome, int total, int ocupado, int carrinho, int disponivel) {
+    printf("\n>> Item: %s\n", nome);
+    printf("   Estoque Total: %d | Ocupado (Outros Eventos): %d\n", total, ocupado);
+    printf("   Ja neste orcamento: %d\n", carrinho);
+    printf("   >> DISPONIVEL PARA ADICIONAR: %d\n", disponivel);
+}
+
+void view_exibir_msg_qtd_atualizada(int nova_qtd) {
+    printf(">> Quantidade atualizada para %d!\n", nova_qtd);
+}
+
+void view_exibir_confirmacao_acao(const char* acao, const char* nome_objeto) {
+    // Exemplo de resultado: "Tem certeza que deseja APAGAR o evento 'Festa da Firma'? ..."
+    printf("\nTem a certeza que deseja %s '%s'? (1-Sim / 0-Nao): ", acao, nome_objeto);
+}
+
+// ... código anterior ...
+
+void view_exibir_resumo_evento(const char* nome, float total) {
+    printf("\n--- RESUMO: %s ---\nTOTAL: R$ %.2f\n", nome, total);
+}
+
+void view_exibir_menu_pagamento_evento() {
+    printf("\nPagamento:\n1. A Vista (Caixa)\n2. Credito Parcelado (Entrada + Parcelas)\nOpcao: ");
+}
+
+void view_exibir_prompt_data_simples() {
+    printf("Data: ");
+}
+
+void view_exibir_prompt_valor_entrada() {
+    printf("Valor de Entrada (0 se nao houver): ");
+}
+
+void view_exibir_prompt_data_vencimento() {
+    printf("Data do Recebimento da Entrada /  Vencimento: ");
+}
+
+void view_exibir_sucesso_entrada_caixa(float valor) {
+    printf(">> Entrada de R$ %.2f lancada no Caixa.\n", valor);
+}
+
+void view_exibir_prompt_parcelas(float restante) {
+    printf("Numero de parcelas (R$ %.2f): ", restante);
+}
+
+void view_exibir_detalhe_fatura(int num, float valor, const char* venc) {
+    printf(" -> Fatura %d: R$ %.2f (Venc: %s)\n", num, valor, venc);
+}
+
+
+
+
+// ...
+void view_exibir_pergunta_adicionar_fornecedor() {
+    printf("\nFornecedores? (1-Sim): ");
+}
+
+void view_exibir_pergunta_adicionar_equipe() {
+    printf("\nEquipe? (1-Sim) (0-Nao): ");
+}
+
+void view_exibir_prompt_id_item_orcamento(const char* tipo_item) {
+    printf("ID do %s (0 fim): ", tipo_item);
+}
+
+void view_exibir_prompt_descricao_servico() {
+    printf("Descricao: ");
+}
+
+void view_exibir_prompt_valor_servico() {
+    printf("Valor: ");
+}
+
+void view_exibir_sucesso_criacao_orcamento(float total) {
+    printf(">> CRIADO! Total: R$ %.2f\n", total);
+}

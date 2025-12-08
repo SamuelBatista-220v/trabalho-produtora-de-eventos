@@ -106,7 +106,9 @@ void listar_cronograma_recurso(ListaOrcamento* lista, Listarecurso* l_rec) {
     Listarecurso* r = buscar_recurso_por_id(l_rec, id);
     if (r == NULL) { view_exibir_mensagem(">> Recurso nao encontrado."); return; }
 
-    printf("\n=== CRONOGRAMA: %s ===\n", r->conteudo.descricao);
+    char titulo[100]; sprintf(titulo, "CRONOGRAMA: %s", r->conteudo.descricao);
+    view_exibir_titulo(titulo); // Genérico
+
     int encontrou = 0;
     while (lista != NULL) {
         // FILTRO IMPORTANTE: Só olha para orçamentos APROVADOS
@@ -127,12 +129,12 @@ void listar_cronograma_recurso(ListaOrcamento* lista, Listarecurso* l_rec) {
         }
         lista = lista->prox;
     }
-    if (!encontrou) printf(">> Livre.\n");
+    if (!encontrou) view_exibir_alerta("INFO", "Livre (Sem reservas futuras).");
 }
 //verifica pelo id os recursos 
 
 void criar_novo_orcamento(ListaOrcamento** lista_orc, ListaCliente* l_cli, Listarecurso* l_rec, Listafornecedor* l_for, Listaequipe* l_eq) {
-    if (!l_cli || !l_rec) { view_exibir_mensagem(">> Cadastre Clientes e Recursos."); return; }
+    if (!l_cli || !l_rec) { view_exibir_mensagem(">>ERRO: Cadastre Clientes e Recursos primeiro."); return; }
     Orcamento novo; memset(&novo, 0, sizeof(Orcamento)); novo.ativo=1; novo.status=STATUS_EM_ANALISE;
     
     view_imprimir_lista(l_cli);
@@ -142,21 +144,22 @@ void criar_novo_orcamento(ListaOrcamento** lista_orc, ListaCliente* l_cli, Lista
     view_ler_dados_base_orcamento(&novo);
     novo.qtd_dias = (novo.dia_fim - novo.dia_inicio) + 1; if(novo.qtd_dias < 1) novo.qtd_dias = 1;
 while (1) {
-        printf("\n--- ADICIONAR RECURSOS ---\n");
+        view_exibir_mensagem("\n--- ADICIONAR RECURSOS ---\n");
         view_imprimir_lista_recurso(l_rec);
         
         // MOSTRA O QUE JÁ ESTÁ NO CARRINHO (Para o utilizador saber)
         if (novo.qtd_recursos_selecionados > 0) {
-            printf("\n[ITENS JA SELECIONADOS NESTE ORCAMENTO]:\n");
+            view_exibir_mensagem("\n[ITENS JA SELECIONADOS NESTE ORCAMENTO]:\n");
             for(int i=0; i<novo.qtd_recursos_selecionados; i++) {
                 // Busca o nome para mostrar (opcional, fica mais bonito)
                 Listarecurso* temp = buscar_recurso_por_id(l_rec, novo.lista_recursos[i].id_recurso);
-                char* nome_item = temp ? temp->conteudo.descricao : "Item";
+                view_exibir_item_carrinho_orcamento(temp ? temp->conteudo.descricao : "Item", novo.lista_recursos[i].id_recurso, novo.lista_recursos[i].quantidade);
+                // char* nome_item = temp ? temp->conteudo.descricao : "Item";
                 
-                printf(" - %s (ID %d): %d unidades\n", 
-                       nome_item,
-                       novo.lista_recursos[i].id_recurso, 
-                       novo.lista_recursos[i].quantidade);
+                // printf(" - %s (ID %d): %d unidades\n", 
+                //        nome_item,
+                //        novo.lista_recursos[i].id_recurso, 
+                //        novo.lista_recursos[i].quantidade);
             }
         }
 
@@ -176,17 +179,14 @@ while (1) {
             // Cálculo Real: Total - Outros - MeuCarrinho
             int disponivel_real = estoque_total - ocupado_outros - ja_no_carrinho;
 
-            printf("\n>> Item: %s\n", no_rec->conteudo.descricao);
-            printf("   Estoque Total: %d | Ocupado (Outros Eventos): %d\n", estoque_total, ocupado_outros);
-            printf("   Ja neste orcamento: %d\n", ja_no_carrinho);
-            printf("   >> DISPONIVEL PARA ADICIONAR: %d\n", disponivel_real);
+            view_exibir_detalhes_estoque(no_rec->conteudo.descricao, estoque_total, ocupado_outros, ja_no_carrinho, disponivel_real);
 
             if (disponivel_real <= 0) {
                 view_exibir_mensagem(">> ALERTA: Nao ha mais unidades disponiveis para esta data.");
                 continue;
             }
 
-            printf("Quantidade a adicionar: ");
+            view_exibir_mensagem("Quantidade a adicionar: ");
             int qtd = view_ler_opcao();
             
             if (qtd > disponivel_real) {
@@ -198,8 +198,7 @@ while (1) {
                     if(novo.lista_recursos[i].id_recurso == id_rec) {
                         novo.lista_recursos[i].quantidade += qtd;
                         novo.valor_total_recursos += (no_rec->conteudo.valor_da_locacao * qtd * novo.qtd_dias);
-                        printf(">> Quantidade atualizada para %d!\n", novo.lista_recursos[i].quantidade);
-                        encontrado = 1;
+                        view_exibir_msg_qtd_atualizada(novo.lista_recursos[i].quantidade); // <--- MUDANÇA AQUI
                         break;
                     }
                 }
@@ -214,7 +213,7 @@ while (1) {
                         novo.qtd_recursos_selecionados++;
                         
                         novo.valor_total_recursos += (no_rec->conteudo.valor_da_locacao * qtd * novo.qtd_dias);
-                        printf(">> Item adicionado com sucesso!\n");
+                        view_exibir_mensagem(">> Item adicionado com sucesso!");
                     } else {
                         view_exibir_mensagem(">> Limite de itens no orcamento atingido.");
                     }
@@ -224,40 +223,58 @@ while (1) {
             view_exibir_mensagem(">> Recurso nao encontrado.");
         }
     }
-   
+   // ... (Código anterior dos recursos continua igual) ...
+
+    // --- BLOCO FORNECEDORES ---
     if (l_for) {
-        view_exibir_mensagem("\nFornecedores? (1-Sim)");
+        view_exibir_pergunta_adicionar_fornecedor(); // VIEW
         if (view_ler_opcao() == 1) {
             while(1) {
                 view_imprimir_lista_fornecedor(l_for);
-                printf("ID (0 fim): "); int id = view_ler_opcao();
+                
+                view_exibir_prompt_id_item_orcamento("Fornecedor"); // VIEW
+                int id = view_ler_opcao();
+                
                 if(id==0) break;
                 if(item_ja_existe(&novo, id, 2)) continue;
+                
                 if(buscar_fornecedor_por_id(l_for, id)) {
                     int idx = novo.qtd_servicos_selecionados;
                     novo.lista_servicos[idx].id_fornecedor = id;
-                    printf("Desc: "); char d[100]; fgets(d, 100, stdin); d[strcspn(d, "\n")]=0; strcpy(novo.lista_servicos[idx].descricao_servico, d);
-                    printf("Valor: "); char v[20]; fgets(v, 20, stdin); novo.lista_servicos[idx].valor_combinado = atof(v);
+                    
+                    view_exibir_prompt_descricao_servico(); // VIEW
+                    view_ler_texto_simples(novo.lista_servicos[idx].descricao_servico, 100); // VIEW (Leitura)
+                    
+                    view_exibir_prompt_valor_servico(); // VIEW
+                    view_ler_float_simples(&novo.lista_servicos[idx].valor_combinado); // VIEW (Leitura com vírgula segura)
+                    
                     novo.valor_total_servicos += novo.lista_servicos[idx].valor_combinado;
                     novo.qtd_servicos_selecionados++;
                 }
             }
         }
     }
+
+    // --- BLOCO EQUIPE ---
     if (l_eq) {
-        view_exibir_mensagem("\nEquipe? (1-Sim) (0-Nao)");
+        view_exibir_pergunta_adicionar_equipe(); // VIEW
         if (view_ler_opcao() == 1) {
             while(1) {
                 view_imprimir_lista_equipe(l_eq);
-                printf("ID (0 fim): "); int id = view_ler_opcao();
+                
+                view_exibir_prompt_id_item_orcamento("Membro"); // VIEW
+                int id = view_ler_opcao();
+                
                 if(id==0) break;
                 if(item_ja_existe(&novo, id, 3)) continue;
+                
                 Listaequipe* eq = buscar_equipe_por_id(l_eq, id);
                 if(eq) {
                     int idx = novo.qtd_equipe_selecionada;
                     novo.lista_equipe[idx].id_membro_equipe = id;
                     novo.lista_equipe[idx].valor_diaria_momento = eq->conteudo.valor_diaria;
                     novo.lista_equipe[idx].dias_trabalhados = novo.qtd_dias;
+                    
                     float custo = eq->conteudo.valor_diaria * novo.qtd_dias;
                     novo.valor_total_equipe += custo;
                     novo.qtd_equipe_selecionada++;
@@ -268,8 +285,54 @@ while (1) {
 
     novo.valor_total_geral = novo.valor_total_recursos + novo.valor_total_servicos + novo.valor_total_equipe;
     inserir_orcamento(lista_orc, novo);
-    printf(">> CRIADO! Total: R$ %.2f\n", novo.valor_total_geral);
+    
+    view_exibir_sucesso_criacao_orcamento(novo.valor_total_geral); // VIEW
 }
+//     if (l_for) {
+//         view_exibir_mensagem("\nFornecedores? (1-Sim)");
+//         if (view_ler_opcao() == 1) {
+//             while(1) {
+//                 view_imprimir_lista_fornecedor(l_for);
+//                 printf("ID (0 fim): "); int id = view_ler_opcao();
+//                 if(id==0) break;
+//                 if(item_ja_existe(&novo, id, 2)) continue;
+//                 if(buscar_fornecedor_por_id(l_for, id)) {
+//                     int idx = novo.qtd_servicos_selecionados;
+//                     novo.lista_servicos[idx].id_fornecedor = id;
+//                     printf("Desc: "); char d[100]; fgets(d, 100, stdin); d[strcspn(d, "\n")]=0; strcpy(novo.lista_servicos[idx].descricao_servico, d);
+//                     printf("Valor: "); char v[20]; fgets(v, 20, stdin); novo.lista_servicos[idx].valor_combinado = atof(v);
+//                     novo.valor_total_servicos += novo.lista_servicos[idx].valor_combinado;
+//                     novo.qtd_servicos_selecionados++;
+//                 }
+//             }
+//         }
+//     }
+//     if (l_eq) {
+//         view_exibir_mensagem("\nEquipe? (1-Sim) (0-Nao)");
+//         if (view_ler_opcao() == 1) {
+//             while(1) {
+//                 view_imprimir_lista_equipe(l_eq);
+//                 printf("ID (0 fim): "); int id = view_ler_opcao();
+//                 if(id==0) break;
+//                 if(item_ja_existe(&novo, id, 3)) continue;
+//                 Listaequipe* eq = buscar_equipe_por_id(l_eq, id);
+//                 if(eq) {
+//                     int idx = novo.qtd_equipe_selecionada;
+//                     novo.lista_equipe[idx].id_membro_equipe = id;
+//                     novo.lista_equipe[idx].valor_diaria_momento = eq->conteudo.valor_diaria;
+//                     novo.lista_equipe[idx].dias_trabalhados = novo.qtd_dias;
+//                     float custo = eq->conteudo.valor_diaria * novo.qtd_dias;
+//                     novo.valor_total_equipe += custo;
+//                     novo.qtd_equipe_selecionada++;
+//                 }
+//             }
+//         }
+//     }
+
+//     novo.valor_total_geral = novo.valor_total_recursos + novo.valor_total_servicos + novo.valor_total_equipe;
+//     inserir_orcamento(lista_orc, novo);
+//     printf(">> CRIADO! Total: R$ %.2f\n", novo.valor_total_geral);
+// }
 
 void aprovar_orcamento_controller(ListaOrcamento* lista) {
     view_exibir_mensagem("ID:"); int id = view_ler_opcao();
@@ -294,7 +357,8 @@ void excluir_orcamento_controller(ListaOrcamento** lista) {
             view_exibir_mensagem(">> Apaga-lo pode deixar os relatorios financeiros sem detalhes.");
         }
 
-        printf("Tem a certeza que deseja APAGAR DEFINITIVAMENTE o evento '%s'? (1-Sim / 0-Nao): ", no->conteudo.nome_evento);
+        // printf("Tem a certeza que deseja APAGAR DEFINITIVAMENTE o evento '%s'? (1-Sim / 0-Nao): ", no->conteudo.nome_evento);
+        view_exibir_confirmacao_acao("APAGAR DEFINITIVAMENTE o evento", no->conteudo.nome_evento);
         if (view_ler_opcao() == 1) {
             // Chama a função do Model para remover da memória
             if (remover_fisico_orcamento(lista, id) == OPERACAO_SUCESSO) {
@@ -308,7 +372,8 @@ void excluir_orcamento_controller(ListaOrcamento** lista) {
     }
 }
 
-// --- FUNÇÃO CORRIGIDA COM ENTRADA + PARCELAS PARA CLIENTE ---
+// 
+
 void finalizar_evento_controller(ListaOrcamento* lista, ListaContaReceber** lista_receber, ListaCaixa** lista_caixa) {
     view_exibir_mensagem("\n=== FINALIZAR EVENTO ===");
     view_exibir_mensagem("Digite o ID do Evento (Deve estar APROVADO):");
@@ -318,25 +383,30 @@ void finalizar_evento_controller(ListaOrcamento* lista, ListaContaReceber** list
 
     if (no && no->conteudo.status == STATUS_APROVADO) {
         Orcamento* o = &no->conteudo;
-        printf("\n--- RESUMO: %s ---\nTOTAL: R$ %.2f\n", o->nome_evento, o->valor_total_geral);
         
-        printf("\nPagamento:\n1. A Vista (Caixa)\n2. Credito Parcelado (Entrada + Parcelas)\nOpcao: ");
+        // Substitui o printf do Resumo
+        view_exibir_resumo_evento(o->nome_evento, o->valor_total_geral);
+        
+        // Substitui o printf do Menu
+        view_exibir_menu_pagamento_evento();
         int op = view_ler_opcao();
 
         if (op == 1) {
             LancamentoCaixa lanc; lanc.id=0; lanc.tipo=1; lanc.valor=o->valor_total_geral;
             sprintf(lanc.descricao, "Evento #%d: %s (A Vista)", o->id, o->nome_evento);
-            printf("Data: "); char buf[20]; fgets(buf, 20, stdin); buf[strcspn(buf, "\n")]=0; strcpy(lanc.data, buf);
+            
+            view_exibir_prompt_data_simples(); // Substitui printf("Data: ");
+            char buf[20]; fgets(buf, 20, stdin); buf[strcspn(buf, "\n")]=0; strcpy(lanc.data, buf);
+            
             inserir_caixa(lista_caixa, lanc);
             o->status = STATUS_FINALIZADO;
             view_exibir_mensagem(">> Sucesso (Caixa)!");
 
         } else if (op == 2) {
-            // AQUI ESTÁ A CORREÇÃO: OPÇÃO DE ENTRADA
-            printf("Valor de Entrada (0 se nao houver): ");
+            view_exibir_prompt_valor_entrada(); 
             char buf_ent[20]; fgets(buf_ent, 20, stdin); float entrada = atof(buf_ent);
             
-            printf("Data do Recebimento da Entrada /  Vencimento: ");
+            view_exibir_prompt_data_vencimento(); 
             char dt_base[20]; fgets(dt_base, 20, stdin); dt_base[strcspn(dt_base, "\n")]=0;
 
             if (entrada > 0) {
@@ -344,12 +414,15 @@ void finalizar_evento_controller(ListaOrcamento* lista, ListaContaReceber** list
                 sprintf(lanc.descricao, "Entrada Evt #%d: %s", o->id, o->nome_evento);
                 strcpy(lanc.data, dt_base);
                 inserir_caixa(lista_caixa, lanc);
-                printf(">> Entrada de R$ %.2f lancada no Caixa.\n", entrada);
+                
+                // Substitui printf(">> Entrada de R$ %.2f...");
+                view_exibir_sucesso_entrada_caixa(entrada);
             }
 
             float restante = o->valor_total_geral - entrada;
             if (restante > 0) {
-                printf("Numero de parcelas (R$ %.2f): ", restante);
+                // Substitui printf("Numero de parcelas...");
+                view_exibir_prompt_parcelas(restante);
                 int parc = view_ler_opcao();
                 if (parc < 1) parc = 1;
 
@@ -362,11 +435,13 @@ void finalizar_evento_controller(ListaOrcamento* lista, ListaContaReceber** list
                     sprintf(cr.descricao, "Fatura Evt #%d (%d/%d)", o->id, i, parc);
                     
                     char dt_venc[20];
-                    somar_meses_data_orc(dt_base, i, dt_venc); // Começa 1 mês depois da entrada/base
+                    somar_meses_data_orc(dt_base, i, dt_venc);
                     strcpy(cr.data_vencimento, dt_venc);
 
                     inserir_conta_receber(lista_receber, cr);
-                    printf(" -> Fatura %d: R$ %.2f (Venc: %s)\n", i, cr.valor_total, cr.data_vencimento);
+                    
+                    // Substitui printf(" -> Fatura %d...");
+                    view_exibir_detalhe_fatura(i, cr.valor_total, cr.data_vencimento);
                 }
             }
             o->status = STATUS_FINALIZADO;
@@ -378,7 +453,7 @@ void finalizar_evento_controller(ListaOrcamento* lista, ListaContaReceber** list
 void controller_gerenciar_orcamentos(ListaOrcamento** lista_orcamentos, ListaCliente* lista_clientes, Listarecurso* lista_recursos, Listafornecedor* lista_fornecedores, Listaequipe* lista_equipe, ListaContaReceber** lista_receber, ListaCaixa** lista_caixa) {
     int opcao = -1;
     do {
-        printf("\n=== ORCAMENTOS ===\n1. Novo\n2. Listar (Analise)\n3. Listar (Aprovados)\n4. Historico\n5. Cronograma\n6. Aprovar\n7. Finalizar\n8. Excluir\n0. Voltar\nOpcao: ");
+        view_exibir_menu_orcamentos();
         opcao = view_ler_opcao();
         switch (opcao) {
             case 1: criar_novo_orcamento(lista_orcamentos, lista_clientes, lista_recursos, lista_fornecedores, lista_equipe); break;

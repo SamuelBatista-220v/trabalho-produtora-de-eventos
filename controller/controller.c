@@ -148,6 +148,23 @@ void controller_iniciar_sistema() {
                     lista_equipe
                 );
                 break;
+                // No topo do arquivo:
+#include "xml_controller.h"
+
+// Dentro da função controller_iniciar_sistema, no switch:
+case 11: 
+    controller_menu_xml(
+        &lista_cliente, 
+        &lista_recurso, 
+        &lista_orcamento,
+        &lista_fornecedor,
+        &lista_equipe,
+        &lista_operador,
+        &lista_caixa,
+        &lista_receber,
+        &lista_pagar
+    );
+    break;
             case 0: 
                 view_exibir_mensagem("\nSalvando dados e saindo...");
                 salvar_tudo(lista_produtora, lista_cliente, lista_equipe, lista_recurso, 
