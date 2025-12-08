@@ -455,11 +455,11 @@ void view_exibir_parcela_gerada(int num, int total, float valor, const char* ven
 }
 
 void view_exibir_confirmacao_pagamento(float valor) {
-    printf("Pagar R$ %.2f? (1-Sim): ", valor);
+    printf("Pagar R$ %.2f? (1-Sim / 0-Nao): ", valor);
 }
 
 void view_exibir_confirmacao_recebimento(float valor) {
-    printf("Receber R$ %.2f? (1-Sim): ", valor);
+    printf("Receber R$ %.2f? (1-Sim / 0-Nao): ", valor);
 }
 
 void view_exibir_sucesso_pagamento() {
@@ -555,7 +555,7 @@ void view_exibir_detalhe_fatura(int num, float valor, const char* venc) {
 
 // ...
 void view_exibir_pergunta_adicionar_fornecedor() {
-    printf("\nFornecedores? (1-Sim): ");
+    printf("\nFornecedores? (1-Sim) (0-Nao): ");
 }
 
 void view_exibir_pergunta_adicionar_equipe() {
